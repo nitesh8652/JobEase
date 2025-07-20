@@ -70,7 +70,7 @@ const JobListing = () => {
 
           <div className='cards grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
             {jobsData.map((jobsData, index) => (
-              <JobCard key={index} job={job} />
+              <JobCard key={index} job={jobsData} />
             ))}
           </div>
         </section>

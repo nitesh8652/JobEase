@@ -55,7 +55,7 @@ const Banner = () => {
             <div className="trustedby mt-10 shadow-2xl p-4 rounded-[12px] flex flex-col gap-16">
                 <h4 className="text-2xl font-medium text-center mb-4">Trusted By</h4>
 
-                <div className="flex flex-wrap items-center justify-around gap-4">
+                <div className="flex flex-wrap items-center justify-around gap-4 mb-6">
                     <img className="h-[30px]" src={assets.microsoft_logo} alt="Microsoft" />
                     <img className="h-[30px]" src={assets.walmart_logo} alt="Walmart" />
                     <img className="h-[30px]" src={assets.adobe_logo} alt="Adobe" />
