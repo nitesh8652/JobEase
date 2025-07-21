@@ -11,17 +11,23 @@ const Navbar = () => {
 
     return (
         <div className="bg-[#ffffff] h-16 flex items-center justify-between px-4 shadow py-4">
-            <img src={assets.logo} style={{ width: '220px', height: '213px' }} />
+            <div className="block sm:hidden">
+                <img src={assets.mobileview} className='w-[50%] h-[50%]  ' />
+            </div>
+           
+            <div className="hidden sm:block">
+                <img src={assets.logo} className='w-[220px] h-[213px]' />
+            </div>
 
             {
-                user ? <div className="flex items-center gap-4">
-                    <Link to={'/application'}> Applied Jobs </Link>
-                    <button className="bg-gradient-to-r from-[#00b3b3] to-[#00b3e6] text-white px-4 py-2 rounded"> Resume Builder </button>
+                user ? <div className="flex items-center gap-2 text-sm">
+                    <Link to={'/application'} className="whitespace-nowrap"> Applied Jobs </Link>
+                    <button className="bg-gradient-to-r from-[#00b3b3] to-[#00b3e6] text-white px-3 py-2 rounded whitespace-nowrap max-sm:px-[3px]"> Resume Builder </button>
                     <UserButton />
                 </div> :
                 <div className='flex items-center gap-8 max-sm:text-xs'>
-                    <button> Recruiter Login </button>
-                    <button onClick={e => openSignIn()} className="bg-blue-500 text-white px-6 sm:px-9 py-2 rounded-full"> Login </button>
+                    <button className=' whitespace-nowrap'> Recruiter Login </button>
+                    <button onClick={e => openSignIn()} className="bg-blue-500 text-white px-6 sm:px-9 py-2 rounded-full md:px-[3px]"> Login </button>
                 </div>
             }
 
