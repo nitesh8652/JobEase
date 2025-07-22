@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../Context/AppContext'
 import { assets, JobCategories, JobLocations, jobsData } from '../assets/assets'
 import JobCard from './JobCard'
@@ -11,6 +11,7 @@ const JobListing = () => {
   const [selectedLocations, setSelectedLocations] = useState([])
   const [currentpage, setcurrentpage] = useState(1)
   const jobsPerPage = 9
+  const[filteredjobs, setfilterjobs] = useState(jobs)
 
 
   const handleCategoryChange = (category) => {
@@ -20,8 +21,7 @@ const JobListing = () => {
         : [...prev, category]
     )
   }
-
-  // Handle location filter  
+ 
   const handleLocationChange = (location) => {
     setSelectedLocations(prev =>
       prev.includes(location)
@@ -29,6 +29,22 @@ const JobListing = () => {
         : [...prev, location]
     )
   }
+
+useEffect(()=>{
+  const matchescatogery = job => selectedCategories.length === 0 || selectedCategories.includes(job.category)
+
+  const matcheslocation = job => selectedCategories.length === 0 || selectedLocations.includes(job.location)
+
+  const matchesjobtitle = job => searchfilter.title === " " || job.title.toLowerCase().includes(searchfilter.title.toLowerCase())
+
+  const matcheslocationtitle = job => searchfilter.location === " " || job.location.toLowerCase().includes(searchfilter.location.toLowerCase())
+
+  const newfilteredjobs = jobs.slice().reverse().filter(job=> matchescatogery(job)&& matchesjobtitle(job) && matcheslocationtitle(job))
+
+  setfilterjobs(newfilteredjobs)
+  setcurrentpage(1)
+
+},[jobs,selectedCategories,selectedLocations,searchfilter]) 
 
   return (
     <div className='container 2xl:px-20 p-5 py-8 mt-40'>
@@ -39,7 +55,7 @@ const JobListing = () => {
               <>
                 <div className='shadow bg-[#97CADC] p-5 w-full rounded-lg flex flex-col mb-6'>
                   <h3 className='text-lg font-medium mb-4'>Your Current Filter</h3>
-                  <div className='flex items-center gap-2 flex-col'>
+                  <div className='flex flex-wrap items-center gap-2 '>
                     {searchfilter.title && (
                       <span className='flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full'>
                         {searchfilter.title}
@@ -69,7 +85,7 @@ const JobListing = () => {
             )
           }
 
-          {/* Filter toggle button for mobile */}
+         
           <button
             className='px-6 py-1.5 rounded border border-gray-400 lg:hidden mt-18'
             onClick={() => setShowFilter(!showFilter)}
@@ -88,8 +104,8 @@ const JobListing = () => {
                     <input
                       className='scale-125 cursor-pointer'
                       type="checkbox"
-                      checked={selectedCategories.includes(Category)}
                       onChange={() => handleCategoryChange(Category)}
+                      checked={selectedCategories.includes(Category)}
                     />
                     <label className='cursor-pointer'>{Category}</label>
                   </li>
@@ -97,7 +113,7 @@ const JobListing = () => {
               }
             </ul>
 
-            {/* Location Filter */}
+            
             <h4 className='font-medium text-lg py-4 pt-14'>Search By Location</h4>
             <ul className='space-y-4 text-gray-600'>
               {
@@ -106,8 +122,8 @@ const JobListing = () => {
                     <input
                       className='scale-125 cursor-pointer'
                       type="checkbox"
-                      checked={selectedLocations.includes(location)}
                       onChange={() => handleLocationChange(location)}
+                      checked={selectedLocations.includes(location)}
                     />
                     <label className='cursor-pointer'>{location}</label>
                   </li>
@@ -122,7 +138,7 @@ const JobListing = () => {
           <p className='mb-8 sm:mb-4 md:mb-8 text-gray-500'>Latest jobs with top companies apply now and shape your career!</p>
 
           <div className='cards grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
-            {jobs
+            {filteredjobs
               .slice((currentpage - 1) * jobsPerPage, currentpage * jobsPerPage)
               .map((jobsData, index) => (
                 <JobCard key={index} job={jobsData} />
@@ -130,14 +146,14 @@ const JobListing = () => {
           </div>
 
 
-          {jobs.length > 0 && (
+          {filteredjobs.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-8">
               <a href="#job-list">
                 <img 
                  onClick={()=> setcurrentpage(Math.max(currentpage-1,1))}
                 src={assets.left_arrow_icon} alt="Previous" />
               </a>
-              {Array.from({ length: Math.ceil(jobs.length / jobsPerPage) }).map((_, index) => (
+              {Array.from({ length: Math.ceil(filteredjobs.length / jobsPerPage) }).map((_, index) => (
                 <a href="#job-list" key={index}>
                   <button 
                     className={`w-8 h-8 rounded ${currentpage === index + 1 ? 'bg-[#1447E6] text-white' : 'bg-gray-100'}`}
@@ -149,7 +165,7 @@ const JobListing = () => {
               ))}
               <a href="#job-list">
                 <img 
-                onClick={()=> setcurrentpage(Math.min(currentpage+1, Math.ceil(jobs.length / jobsPerPage)))}
+                onClick={()=> setcurrentpage(Math.min(currentpage+1, Math.ceil(filteredjobs.length / jobsPerPage)))}
                 src={assets.right_arrow_icon} alt="Next" />
               </a>
             </div> 
