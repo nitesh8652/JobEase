@@ -27,7 +27,7 @@ const Navbar = () => {
                 </div> :
                 <div className='flex items-center gap-8 max-sm:text-xs'>
                     <button className=' whitespace-nowrap'> Recruiter Login </button>
-                    <button onClick={e => openSignIn()} className="bg-blue-500 text-white px-6 sm:px-9 py-2 rounded-full md:px-[3px]"> Login </button>
+                    <button onClick={e => openSignIn()} className="bg-blue-500 text-white px-6 sm:px-9 py-2 rounded-full md:px-[3px]"> Login </button> 
                 </div>
             }
 
