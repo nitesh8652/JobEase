@@ -49,7 +49,7 @@ useEffect(()=>{
   return (
     <div className='container 2xl:px-20 p-5 py-8 mt-40'>
       <div className='lg:flex lg:gap-8 max-lg:space-y-8'>
-        <div className='lg:w-1/4'>
+        <div className='lg:w-1/4 pl-[42px]'>
           {
             issearched && (searchfilter.title !== "" || searchfilter.location !== "") && (
               <>
@@ -94,9 +94,9 @@ useEffect(()=>{
           </button>
 
           {/* Both category and location filters controlled by showFilter state */}
-          <div className={showFilter ? "" : "max-lg:hidden"}>
+          <div className={showFilter ? "" : "max-lg:hidden"} >
             {/* Category Filter */}
-            <h4 className='font-medium text-lg py-4'>Search By Category</h4>
+            <h4 className='font-medium text-lg py-4 '>Search By Category</h4>
             <ul className='space-y-4 text-gray-600'>
               {
                 JobCategories.map((Category, index) => (
