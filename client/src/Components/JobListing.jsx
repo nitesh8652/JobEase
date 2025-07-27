@@ -135,7 +135,7 @@ useEffect(()=>{
 
         <section className='lg:w-3/4 '>
           <h3 className='font-bold text-3xl py-2' id="job-list">Latest Jobs</h3>
-          <p className='mb-8 sm:mb-4 md:mb-8 text-gray-500'>Latest jobs with top companies apply now and shape your career!</p>
+          <p className='mb-8 sm:mb-4 md:mb-8 text-gray-500'>Latest jobs with top companies. Apply now and shape your career!</p>
 
           <div className='cards grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
             {filteredjobs
