@@ -148,12 +148,15 @@ useEffect(()=>{
 
           {filteredjobs.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-8">
+             
               <a href="#job-list">
                 <img 
                  onClick={()=> setcurrentpage(Math.max(currentpage-1,1))}
                 src={assets.left_arrow_icon} alt="Previous" />
               </a>
+
               {Array.from({ length: Math.ceil(filteredjobs.length / jobsPerPage) }).map((_, index) => (
+                
                 <a href="#job-list" key={index}>
                   <button 
                     className={`w-8 h-8 rounded ${currentpage === index + 1 ? 'bg-[#1447E6] text-white' : 'bg-gray-100'}`}
@@ -161,13 +164,16 @@ useEffect(()=>{
                   >
                     {index + 1}
                   </button>
+              
                 </a>
               ))}
+
               <a href="#job-list">
                 <img 
                 onClick={()=> setcurrentpage(Math.min(currentpage+1, Math.ceil(filteredjobs.length / jobsPerPage)))}
                 src={assets.right_arrow_icon} alt="Next" />
               </a>
+
             </div> 
           )}
 
