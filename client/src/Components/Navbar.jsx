@@ -1,22 +1,22 @@
 import React from 'react'
 import { assets } from '../assets/assets'
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const Navbar = () => {
 
     const { openSignIn } = useClerk()
     const { user } = useUser()
-
+    const navigate = useNavigate()
 
     return (
         <div className="bg-[#ffffff] h-16 flex items-center justify-between px-4 shadow py-4">
             <div className="block sm:hidden">
-                <img src={assets.mobileview} className='w-[50%] h-[50%]  ' />
+                <img onClick={()=> navigate('/')}  src={assets.mobileview} className='w-[50%] h-[50%]  ' />
             </div>
            
             <div className="hidden sm:block">
-                <img src={assets.logo} className='w-[220px] h-[213px]' />
+                <img onClick={()=> navigate('/')} src={assets.logo} className='w-[220px] h-[213px] cursor-pointer' />
             </div>
 
             {
