@@ -9,7 +9,7 @@ const JobCard = ({ job }) => {
     return (
         <>
             {/* 1. Added flex and flex-col to make the card a vertical flex container */}
-            <div className='shadow border p-6 rounded-[6px] flex flex-col'>
+            <div className='shadow-md border border-[#002761]  p-6 rounded-[6px] flex flex-col'>
 
                 <div className="flex items-center gap-[12px]" >
                     <img src={assets.company_icon} alt="company icon" />

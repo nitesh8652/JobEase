@@ -34,10 +34,9 @@
                 <input
                     type="text"
                     placeholder="Search job title, or company"
-                    maxLength={26}
-                    break-all
-                    whitespace="nowrap"
+                    maxLength={30}
                     className="flex-1 outline-none text-gray-700 placeholder-gray-400"
+                    style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
                     ref={titleref}
                 />
                 </div>
@@ -46,8 +45,9 @@
                 <input
                     type="text"
                     placeholder="Location"
-                    maxLength={28}
+                    maxLength={30}
                     className="flex-1 outline-none text-gray-700 placeholder-gray-400"
+                    style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
                     ref={locationref}
                 />
                 </div>

@@ -30,7 +30,7 @@ const Navbar = () => {
                                 <img src={assets.facebook_icon} alt="" className="w-6 h-6" />
                             </a>
                             <a href="https://twitter.com" aria-label="X (Twitter)">
-                                <img src={assets.twitter_icon} alt="" className="w-6 h-6" />
+                                <img src={assets.x_icon} alt="" className="w-6 h-6" />
                             </a>
                             <a href="https://linkedin.com" aria-label="LinkedIn">
                                 <img src={assets.linkedin_icon} alt="" className="w-6 h-6" />
