@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
 import { AppContext } from '../Context/AppContext';
 
@@ -11,13 +11,16 @@ const RecuterLogin = () => {
     const [data, setdata] = useState(false);
     const { setShowRecruiterLogin } = useContext(AppContext);
 
-
-
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
 
     const onsubmithandler = async (e) => {
         e.preventDefault();
         if (state === "Sign Up" && !data) {
-            // move to next step (e.g., upload image)
             setdata(true);
             return;
         }
@@ -125,7 +128,7 @@ const RecuterLogin = () => {
                                 className='text-blue-600 cursor-pointer'
                                 onClick={() => {
                                     setstate("Sign Up");
-                                    setdata(false); // reset step
+                                    setdata(false);
                                 }}
                             >
                                 Sign Up
