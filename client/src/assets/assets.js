@@ -81,19 +81,28 @@ export const assets = {
 export const JobCategories = [
     "Programming",
     "Data Science",
+    "Data Analysit",
     "Designing",
     "Networking",
     "Management",
     "Marketing",
     "Cybersecurity",
+    "Healthcare",
+    "Education",
+    "Media",
+    "Human Resources",
+
 ]
 
 export const JobLocations = [
-    "Bangalore",
+    "Bangalore (Bengaluru)",
     "Washington",
     "Hyderabad",
+    "Delhi",
+    "Pune",
     "Mumbai",
     "California",
+    "Kolkata",
     "Chennai",
     "New York"
 ]
