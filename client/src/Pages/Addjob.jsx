@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Quill from 'quill'
-import 'quill/dist/quill.snow.css' // Quill editor CSS
+import 'quill/dist/quill.snow.css' 
 import { JobCategories, JobLocations } from '../assets/assets'
 
 const Addjob = () => {
