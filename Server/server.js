@@ -2,9 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'
 import mongoose from 'mongoose';
+import connectDB from './Config/db.js';
 
 
 const app = express();
+await connectDB()
 
 app.use(cors())
 
