@@ -10,6 +10,24 @@ const clerkwebhooks = async (req, res) => {
             "svix-timestamp": req.headers['svix-timestamp'],
             "svix-signature": req.headers['svix-signature']
         })
+
+        const { data, type } = req.body
+
+        switch (type) {
+            case 'user.created': {
+
+            }
+            case 'user.updated': {
+
+            }
+            case 'user.deleted': {
+
+            }
+
+            default:
+                break;
+        }
+
     } catch {
 
     }
