@@ -15,13 +15,31 @@ const clerkwebhooks = async (req, res) => {
 
         switch (type) {
             case 'user.created': {
-
+                const userData = {
+                    _id: data.id,  //id - mongo || data.id- clerk user base
+                    email: data.email_addresses[0].email_addresses,
+                    name: data.first_name + "" + data.last_name,
+                    image: data.image_url,
+                    resume: ''
+                }
+                await User.create(userData)
+                res.json({})
+                break;
             }
             case 'user.updated': {
-
+                const userData = {
+                    email: data.email_addresses[0].email_addresses,
+                    name: data.first_name + "" + data.last_name,
+                    image: data.image_url,
+                }
+                await User.findByIdAndUpdate(data.id, userData)
+                res.json({})
+                break;
             }
             case 'user.deleted': {
-
+                await User.findByIdAndDelete(data.id)
+                res.json({})
+                break;
             }
 
             default:
@@ -29,7 +47,8 @@ const clerkwebhooks = async (req, res) => {
         }
 
     } catch {
-
+        console.log(error.message);
+        res.json({ sucess: false, message: "Error in Clerk Webhooks" })
     }
 }
 
