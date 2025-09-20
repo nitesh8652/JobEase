@@ -46,9 +46,10 @@ const clerkwebhooks = async (req, res) => {
                 break;
         }
 
-    } catch {
+    } catch (error) {
         console.log(error.message);
-        res.json({ sucess: false, message: "Error in Clerk Webhooks" })
+        res.json({ success: false, message: "Error in Clerk Webhooks" })
     }
 }
+export { clerkwebhooks }
 
