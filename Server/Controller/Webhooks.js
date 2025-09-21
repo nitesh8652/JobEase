@@ -16,9 +16,9 @@ const clerkwebhooks = async (req, res) => {
         switch (type) {
             case 'user.created': {
                 const userData = {
-                    _id: data.id,  //id - mongo || data.id- clerk user base
-                    email: data.email_addresses[0].email_addresses,
-                    name: data.first_name + "" + data.last_name,
+                    _id: data.id,  
+                    email: data.email_addresses[0].email_address,
+                    name: data.first_name + " " + data.last_name,
                     image: data.image_url,
                     resume: ''
                 }
@@ -28,8 +28,8 @@ const clerkwebhooks = async (req, res) => {
             }
             case 'user.updated': {
                 const userData = {
-                    email: data.email_addresses[0].email_addresses,
-                    name: data.first_name + "" + data.last_name,
+                    email: data.email_addresses[0].email_address,
+                    name: data.first_name + " " + data.last_name,
                     image: data.image_url,
                 }
                 await User.findByIdAndUpdate(data.id, userData)
