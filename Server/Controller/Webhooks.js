@@ -1,33 +1,32 @@
 import { Webhook } from "svix";
 import User from '../Models/User.js'
 
-
 const clerkwebhooks = async (req, res) => {
     try {
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
-        await whook.verify(JSON.stringify(req.body), {
+        const payload = req.body.toString()
+        
+        await whook.verify(payload, {
             "svix-id": req.headers['svix-id'],
             "svix-timestamp": req.headers['svix-timestamp'],
             "svix-signature": req.headers['svix-signature']
         })
 
-        const { data, type } = req.body
+        const { data, type } = JSON.parse(payload)
 
-       switch (type) {
-    case 'user.created': {
-        console.log('Webhook received: user.created', data);
-        const userData = {
-            _id: data.id,  
-            email: data.email_addresses[0].email_address,
-            name: data.first_name + " " + data.last_name,
-            image: data.image_url,
-            resume: ''
-        }
-        await User.create(userData)
-        console.log('User created in MongoDB:', userData);
-        res.json({})
-        break;
-    }
+        switch (type) {
+            case 'user.created': {
+                const userData = {
+                    _id: data.id,  
+                    email: data.email_addresses[0].email_address,
+                    name: data.first_name + " " + data.last_name,
+                    image: data.image_url,
+                    resume: ''
+                }
+                await User.create(userData)
+                res.json({})
+                break;
+            }
             case 'user.updated': {
                 const userData = {
                     email: data.email_addresses[0].email_address,
@@ -43,15 +42,12 @@ const clerkwebhooks = async (req, res) => {
                 res.json({})
                 break;
             }
-
             default:
                 break;
         }
-
     } catch (error) {
         console.log(error.message);
         res.json({ success: false, message: "Error in Clerk Webhooks" })
     }
 }
 export { clerkwebhooks }
-
