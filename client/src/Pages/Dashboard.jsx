@@ -15,7 +15,7 @@ const Dashboard = () => {
                     className='h-8 w-8 cursor-pointer'
                 />
                 <div className='flex items-center gap-3'>
-                    <p className='text-gray-700 text-sm max-sm:hidden'>Welcome, baby</p>
+                    <p className='text-gray-700 text-sm max-sm:hidden'>Welcome, Nitesh</p>
                     <div className='flex items-center gap-2 relative group'>
                         <img src={assets.company_icon} className='w-6 h-6' />
                         <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>

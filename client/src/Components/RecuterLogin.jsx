@@ -1,15 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
 import { AppContext } from '../Context/AppContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const RecuterLogin = () => {
+    const navigate = useNavigate()
     const [state, setstate] = useState('Login'); // 'Login' or 'Sign Up'
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [image, setImage] = useState(null);
     const [data, setdata] = useState(false);
-    const { setShowRecruiterLogin } = useContext(AppContext);
+    const { setShowRecruiterLogin , backendUrl , setCompanyToken , setCompanyData } = useContext(AppContext);
+    
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -31,6 +36,29 @@ const RecuterLogin = () => {
         } else {
             console.log('Signing up:', { name, email, password, image });
         }
+
+        try {
+            
+            if (state==="Login") {
+                const {data} = await axios.post(backendUrl + '/api/company/login' , {email,password})
+            
+            if (data.success) {
+                console.log(data)
+                setCompanyData(data.company)
+                setCompanyToken(data.token)
+                localStorage.setItem('companyToken',data.token)
+                setShowRecruiterLogin(false)
+                navigate('/dashboard')
+            } else{
+                toast.error(data.message)
+            }
+            
+            }
+
+        } catch (error) {
+            
+        }
+
     };
 
     return (
