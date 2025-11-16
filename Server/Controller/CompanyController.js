@@ -54,7 +54,7 @@ export const loginCompany = async (req, res) => {
 
         const company = await Company.findOne({ email })
 
-        if (bcrypt.compare(password, company.password)) {
+        if (await bcrypt.compare(password, company.password)) {
             res.json({
                 success: true,
                 company: {
@@ -78,6 +78,13 @@ export const loginCompany = async (req, res) => {
 
 export const getCompanyData = async (req, res) => {
 
+    try {
+        const company = req.company;
+        res.json({ success: true, company })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+
 }
 
 export const postJob = async (req, res) => {
@@ -92,7 +99,7 @@ export const postJob = async (req, res) => {
             location,
             salary,
             companyId,
-            date:Date.now(),
+            date: Date.now(),
             level,
             category
         })
@@ -110,6 +117,14 @@ export const getCompanyJobApplicants = async (req, res) => {
 
 export const getCompanyPostedJobs = async (req, res) => {
 
+    try {
+        const companyId = req.company._id
+        const jobs = await Job.find({ companyId })
+        res.json({ success: true, jobsData: jobs })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+
 }
 
 export const changeJobApplications = async (req, res) => {
@@ -117,7 +132,22 @@ export const changeJobApplications = async (req, res) => {
 }
 export const changeVisibility = async (req, res) => {
 
+    try {
+        const { id } = req.body
+        const companyId = req.company._id
+        const job = await Job.findById(id)
+        if (companyId.toString() === job.companyId.toString()) {
+            job.visible = !job.visible
+        }
+        await job.save() 
+        res.json({ success: true, job })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+
+    }
+
 }
+
 export const changeJobApplicationStatus = async (req, res) => {
 
 }
