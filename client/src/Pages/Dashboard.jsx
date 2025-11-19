@@ -1,9 +1,12 @@
 import React from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
+import { useContext } from 'react';
+import { AppContext } from '../Context/AppContext';
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const { companyData } = useContext(AppContext)
 
     return (
         <div className='min-h-screen bg-gray-50'>
@@ -14,19 +17,26 @@ const Dashboard = () => {
                     src={assets.logo}
                     className='h-8 w-8 cursor-pointer'
                 />
-                <div className='flex items-center gap-3'>
-                    <p className='text-gray-700 text-sm max-sm:hidden'>Welcome, Nitesh</p>
-                    <div className='flex items-center gap-2 relative group'>
-                        <img src={assets.company_icon} className='w-6 h-6' />
-                        <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
-                            <ul className='list-none m-0 p-2 bg-white rounded-md text-sm shadow-xl'>
-                                <li className='py-1 px-2 pr-10 cursor-pointer text-red-600 hover:text-red-800 text-sm'>
-                                    Logout
-                                </li>
-                            </ul>
+                {companyData && (
+
+                    <div className='flex items-center gap-3'>
+                        <p className='text-gray-700 text-sm max-sm:hidden'>Welcome, 
+                            {companyData.name}
+                        </p>
+                        <div className='flex items-center gap-2 relative group'>
+                            <img src={companyData.image} className='w-6 h-6' />
+                            <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
+                                <ul className='list-none m-0 p-2 bg-white rounded-md text-sm shadow-xl'>
+                                    <li className='py-1 px-2 pr-10 cursor-pointer text-red-600 hover:text-red-800 text-sm'>
+                                        Logout
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                )}
+
             </div>
 
             {/* Sidebar + Content */}

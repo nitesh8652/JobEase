@@ -2,6 +2,10 @@ import React, { useState, useRef, useEffect } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css' 
 import { JobCategories, JobLocations } from '../assets/assets'
+import axios from 'axios'
+import { useContext } from 'react'
+import { AppContext } from '../Context/AppContext'
+import { toast } from 'react-toastify'
 
 const Addjob = () => {
   const [title, setTitle] = useState('')
@@ -12,6 +16,36 @@ const Addjob = () => {
 
   const editorRef = useRef(null)
   const quillRef = useRef(null)
+  const {backendUrl , companyToken} = useContext(AppContext)
+
+  const onsubmithandler = async (e) => {
+    e.preventDefault()
+    try{
+
+      const description = quillRef.current.root.innerHTML
+      const {data} = await axios.post(backendUrl+'/api/company/post-job',{
+        title,
+        description,
+        location,
+        salary,
+        category,
+        level
+      },{headers:{token:companyToken}}
+    ) 
+    if (data.success){
+      toast.success(data.message)
+      setTitle('')
+      setSalary(0)
+      quillRef.current.root.innerHTML = ""
+    }else{
+      toast.error(data.message)
+    }
+
+    }catch(error){
+      toast.error(error.message)
+    }
+   
+  }
 
   useEffect(() => {
     if (editorRef.current && !quillRef.current) {
@@ -23,7 +57,7 @@ const Addjob = () => {
   }, [])
 
   return (
-    <form className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-2xl space-y-6">
+    <form onSubmit={onsubmithandler} className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-2xl space-y-6">
      
       <div>
         <label className="block mb-1 font-semibold text-gray-700">Job Title</label>
