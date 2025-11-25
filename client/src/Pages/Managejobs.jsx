@@ -1,8 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { manageJobsData } from "../assets/assets";
 import moment from "moment";
+import axios from "axios";
+import { useContext } from "react";
+import { AppContext } from "../Context/AppContext";
+import { toast } from "react-toastify";
+
 
 const Managejobs = () => {
+
+  const [jobs, setJobs] = useState([]);
+  const { backendUrl, companyToken } = useContext(AppContext);
+
+  //fetch job applicatints data
+
+  const fetchCompanyJob = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + '/api/company/listjobs', {
+        headers: { token: companyToken }
+      })
+
+      if (data.success) {
+        setJobs(data.jobsData.reverse())
+        console.log(data.jobsData)
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+  const changeJobVisibility = async (id)=>{
+     try {
+      const {data} = await axios.post(backendUrl+'/api/company/changevisibility',{
+        id
+      },{
+        headers:{token:companyToken}
+      })
+      if (data.success) {
+        toast.success(data.message)
+        fetchCompanyJob()
+      }else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+       toast.error(error.message)
+      
+     }
+  }
+
+  useEffect(() => {
+    if (companyToken) {
+      fetchCompanyJob()
+    }
+  }, [companyToken])
+
   return (
     <div className="p-4 sm:p-6">
       <div className="overflow-x-auto">
@@ -18,7 +72,8 @@ const Managejobs = () => {
             </tr>
           </thead>
           <tbody>
-            {manageJobsData.map((job, index) => (
+
+            {jobs.map((job, index) => (
               <tr
                 key={index}
                 className="hover:bg-gray-50 transition border-b last:border-none"
@@ -30,8 +85,10 @@ const Managejobs = () => {
                 <td className="p-2 sm:p-3">{job.applicants}</td>
                 <td className="p-2 sm:p-3 text-center">
                   <input
+                  onChange={()=>changeJobVisibility(job._id)}
                     type="checkbox"
                     className="w-4 h-4 cursor-pointer accent-blue-600"
+                    checked={job.visible}
                   />
                 </td>
               </tr>
