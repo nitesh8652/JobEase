@@ -12,7 +12,7 @@ const JobCard = ({ job }) => {
             <div className='shadow-md border border-[#002761]  p-6 rounded-[6px] flex flex-col'>
 
                 <div className="flex items-center gap-[12px]" >
-                    <img src={assets.company_icon} alt="company icon" />
+                    <img src={job.companyId.image} alt="company icon" />
                     <h4 className='font-medium text-xl '>{job.title}</h4>
                 </div>
                 
