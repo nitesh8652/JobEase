@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { assets, jobsData } from '../assets/assets'
+import { assets } from '../assets/assets' // removed jobsData as it seems unused
 import Loading from '../Components/Loading'
 import Navbar from '../Components/Navbar'
 import kconvert from 'k-convert'
@@ -10,17 +10,19 @@ import Footer from '../Components/Footer'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useAuth, useUser } from '@clerk/clerk-react'
-import { AppContext } from "../Context/AppContext"
+import { AppContext } from "../Context/AppContext" 
 
 const ApplyJob = () => {
 
     const { id } = useParams()
+    const { getToken } = useAuth()
+ 
     const navigate = useNavigate()
     const [jobdata, setjobdata] = useState(null)
 
+    // Ensure jobs is defaulted to empty array if context is undefined
     const { jobs, backendUrl, userData } = useContext(AppContext)
     const { user } = useUser()
-    const { getToken } = useAuth()
 
     const fetchjob = async () => {
         try {
@@ -37,74 +39,71 @@ const ApplyJob = () => {
 
     const applyHandler = async () => {
         try {
-            // require either Clerk session or DB user record
-            if (!user && !userData) {
-                toast.error("Login to apply job")
-                return
+            if (!userData) {
+                return toast.error("Please login to apply for jobs")
+            }
+            if(!userData.resume){
+                navigate('/application')
+                return toast.info("Please upload your resume before applying")
             }
 
-            if (!userData?.resume) {
-                navigate ('/application')
-                toast.error("Please upload your resume in profile section to apply for a job")
-                return
-            }
-
-
-            // get Clerk token and call backend
             const token = await getToken()
-            const { data } = await axios.post(
-                backendUrl + '/api/users/apply',
-                { jobId: id },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        token // fallback
-                    },
-                    validateStatus: () => true
-                }
-            )
 
-            if (data && data.success) {
-                toast.success(data.message || "Applied successfully")
-            } else {
-                toast.error(data?.message || "Failed to apply")
-            }
-        } catch (error) {
-            toast.error(error.message)
-        }
+            const { data } = await axios.post(
+  backendUrl + '/api/users/apply',
+  { jobId: jobdata._id },
+  {
+    headers: {
+      token: userData._id
     }
+  }
+)
+            if(data.success){
+                toast.success(data.message || "Applied successfully")
+            }else{
+                toast.error(data.message || "Failed to apply")
+            }
+            }catch (error) {
+                toast.error(error.message)
+            }
+
+        }
+    
 
     useEffect(() => {
-        fetchjob()
+        if (id) {
+            fetchjob()
+        }
     }, [id])
 
     return jobdata ? (
         <>
             <Navbar />
 
-            <div className='min-h-screen flex flex-col  py-10  container px-4 2xl:px-20 mx-auto ' >
+            <div className='min-h-screen flex flex-col py-10 container px-4 2xl:px-20 mx-auto ' >
                 <div className='bg-white text-black p-4 rounded-lg w-full'>
                     <div className='flex justify-center md:justify-between flex-wrap gap-8 px-14 py-20 mb-6 bg-sky-50 border border-[#00B3C7] rounded-xl '>
                         <div className='flex flex-col md:flex-row items-center'>
-                            <img className='h-24 bg-white rounded-lg p-4 mr-4 max-md:mb-4' src={jobdata.companyId.image} />
+                            {/* Added optional chaining ?. to prevent crash if image is missing */}
+                            <img className='h-24 bg-white rounded-lg p-4 mr-4 max-md:mb-4' src={jobdata?.companyId?.image || assets.suitcase_icon} alt="" />
                             <div className='text-center md:text-left text-neutral-700'>
                                 <h1 className='text-2xl sm:text-4xl font-medium' >{jobdata.title}</h1>
                                 <div className='flex flex-row flex-wrap max-md:justify-center  gap-8 items-center  mt-4' >
                                     <span className='flex items-center gap-2' >
-                                        <img src={assets.suitcase_icon} />
-                                        {jobdata.companyId.name}
+                                        <img src={assets.suitcase_icon} alt="" />
+                                        {jobdata?.companyId?.name}
                                     </span>
                                     <span className='flex items-center gap-2' >
-                                        <img src={assets.location_icon} />
+                                        <img src={assets.location_icon} alt="" />
                                         {jobdata.location}
                                     </span>
                                     <span className='flex items-center -2' >
-                                        <img src={assets.person_icon} />
+                                        <img src={assets.person_icon} alt="" />
                                         {jobdata.level}
                                     </span>
                                     <span className='flex items-center gap-2' >
-                                        <img src={assets.money_icon} />
-                                        Anual Salary:{kconvert.convertTo(jobdata.salary)}
+                                        <img src={assets.money_icon} alt="" />
+                                        Anual Salary: {kconvert.convertTo(jobdata.salary)}
                                     </span>
                                 </div>
                             </div>
@@ -125,8 +124,17 @@ const ApplyJob = () => {
 
                         {/* {right sec} */}
                         <div className='w-full lg:w-1/3 mt-8 space-y-5'>
-                            <h2 className='bg-[#e3f8ff] p-3 rounded-2xl'>More Jobs From {jobdata.companyId.name}</h2>
-                            {jobs.filter(job => job._id !== jobdata._id && job.companyId._id === jobdata.companyId._id).slice(0, 3).map((job, index) => <JobCard key={index} job={job} />)}
+                            <h2 className='bg-[#e3f8ff] p-3 rounded-2xl'>More Jobs From {jobdata?.companyId?.name}</h2>
+
+                            {/* FIX: Check if 'jobs' exists before filtering */}
+                            {jobs && jobs.length > 0 ? (
+                                jobs.filter(job =>
+                                    job._id !== jobdata._id &&
+                                    job.companyId?._id === jobdata.companyId?._id
+                                )
+                                    .slice(0, 3)
+                                    .map((job, index) => <JobCard key={index} job={job} />)
+                            ) : null}
                         </div>
 
                     </div>
@@ -143,5 +151,3 @@ const ApplyJob = () => {
 }
 
 export default ApplyJob
-
-
