@@ -4,11 +4,10 @@ import Job from "../Models/Job.js"
 import { clerkClient } from "@clerk/clerk-sdk-node"
 import { v2 as cloudinary } from "cloudinary"
 
-
 export const getUserData = async (req, res) => {
     try {
-        const userId = req.auth.userId
-        
+        console.log('token header:', req.headers.token);
+        const userId = req.headers.token;
         if (!userId) {
             return res.json({ success: false, message: "Not authenticated" })
         }
@@ -54,7 +53,8 @@ export const getUserData = async (req, res) => {
 export const applyForJob = async (req, res) => {
     try {
         const { jobId } = req.body
-        const userId = req.auth.userId
+      const userId = req.headers.token  
+
 
         const isAlreadyApplied = await JobApplication.findOne({ userId, jobId })
         if (isAlreadyApplied) {
@@ -100,7 +100,7 @@ export const getUserJobApplication = async (req, res) => {
 
 export const updateUserResume = async (req, res) => {
     try {
-        const userId = req.auth.userId
+        const userId = req.headers.token
 
         if (!userId) {
             return res.json({ success: false, message: "Not authenticated" })
