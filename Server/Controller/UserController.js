@@ -80,23 +80,28 @@ export const applyForJob = async (req, res) => {
 }
 
 export const getUserJobApplication = async (req, res) => {
-    try {
-        const userId = req.auth.userId
+  try {
+    const userId = req.headers.token;
 
-        const application = await JobApplication.find({ userId })
-            .populate('jobId')
-            .populate('companyId', 'name email image')
-            .exec()
-
-        if (!application || application.length === 0) {
-            return res.json({ success: false, message: "No Application Found" })
-        }
-
-        return res.json({ success: true, application })
-    } catch (error) {
-        return res.json({ success: false, message: error.message })
+    if (!userId) {
+      return res.json({ success: false, message: "Not authenticated" });
     }
-}
+
+    const application = await JobApplication.find({ userId })
+      .populate('jobId')
+      .populate('companyId', 'name email image')
+      .exec();
+
+    if (!application || application.length === 0) {
+      return res.json({ success: false, message: "No Application Found" });
+    }
+
+    return res.json({ success: true, application });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
 
 export const updateUserResume = async (req, res) => {
     try {
