@@ -10,13 +10,13 @@ import Footer from '../Components/Footer'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useAuth, useUser } from '@clerk/clerk-react'
-import { AppContext } from "../Context/AppContext" 
+import { AppContext } from "../Context/AppContext"
 
 const ApplyJob = () => {
 
     const { id } = useParams()
     const { getToken } = useAuth()
- 
+
     const navigate = useNavigate()
     const [jobdata, setjobdata] = useState(null)
 
@@ -42,7 +42,7 @@ const ApplyJob = () => {
             if (!userData) {
                 return toast.error("Please login to apply for jobs")
             }
-            if(!userData.resume){
+            if (!userData.resume) {
                 navigate('/application')
                 return toast.info("Please upload your resume before applying")
             }
@@ -50,25 +50,25 @@ const ApplyJob = () => {
             const token = await getToken()
 
             const { data } = await axios.post(
-  backendUrl + '/api/users/apply',
-  { jobId: jobdata._id },
-  {
-    headers: {
-      token: userData._id
-    }
-  }
-)
-            if(data.success){
+                backendUrl + '/api/users/apply',
+                { jobId: jobdata._id },
+                {
+                    headers: {
+                        token: userData._id
+                    }
+                }
+            )
+            if (data.success) {
                 toast.success(data.message || "Applied successfully")
-            }else{
+            } else {
                 toast.error(data.message || "Failed to apply")
             }
-            }catch (error) {
-                toast.error(error.message)
-            }
-
+        } catch (error) {
+            toast.error(error.message)
         }
-    
+
+    }
+
 
     useEffect(() => {
         if (id) {
