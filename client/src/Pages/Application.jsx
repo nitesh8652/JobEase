@@ -8,12 +8,13 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import { AppContext } from '../Context/AppContext'
 
+
 const Application = () => {
   const { user } = useUser()
   const { getToken , userId } = useAuth()
   const [isedit, setisedit] = useState(false)
   const [resume, setResume] = useState(null)
-  const { userData, fetchUserData } = useContext(AppContext)
+  const { userData , userApplications , fetchUserData   } = useContext(AppContext)
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   const handleFileSelect = (file) => {
     setResume(file || null)
@@ -128,16 +129,17 @@ const Application = () => {
             </tr>
           </thead>
           <tbody>
-            {jobsApplied.map((job, index) => (
+            {userApplications.map((job, index) => (
               <tr key={index}>
                 <td className="py-3 px-4 border border-gray-300 flex items-center gap-3">
-                  <img className="w-8 h-8" src={job.logo} alt={job.company} />
-                  {job.company}
+                  <img className="w-8 h-8" src={job.companyId.image} alt={job.company} />
+                  {job.companyId.name}
                 </td>
-                <td className="py-3 px-4 border border-gray-300">{job.title}</td>
-                <td className="py-3 px-4 border border-gray-300 max-sm:hidden">{job.location}</td>
-                <td className="py-3 px-4 border border-gray-300 max-sm:hidden">{job.date}</td>
-                <td className="py-3 px-4 border border-gray-300">
+                <td className="py-3 px-4 border border-gray-300">{job.jobId.title}</td>
+                <td className="py-3 px-4 border border-gray-300 max-sm:hidden">{job.jobId.location}</td>
+<td className="py-3 px-4 border border-gray-300 max-sm:hidden">
+  {job.date ? moment(Number(job.date)).format('LL') : '—'}
+</td>                <td className="py-3 px-4 border border-gray-300">
                   <span
                     className={`${
                       job.status === 'Pending'

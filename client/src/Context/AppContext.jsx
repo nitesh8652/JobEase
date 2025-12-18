@@ -16,7 +16,7 @@ export const AppContextProvider = (props) => {
   const [companyToken, setCompanyToken] = useState(null);
   const [companyData, setCompanyData] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [userApplication, setuserApplication] = useState(null);
+  const [userApplications, setUserApplications] = useState([]); // <- initialized as empty array
 
   const fetchJobs = async () => {
     try {
@@ -55,12 +55,12 @@ export const AppContextProvider = (props) => {
     try {
       const token = await getToken();
       const url = `${backendUrl}/api/users/user`;
-      console.log(userId)
+      console.log(userId);
       if (!token) {
         console.log("No Clerk token returned. User may not be signed in.");
         return;
       }
-      const { data } = await axios.get(`${backendUrl}/api/users/user`, {
+      const { data } = await axios.get(url, {
         headers: {
           token: `${userId}`,
         },
@@ -77,8 +77,7 @@ export const AppContextProvider = (props) => {
     }
   };
 
-  //user applied jobs to get
-
+  // user applied jobs to get
   const fetchUserApplications = async () => {
     try {
       const token = await getToken();
@@ -88,14 +87,14 @@ export const AppContextProvider = (props) => {
         },
       });
       if (data.success) {
-        setuserApplication(data.application)
+        setUserApplications(data.application || []); // <- set array, default to []
       } else {
-        toast.error(data.message || "Failed to fetch applications")
+        toast.error(data.message || "Failed to fetch applications");
       }
     } catch (error) {
       console.error(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchJobs();
@@ -117,6 +116,7 @@ export const AppContextProvider = (props) => {
       fetchUserApplications();
     } else {
       setUserData(null);
+      setUserApplications([]); // clear on sign out
     }
   }, [isSignedIn, user]);
 
@@ -136,10 +136,10 @@ export const AppContextProvider = (props) => {
     backendUrl,
     userData,
     setUserData,
-    userApplication,
-    setuserApplication,
+    userApplications, // <- exposed
+    setUserApplications,
     fetchUserData,
-    fetchUserApplications
+    fetchUserApplications,
   };
 
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;

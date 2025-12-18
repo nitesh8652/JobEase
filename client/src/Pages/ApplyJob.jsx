@@ -20,8 +20,10 @@ const ApplyJob = () => {
     const navigate = useNavigate()
     const [jobdata, setjobdata] = useState(null)
 
+    const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
+
     // Ensure jobs is defaulted to empty array if context is undefined
-    const { jobs, backendUrl, userData } = useContext(AppContext)
+    const { jobs, backendUrl, userData,  userApplications , fetchUserApplications } = useContext(AppContext)
     const { user } = useUser()
 
     const fetchjob = async () => {
@@ -69,12 +71,26 @@ const ApplyJob = () => {
 
     }
 
+const checkIfApplied = () => {
+  const hasApplied = userApplications.some(
+    (item) => item.jobId?._id === jobdata?._id
+  )
+  setIsAlreadyApplied(hasApplied)
+}
+
 
     useEffect(() => {
         if (id) {
             fetchjob()
         }
     }, [id])
+
+useEffect(() => {
+  if (userApplications.length > 0 && jobdata) {
+    checkIfApplied()
+  }
+}, [jobdata, userApplications])
+
 
     return jobdata ? (
         <>
@@ -110,7 +126,7 @@ const ApplyJob = () => {
                         </div>
 
                         <div className='flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center'>
-                            <button onClick={applyHandler} className='bg-blue-600 p-2.5 px-10 text-white rounded'  >Apply Now</button>
+                            <button onClick={applyHandler} className='bg-blue-600 p-2.5 px-10 text-white rounded'  > {isAlreadyApplied? "Applied" : "Apply Now"}</button>
                             <p className='text-gray-500 mt-2'>Posted {moment(jobdata.createdAt).fromNow()}</p>
                         </div>
                     </div>
@@ -119,7 +135,7 @@ const ApplyJob = () => {
                         <div className='w-full lg:w-2/3' >
                             <h2 className='font-bold text-2xl mb-4'>Job Description</h2>
                             <div className='rich-text' dangerouslySetInnerHTML={{ __html: jobdata.description }}></div>
-                            <button onClick={applyHandler} className='bg-blue-600 mt-10 p-2.5 px-10 text-white rounded'  >Apply Now</button>
+                            <button onClick={applyHandler} className='bg-blue-600 mt-10 p-2.5 px-10 text-white rounded'  > {isAlreadyApplied? "Applied" : "Apply Now"} </button>
                         </div>
 
                         {/* {right sec} */}
