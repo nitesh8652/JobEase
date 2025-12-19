@@ -23,7 +23,7 @@ const ApplyJob = () => {
     const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
 
     // Ensure jobs is defaulted to empty array if context is undefined
-    const { jobs, backendUrl, userData,  userApplications , fetchUserApplications } = useContext(AppContext)
+    const { jobs, backendUrl, userData, userApplications, fetchUserApplications } = useContext(AppContext)
     const { user } = useUser()
 
     const fetchjob = async () => {
@@ -62,6 +62,9 @@ const ApplyJob = () => {
             )
             if (data.success) {
                 toast.success(data.message || "Applied successfully")
+
+                fetchUserApplications()
+
             } else {
                 toast.error(data.message || "Failed to apply")
             }
@@ -71,12 +74,12 @@ const ApplyJob = () => {
 
     }
 
-const checkIfApplied = () => {
-  const hasApplied = userApplications.some(
-    (item) => item.jobId?._id === jobdata?._id
-  )
-  setIsAlreadyApplied(hasApplied)
-}
+    const checkIfApplied = () => {
+        const hasApplied = userApplications.some(
+            (item) => item.jobId?._id === jobdata?._id
+        )
+        setIsAlreadyApplied(hasApplied)
+    }
 
 
     useEffect(() => {
@@ -85,11 +88,11 @@ const checkIfApplied = () => {
         }
     }, [id])
 
-useEffect(() => {
-  if (userApplications.length > 0 && jobdata) {
-    checkIfApplied()
-  }
-}, [jobdata, userApplications])
+    useEffect(() => {
+        if (userApplications.length > 0 && jobdata) {
+            checkIfApplied()
+        }
+    }, [jobdata, userApplications])
 
 
     return jobdata ? (
@@ -126,7 +129,7 @@ useEffect(() => {
                         </div>
 
                         <div className='flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center'>
-                            <button onClick={applyHandler} className='bg-blue-600 p-2.5 px-10 text-white rounded'  > {isAlreadyApplied? "Applied" : "Apply Now"}</button>
+                            <button onClick={applyHandler} className='bg-blue-600 p-2.5 px-10 text-white rounded'  > {isAlreadyApplied ? "Applied" : "Apply Now"}</button>
                             <p className='text-gray-500 mt-2'>Posted {moment(jobdata.createdAt).fromNow()}</p>
                         </div>
                     </div>
@@ -135,7 +138,7 @@ useEffect(() => {
                         <div className='w-full lg:w-2/3' >
                             <h2 className='font-bold text-2xl mb-4'>Job Description</h2>
                             <div className='rich-text' dangerouslySetInnerHTML={{ __html: jobdata.description }}></div>
-                            <button onClick={applyHandler} className='bg-blue-600 mt-10 p-2.5 px-10 text-white rounded'  > {isAlreadyApplied? "Applied" : "Apply Now"} </button>
+                            <button onClick={applyHandler} className='bg-blue-600 mt-10 p-2.5 px-10 text-white rounded'  > {isAlreadyApplied ? "Applied" : "Apply Now"} </button>
                         </div>
 
                         {/* {right sec} */}
@@ -144,10 +147,15 @@ useEffect(() => {
 
                             {/* FIX: Check if 'jobs' exists before filtering */}
                             {jobs && jobs.length > 0 ? (
-                                jobs.filter(job =>
+                                jobs.filter(job => 
                                     job._id !== jobdata._id &&
                                     job.companyId?._id === jobdata.companyId?._id
                                 )
+                                .filter(job =>{
+                                    //more jobs 
+                                    const appliedJobsId = new Set(userApplications.map(app => app.jobId && app.jobId._id));
+                                    return !appliedJobsId.has(job._id);
+                                })
                                     .slice(0, 3)
                                     .map((job, index) => <JobCard key={index} job={job} />)
                             ) : null}
