@@ -1,12 +1,82 @@
-import React, { useState } from "react";
-import { assets, viewApplicationsPageData } from "../assets/assets";
+import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { AppContext } from "../Context/AppContext";
+import { assets } from "../assets/assets";
+import Loading from "../Components/Loading";
 
 const ViewApplication = () => {
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const { backendUrl, companyToken } = useContext(AppContext);
+
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchCompanyJobApplications = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}/api/company/applicants`,
+        { headers: { token: companyToken } }
+      );
+
+      if (data.success) {
+        setApplications(data.applications || []);
+      } else {
+        toast.error(data.message);
+        setApplications([]);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      setApplications([]);
+    }
+    setLoading(false);
+  };
+
+  //user application update
+
+  const changeJobApplicationStatus = async (id, status) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/company/changestatus`,
+        {}, // <-- empty body
+        {
+          headers: {
+            token: companyToken,
+            "application-id": id,
+            "application-status": status,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success("Status updated to " + status);
+        fetchCompanyJobApplications();
+      } else {
+        toast.error(data.message);
+      }
+
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+
+  useEffect(() => {
+    if (companyToken) fetchCompanyJobApplications();
+  }, [companyToken]);
+
+  if (loading) return <Loading />;
+
+  if (!applications || applications.length === 0) {
+    return (
+      <div className="p-6 text-center text-gray-500 text-lg">
+        No Applications Found
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6">
-      {/* Table container for horizontal scroll on small screens */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse bg-white shadow rounded-lg text-sm sm:text-base">
           <thead>
@@ -21,77 +91,83 @@ const ViewApplication = () => {
           </thead>
 
           <tbody>
-            {viewApplicationsPageData.map((applicant, index) => (
-              <tr
-                key={index}
-                className="hover:bg-gray-50 transition border-b last:border-none"
-              >
-                <td className="p-2 sm:p-3 text-xs sm:text-sm">{index + 1}</td>
+            {applications
+              .filter(item => item.userId && item.jobId)
+              .map((applicant, index) => (
+                <tr
+                  key={index}
+                  className="hover:bg-gray-50 transition border-b last:border-none"
+                >
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm">{index + 1}</td>
 
-                {/* User Info */}
-                <td className="p-2 sm:p-3 flex items-center gap-2 min-w-[150px]">
-                  <img
-                    src={applicant.imgSrc}
-                    alt=""
-                    className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
-                  />
-                  <span className="truncate max-w-[100px] sm:max-w-none">
-                    {applicant.name}
-                  </span>
-                </td>
-
-                {/* Job Title */}
-                <td className="p-2 sm:p-3 min-w-[120px] truncate">
-                  {applicant.jobTitle}
-                </td>
-
-                {/* Location */}
-                <td className="p-2 sm:p-3 min-w-[120px] truncate">
-                  {applicant.location}
-                </td>
-
-                {/* Resume */}
-                <td className="p-2 sm:p-3">
-                  <a
-                    href=""
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-blue-600 hover:underline text-xs sm:text-sm"
-                  >
-                    <span>Resume</span>
+                  {/* User Info */}
+                  <td className="p-2 sm:p-3 flex items-center gap-2 min-w-[150px]">
                     <img
-                      src={assets.resume_download_icon}
+                      src={applicant.userId.image}
                       alt=""
-                      className="w-4 h-4"
+                      className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
                     />
-                  </a>
-                </td>
+                    <span className="truncate max-w-[100px] sm:max-w-none">
+                      {applicant.userId.name}
+                    </span>
+                  </td>
 
-                {/* Actions */}
-                <td className="p-2 sm:p-3 text-center relative">
-                  <button
-                    className={`px-2 py-1 rounded transition text-lg sm:text-xl
-                      ${openDropdown === index ? "bg-gray-200" : "hover:bg-gray-200"}`}
-                    onClick={() =>
-                      setOpenDropdown(openDropdown === index ? null : index)
+                  {/* Job Title */}
+                  <td className="p-2 sm:p-3">{applicant.jobId.title}</td>
+
+                  {/* Location */}
+                  <td className="p-2 sm:p-3">{applicant.jobId.location}</td>
+
+                  {/* Resume */}
+                  <td className="p-2 sm:p-3">
+                    <a
+                      href={applicant.userId.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-blue-600 hover:underline text-xs sm:text-sm"
+                    >
+                      Resume
+                      <img
+                        src={assets.resume_download_icon}
+                        alt=""
+                        className="w-4 h-4"
+                      />
+                    </a>
+                  </td>
+
+                  {/* ACTION BUTTONS (MINIMAL STYLE) */}
+                  <td className="p-2 sm:p-3 text-center">
+
+                    {applicant.status === "applied"
+                      ?
+
+                      <div className="flex gap-2 justify-center">
+
+                        <button
+                          className="px-3 py-1 border border-green-500 text-green-600 rounded-md text-xs sm:text-sm hover:bg-green-50 transition"
+                          onClick={() => changeJobApplicationStatus(applicant._id, "Accepted")}
+                        >
+                          Accept
+                        </button>
+
+                        <button
+                          className="px-3 py-1 border border-red-500 text-red-600 rounded-md text-xs sm:text-sm hover:bg-red-50 transition"
+                          onClick={() => changeJobApplicationStatus(applicant._id, "Rejected")}
+                        >
+                          Reject
+                        </button>
+
+                      </div>
+
+                      : <div>{applicant.status}</div>
+
                     }
-                  >
-                    …
-                  </button>
 
-                  {openDropdown === index && (
-                    <div className="absolute right-0 top-full mt-2 w-28 sm:w-32 bg-white rounded-lg shadow-[0px_0px_15px_rgba(0,0,0,0.2)] z-20">
-                      <button className="w-full text-left px-3 sm:px-4 py-2 hover:bg-green-100 text-green-600 text-xs sm:text-sm">
-                        Accept
-                      </button>
-                      <button className="w-full text-left px-3 sm:px-4 py-2 hover:bg-red-100 text-red-600 text-xs sm:text-sm">
-                        Reject
-                      </button>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
+
+                  </td>
+
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
