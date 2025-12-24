@@ -47,6 +47,8 @@ const Addjob = () => {
    
   }
 
+  
+
   useEffect(() => {
     if (editorRef.current && !quillRef.current) {
       quillRef.current = new Quill(editorRef.current, {

@@ -1,46 +1,69 @@
 import React from 'react'
-import { assets } from '../assets/assets'
-import { Link } from 'react-router-dom'
+import { assets } from '../assets/assets' 
 
-const Navbar = () => {
-    return (
-        <nav className="bg-[#1447E6] text-white">
-            <div className="container mx-auto flex flex-row sm:flex-row items-center justify-between p-4">
-                {/* Left: Logo + Site Name */}
-                <div className="flex items-center gap-4 mt-[12px] md:mt-[0px]">
-                    <img
-                        src={assets.logo}
-                        alt="JobEase Logo"
-                        className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-md"
-                    />
-                    {/* Change items-baseline to items-center here */}
-                    <div className="flex items-center space-x-2 flex-col md:flex-row">
-                        <h1 className="text-lg sm:w-[33%] w-[94%] sm:text-2xl font-bold">Nitesh</h1>
-                        <span className="hidden sm:inline-block border-l border-white h-8"></span>
-                        <h2 className=" sm:text-[15px] font-light">All rights reserved.</h2>
-                    </div>
-                </div>
+// Mock assets for preview purposes. 
+// In your local project, uncomment the import above and remove this const.
+// const assets = {
+//     logo: "https://via.placeholder.com/64/1447E6/FFFFFF?text=JobEase",
+//     facebook_icon: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
+//     x_icon: "https://cdn-icons-png.flaticon.com/512/5969/5969020.png",
+//     linkedin_icon: "https://cdn-icons-png.flaticon.com/512/174/174857.png"
+// }
 
-                {/* Right: Connect Us Here */}
-                <div className="mt-4 sm:mt-0">
-                    <div className="inline-flex flex-row sm:flex-row items-center bg-amber-50 text-gray-800 rounded-lg p-2 sm:p-4 gap-2 sm:gap-4">
-                        <span className="underline text-sm sm:text-base">Connect Us Here</span>
-                        <div className="flex items-center gap-3">
-                            <a href="https://facebook.com" aria-label="Facebook">
-                                <img src={assets.facebook_icon} alt="" className="w-6 h-6" />
-                            </a>
-                            <a href="https://twitter.com" aria-label="X (Twitter)">
-                                <img src={assets.x_icon} alt="" className="w-6 h-6" />
-                            </a>
-                            <a href="https://linkedin.com" aria-label="LinkedIn">
-                                <img src={assets.linkedin_icon} alt="" className="w-6 h-6" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    )
+
+const Footer = () => {
+  return (
+    <div className="bg-[#1447E6] text-white py-3 mt-10">
+      <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        
+        {/* Left Side: Logo & Brand */}
+        <div className="flex items-center gap-3">
+          <img 
+            src={assets.logo} 
+            alt="Logo" 
+            className="w-8 h-8 bg-white rounded-full p-1 shadow-sm object-contain"
+          />
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-bold tracking-wide">JobEase</h1>
+            <span className="text-white/40">|</span>
+            <p className="text-xs text-white/80 font-light">All rights reserved.</p>
+          </div>
+        </div>
+
+        {/* Right Side: Social Icons */}
+        <div className="flex items-center gap-4">
+          <span className="text-xs text-white/70 hidden sm:block">Connect with us</span>
+          <div className="flex gap-3">
+            <a 
+                href="https://facebook.com" 
+                target="_blank" 
+                rel="noreferrer"
+                className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
+            >
+                <img src={assets.facebook_icon} alt="Facebook" className="w-5 h-5" />
+            </a>
+            <a 
+                href="https://twitter.com" 
+                target="_blank" 
+                rel="noreferrer"
+                className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
+            >
+                <img src={assets.x_icon} alt="Twitter" className="w-5 h-5 invert brightness-0" />
+            </a>
+            <a 
+                href="https://www.linkedin.com/in/nitesh-salian-4792602a4/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
+            >
+                <img src={assets.linkedin_icon} alt="LinkedIn" className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  )
 }
 
-export default Navbar
+export default Footer

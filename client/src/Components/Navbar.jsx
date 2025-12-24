@@ -1,42 +1,136 @@
-import React from 'react'
-import { assets } from '../assets/assets'
-import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
-import { AppContext } from '../Context/AppContext'
+import React, { useState, useContext } from "react";
+import { assets } from "../assets/assets";
+import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { Link, useNavigate } from "react-router-dom";
+import { AppContext } from "../Context/AppContext";
 
 const Navbar = () => {
+  const { openSignIn } = useClerk();
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const { setShowRecruiterLogin } = useContext(AppContext);
 
-    const { openSignIn } = useClerk()
-    const { user } = useUser()
-    const navigate = useNavigate()
-    const {setShowRecruiterLogin} = useContext(AppContext)
+  const [mobileMenu, setMobileMenu] = useState(false);
 
-    return (
-        <div className="bg-[#ffffff] h-16 flex items-center justify-between px-4 shadow py-4">
-            <div className="block sm:hidden">
-                <img onClick={() => navigate('/')} src={assets.mobileview} className='w-[50%] h-[50%]  ' />
-            </div>
+  return (
+    <nav className="bg-white shadow-md px-4 md:px-10 h-16 flex items-center justify-between sticky top-0 z-50">
+      {/* Logo */}
+      <div className="flex items-center gap-2">
+        <img
+          src={assets.mobileview}
+          onClick={() => navigate("/")}
+          className="h-10 cursor-pointer hidden md:block"
+          alt="JobEase"
+        />
+        <img
+          src={assets.mobileview}
+          onClick={() => navigate("/")}
+          className="h-8 cursor-pointer md:hidden"
+          alt="JobEase"
+        />
+      </div>
 
-            <div className="hidden sm:block">
-                <img onClick={() => navigate('/')} src={assets.logo} className='w-[220px] h-[213px] cursor-pointer' />
-            </div>
+      {/* Desktop Menu */}
+      <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+        {user ? (
+          <>
+            <Link
+              to="/application"
+              className="hover:text-[#00b3c7] transition"
+            >
+              Applied Jobs
+            </Link>
 
-            {
-                user ? <div className="flex items-center gap-2 text-sm">
-                    <Link to={'/application'} className="whitespace-nowrap"> Applied Jobs </Link>
-                    <button className="bg-gradient-to-r from-[#00b3b3] to-[#00b3e6] text-white px-3 py-2 rounded whitespace-nowrap max-sm:px-[3px]"> Resume Builder </button>
-                    <UserButton />
-                </div> :
-                    <div className='flex items-center gap-8 max-sm:text-xs'>
-                        <button onClick={e=> setShowRecruiterLogin(true)} className=' whitespace-nowrap '> Recruiter Login </button>
-                        <button onClick={e => openSignIn()} className="bg-blue-500 text-white px-6 sm:px-9 py-2 rounded-full md:px-[3px]"> Login </button>
-                    </div>
-            }
+            <button
+              onClick={() => navigate("/resume/yourid")}
+              className="bg-[#00b3c7] text-white px-4 py-2 rounded-lg hover:bg-[#0096a7] transition"
+            >
+              Resume Builder
+            </button>
 
+            <UserButton />
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => setShowRecruiterLogin(true)}
+              className="hover:text-[#00b3c7] transition"
+            >
+              Recruiter Login
+            </button>
 
+            <button
+              onClick={openSignIn}
+              className="bg-[#007bff] text-white px-6 py-2 rounded-full hover:bg-[#006ae0] transition"
+            >
+              Login
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Mobile Menu Button */}
+      <button
+        className="md:hidden text-2xl"
+        onClick={() => setMobileMenu(!mobileMenu)}
+      >
+        {mobileMenu ? "✖" : "☰"}
+      </button>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileMenu && (
+        <div className="absolute top-16 right-0 w-full bg-white shadow-lg py-4 md:hidden z-40">
+          <div className="flex flex-col items-center gap-4 text-sm font-medium">
+            {user ? (
+              <>
+                <Link
+                  to="/application"
+                  onClick={() => setMobileMenu(false)}
+                  className="hover:text-[#00b3c7] transition"
+                >
+                  Applied Jobs
+                </Link>
+
+                <button
+                  onClick={() => {
+                    navigate("/resume/yourid");
+                    setMobileMenu(false);
+                  }}
+                  className="bg-[#00b3c7] text-white px-5 py-2 rounded-lg hover:bg-[#0096a7] transition"
+                >
+                  Resume Builder
+                </button>
+
+                <UserButton />
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    setShowRecruiterLogin(true);
+                    setMobileMenu(false);
+                  }}
+                  className="hover:text-[#00b3c7] transition"
+                >
+                  Recruiter Login
+                </button>
+
+                <button
+                  onClick={() => {
+                    openSignIn();
+                    setMobileMenu(false);
+                  }}
+                  className="bg-[#007bff] text-white px-6 py-2 rounded-full hover:bg-[#006ae0] transition"
+                >
+                  Login
+                </button>
+              </>
+            )}
+          </div>
         </div>
-    )
-}
+      )}
+    </nav>
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { assets } from '../assets/assets' // removed jobsData as it seems unused
+import { assets } from '../assets/assets' 
 import Loading from '../Components/Loading'
 import Navbar from '../Components/Navbar'
 import kconvert from 'k-convert'
