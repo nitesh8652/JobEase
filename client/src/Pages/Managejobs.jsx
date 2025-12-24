@@ -5,6 +5,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
 import { toast } from "react-toastify";
+import Loading from "../Components/Loading";
 
 
 const Managejobs = () => {
@@ -57,7 +58,11 @@ const Managejobs = () => {
     }
   }, [companyToken])
 
-  return (
+  return jobs ? jobs.length === 0 ? ( 
+  <div className="flex items-center justify-center h-[70vh]" > 
+<p className="text-xl sm:text-2xl bold">No Jobs Posted.</p>    
+ </div>
+) : (
     <div className="p-4 sm:p-6">
       <div className="overflow-x-auto">
         <table className="w-full border-collapse bg-white shadow rounded-lg text-sm sm:text-base">
@@ -100,7 +105,7 @@ const Managejobs = () => {
 
       </div>
     </div>
-  );
+  ) : <Loading/>
 };
 
 export default Managejobs;

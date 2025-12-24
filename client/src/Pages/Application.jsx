@@ -11,10 +11,10 @@ import { AppContext } from '../Context/AppContext'
 
 const Application = () => {
   const { user } = useUser()
-  const { getToken , userId } = useAuth()
+  const { getToken, userId } = useAuth()
   const [isedit, setisedit] = useState(false)
   const [resume, setResume] = useState(null)
-  const { userData , userApplications , fetchUserData   } = useContext(AppContext)
+  const { userData, userApplications, fetchUserData } = useContext(AppContext)
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   const handleFileSelect = (file) => {
     setResume(file || null)
@@ -137,17 +137,17 @@ const Application = () => {
                 </td>
                 <td className="py-3 px-4 border border-gray-300">{job.jobId.title}</td>
                 <td className="py-3 px-4 border border-gray-300 max-sm:hidden">{job.jobId.location}</td>
-<td className="py-3 px-4 border border-gray-300 max-sm:hidden">
-  {job.date ? moment(Number(job.date)).format('LL') : '—'}
-</td>                <td className="py-3 px-4 border border-gray-300">
+                <td className="py-3 px-4 border border-gray-300 max-sm:hidden">
+                  {job.date ? moment(Number(job.date)).format('LL') : '—'}
+                </td>
+                <td className="py-3 px-4 border border-gray-300">
                   <span
-                    className={`${
-                      job.status === 'Pending'
-                        ? 'bg-blue-200 text-blue-800'
-                        : job.status === 'Rejected'
+                    className={`${job.status === 'Pending'
+                      ? 'bg-blue-200 text-blue-800'
+                      : job.status === 'Rejected'
                         ? 'bg-red-200 text-red-800'
                         : 'bg-green-200 text-green-800'
-                    } rounded-lg py-1.5 px-4`}
+                      } rounded-lg py-1.5 px-4`}
                   >
                     {job.status}
                   </span>

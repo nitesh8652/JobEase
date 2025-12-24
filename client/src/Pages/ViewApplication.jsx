@@ -69,13 +69,13 @@ const ViewApplication = () => {
 
   if (!applications || applications.length === 0) {
     return (
-      <div className="p-6 text-center text-gray-500 text-lg">
-        No Applications Found
+      <div className="flex items-center justify-center h-[70vh]">
+        <p className="text-xl sm:text-2xl bold">No Applications Found</p>
       </div>
     );
   }
 
-  return (
+  return  (
     <div className="p-4 sm:p-6">
       <div className="overflow-x-auto">
         <table className="w-full border-collapse bg-white shadow rounded-lg text-sm sm:text-base">
