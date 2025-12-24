@@ -127,7 +127,7 @@ export const getCompanyJobApplicants = async (req, res) => {
     }
 
 }
-
+ 
 export const getCompanyPostedJobs = async (req, res) => {
 
     try {
