@@ -19,7 +19,7 @@ const Footer = () => {
         {/* Left Side: Logo & Brand */}
         <div className="flex items-center gap-3">
           <img 
-            src={assets.logo} 
+            src={assets.suitcaselogo} 
             alt="Logo" 
             className="w-8 h-8 bg-white rounded-full p-1 shadow-sm object-contain"
           />

@@ -29,7 +29,7 @@ const Dashboard = () => {
             <div className='bg-white shadow-md h-[50px] flex items-center justify-between px-4'>
                 <img
                     onClick={() => navigate('/')}
-                    src={assets.logo}
+                    src={assets.suitcaselogo}
                     className='h-8 w-8 cursor-pointer'
                 />
                 {companyData && (

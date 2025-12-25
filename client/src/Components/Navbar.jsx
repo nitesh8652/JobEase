@@ -17,17 +17,17 @@ const Navbar = () => {
       {/* Logo */}
       <div className="flex items-center gap-2">
         <img
-          src={assets.mobileview}
+          src={assets.mainlogo}
           onClick={() => navigate("/")}
           className="h-10 cursor-pointer hidden md:block"
           alt="JobEase"
         />
-        <img
+        {/* <img
           src={assets.mobileview}
           onClick={() => navigate("/")}
           className="h-8 cursor-pointer md:hidden"
           alt="JobEase"
-        />
+        /> */}
       </div>
 
       {/* Desktop Menu */}
