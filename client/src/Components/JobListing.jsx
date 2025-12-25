@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../Context/AppContext'
-import { assets, JobCategories, JobLocations, jobsData } from '../assets/assets'
+import { assets, JobCategories, JobLocations } from '../assets/assets'
 import JobCard from './JobCard'
+import { Link, useNavigate } from 'react-router-dom'
+import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 
 const JobListing = () => {
-  const { issearched, searchfilter, setSearchFilter, jobsData, jobs } = useContext(AppContext)
+  const { issearched, searchfilter, setSearchFilter, jobs } = useContext(AppContext)
 
-  const [showFilter, setShowFilter] = useState(true)
+  const [showFilter, setShowFilter] = useState(false)
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedLocations, setSelectedLocations] = useState([])
   const [currentpage, setcurrentpage] = useState(1)
   const jobsPerPage = 9
-  const[filteredjobs, setfilterjobs] = useState(jobs)
-
+  const [filteredjobs, setfilterjobs] = useState(jobs)
+  const navigate = useNavigate()
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(prev =>
@@ -21,7 +23,7 @@ const JobListing = () => {
         : [...prev, category]
     )
   }
- 
+
   const handleLocationChange = (location) => {
     setSelectedLocations(prev =>
       prev.includes(location)
@@ -30,26 +32,83 @@ const JobListing = () => {
     )
   }
 
-useEffect(()=>{
-  const matchescatogery = job => selectedCategories.length === 0 || selectedCategories.includes(job.category)
+  useEffect(() => {
+    // 1. Filter by Category (Checkboxes)
+    const matchesCategory = job =>
+      selectedCategories.length === 0 || selectedCategories.includes(job.category)
 
-  const matcheslocation = job => selectedCategories.length === 0 || selectedLocations.includes(job.location)
+    // 2. Filter by Location (Checkboxes)
+    // FIX: Changed selectedCategories.length to selectedLocations.length
+    const matchesLocation = job =>
+      selectedLocations.length === 0 || selectedLocations.includes(job.location)
 
-  const matchesjobtitle = job => searchfilter.title === " " || job.title.toLowerCase().includes(searchfilter.title.toLowerCase())
+    // 3. Filter by Search Title (Search Bar)
+    // FIX: Now checks if Title OR Category contains the search text
+    const matchesTitleSearch = job =>
+      searchfilter.title === "" ||
+      job.title.toLowerCase().includes(searchfilter.title.toLowerCase()) ||
+      job.category.toLowerCase().includes(searchfilter.title.toLowerCase())
 
-  const matcheslocationtitle = job => searchfilter.location === " " || job.location.toLowerCase().includes(searchfilter.location.toLowerCase())
+    // 4. Filter by Search Location (Search Bar)
+    const matchesLocationSearch = job =>
+      searchfilter.location === "" ||
+      job.location.toLowerCase().includes(searchfilter.location.toLowerCase())
 
-  const newfilteredjobs = jobs.slice().reverse().filter(job=> matchescatogery(job)&& matchesjobtitle(job) && matcheslocationtitle(job))
+    // Apply all filters
+    // FIX: Added matchesLocation(job) to the chain
+    const newFilteredJobs = jobs.slice().reverse().filter(
+      job => matchesCategory(job) &&
+        matchesLocation(job) &&
+        matchesTitleSearch(job) &&
+        matchesLocationSearch(job)
+    )
 
-  setfilterjobs(newfilteredjobs)
-  setcurrentpage(1)
+    setfilterjobs(newFilteredJobs)
+    setcurrentpage(1)
 
-},[jobs,selectedCategories,selectedLocations,searchfilter]) 
+  }, [jobs, selectedCategories, selectedLocations, searchfilter])
 
   return (
     <div className='container 2xl:px-20 p-5 py-8 mt-40'>
       <div className='lg:flex lg:gap-8 max-lg:space-y-8'>
+
+        {/* Sidebar Filters */}
         <div className='lg:w-1/4 pl-[42px]'>
+          <div className="mt-10 relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7]">
+            <div className="bg-white rounded-2xl p-6 h-full w-full">
+
+              <h4 className="text-xl font-black mb-4 bg-gradient-to-r from-[#00b3c7] to-[#008f9f] bg-clip-text text-transparent">
+                Login For FREE Perks!
+              </h4>
+
+              <ul className="space-y-3">
+                <li className="flex items-start group/item">
+                  <span className="mt-1 mr-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#e0faff] text-[#00b3c7] group-hover/item:scale-110 transition-transform">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" /></svg>
+                  </span>
+                  <div type="button" className="flex flex-col">
+                    <button onClick={() => navigate("/resume/yourid")} className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">AI Resume Maker</button>
+                    <button className="text-xs text-gray-600 hover:text-gray-600 cursor-pointer text-left">Build resumes instantly</button>
+                  </div>
+                </li>
+
+
+                <li className="flex items-start group/item cursor-pointer">
+                  <span className="mt-1 mr-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#e0faff] text-[#00b3c7] group-hover/item:scale-110 transition-transform">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" /></svg>
+                  </span>
+                  <div className="flex flex-col">
+                    <button type="button" onClick={() => navigate("/resume/yourid")}  className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">ATS Score Checker</button >
+                    <span className="text-xs text-gray-600">Get hired faster</span>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+
+
           {
             issearched && (searchfilter.title !== "" || searchfilter.location !== "") && (
               <>
@@ -85,7 +144,6 @@ useEffect(()=>{
             )
           }
 
-         
           <button
             className='px-6 py-1.5 rounded border border-gray-400 lg:hidden mt-18'
             onClick={() => setShowFilter(!showFilter)}
@@ -93,10 +151,11 @@ useEffect(()=>{
             {showFilter ? "Close" : "Filters"}
           </button>
 
-          {/* Both category and location filters controlled by showFilter state */}
+          {/* Filter Lists */}
           <div className={showFilter ? "" : "max-lg:hidden"} >
+
             {/* Category Filter */}
-            <h4 className='font-medium text-lg py-4 '>Search By Category</h4>
+            <h4 className='font-bold text-lg py-4 '>Filter By Top Categories! </h4>
             <ul className='space-y-4 text-gray-600'>
               {
                 JobCategories.map((Category, index) => (
@@ -113,8 +172,8 @@ useEffect(()=>{
               }
             </ul>
 
-            
-            <h4 className='font-medium text-lg py-4 pt-14'>Search By Location</h4>
+            {/* Location Filter */}
+            <h4 className='font-bold text-lg py-4 pt-14'>Filter By Top Locations!</h4>
             <ul className='space-y-4 text-gray-600'>
               {
                 JobLocations.map((location, index) => (
@@ -130,9 +189,13 @@ useEffect(()=>{
                 ))
               }
             </ul>
+
+
+
           </div>
         </div>
 
+        {/* Job Cards Section */}
         <section className='lg:w-3/4 '>
           <h3 className='font-bold text-3xl py-2' id="job-list">Latest Jobs</h3>
           <p className='mb-8 sm:mb-4 md:mb-8 text-gray-500'>Latest jobs with top companies. Apply now and shape your career!</p>
@@ -140,41 +203,41 @@ useEffect(()=>{
           <div className='cards grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
             {filteredjobs
               .slice((currentpage - 1) * jobsPerPage, currentpage * jobsPerPage)
-              .map((jobsData, index) => (
-                <JobCard key={index} job={jobsData} />
+              .map((job, index) => (
+                <JobCard key={index} job={job} />
               ))}
           </div>
 
-
+          {/* Pagination */}
           {filteredjobs.length > 0 && (
             <div className="flex items-center justify-center gap-2 mt-8">
-             
+
               <a href="#job-list">
-                <img 
-                 onClick={()=> setcurrentpage(Math.max(currentpage-1,1))}
-                src={assets.left_arrow_icon} alt="Previous" />
+                <img
+                  onClick={() => setcurrentpage(Math.max(currentpage - 1, 1))}
+                  src={assets.left_arrow_icon} alt="Previous" />
               </a>
 
               {Array.from({ length: Math.ceil(filteredjobs.length / jobsPerPage) }).map((_, index) => (
-                
+
                 <a href="#job-list" key={index}>
-                  <button 
+                  <button
                     className={`w-8 h-8 rounded ${currentpage === index + 1 ? 'bg-[#1447E6] text-white' : 'bg-gray-100'}`}
                     onClick={() => setcurrentpage(index + 1)}
                   >
                     {index + 1}
                   </button>
-              
+
                 </a>
               ))}
 
               <a href="#job-list">
-                <img 
-                onClick={()=> setcurrentpage(Math.min(currentpage+1, Math.ceil(filteredjobs.length / jobsPerPage)))}
-                src={assets.right_arrow_icon} alt="Next" />
+                <img
+                  onClick={() => setcurrentpage(Math.min(currentpage + 1, Math.ceil(filteredjobs.length / jobsPerPage)))}
+                  src={assets.right_arrow_icon} alt="Next" />
               </a>
 
-            </div> 
+            </div>
           )}
 
         </section>
