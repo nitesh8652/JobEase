@@ -13,7 +13,7 @@ import { assets } from '../assets/assets'
 
 const Footer = () => {
   return (
-    <div className="bg-[#1447E6] text-white py-3 mt-10">
+    <div className="bg-[#15163A] text-white py-3 mt-10">
       <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         
         {/* Left Side: Logo & Brand */}
