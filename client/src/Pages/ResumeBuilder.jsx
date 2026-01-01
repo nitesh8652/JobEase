@@ -6,6 +6,7 @@ import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIc
 import PersonalInfoForm from '../Components/PersonalInfoForm';
 import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
+import ColorPicker from '../Components/ColorPicker';
 
 const ResumeCreator = () => {
 
@@ -17,7 +18,7 @@ const ResumeCreator = () => {
         personal_info: {},
         professional_summary: "",
         experience: [],
-        education: [], 
+        education: [],
         project: [],
         skills: [],
         template: "classic",
@@ -47,11 +48,11 @@ const ResumeCreator = () => {
         { id: "skills", name: "Skills", icon: Sparkles },
     ]
 
-    const activeSection = sections[activeSectionIndex] 
+    const activeSection = sections[activeSectionIndex]
 
-        useEffect(() => {
-            loadExistingResume()
-        }, [])
+    useEffect(() => {
+        loadExistingResume()
+    }, [])
 
     return (
         <>
@@ -78,9 +79,10 @@ const ResumeCreator = () => {
 
                                 {/* navigation */}
                                 <div className='flex justify-between items-center mb-6 border-b border-gray-300 py-2'>
-<div className='flex justify-between items-center mb-6 border-b border-gray-500 py-1 '>
-    <TemplateSelector selectedTemplate={resumeData.template} onChange={(template)=>setResumeData(prev=>({...prev,template}))}/>
-</div>
+                                    <div className='flex  items-center gap-4'>
+                                        <TemplateSelector selectedTemplate={resumeData.template} onChange={(template) => setResumeData(prev => ({ ...prev, template }))} />
+                                        <ColorPicker selectedColor={resumeData.accent_color} onChange={(color) => setResumeData(prev => ({ ...prev, accent_color: color }))} />
+                                    </div>
                                     <div className='flex items-center'>
                                         {activeSectionIndex !== 0 && (
                                             <button onClick={() => setActiveSectionIndex((prevIndex) => Math.max(prevIndex - 1, 0))} className='flex items-center gap-1 p-3 rounded-lg text-sm font-medium text-grey-600 hover:bg-gray-50 transition-all' disabled={activeSectionIndex === 0}>
@@ -95,7 +97,7 @@ const ResumeCreator = () => {
                                 {/* form content */}
                                 <div className='space-y-6' >
                                     {activeSection.id === 'personal' && (
-                                        <PersonalInfoForm data={resumeData.personal_info} onChange={(data)=>setResumeData(prev => ({...prev, personal_info: data}))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground} />
+                                        <PersonalInfoForm data={resumeData.personal_info} onChange={(data) => setResumeData(prev => ({ ...prev, personal_info: data }))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground} />
 
                                     )}
 
@@ -110,13 +112,13 @@ const ResumeCreator = () => {
                         {/* right */}
                         <div className='lg:col-span-7 max-lg:mt-6 '>
 
-<div>
-    {/* buttons */}
+                            <div>
+                                {/* buttons */}
 
 
 
-</div>
-<ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
+                            </div>
+                            <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
                         </div>
 
 
