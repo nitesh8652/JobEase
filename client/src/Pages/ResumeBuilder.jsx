@@ -7,6 +7,7 @@ import PersonalInfoForm from '../Components/PersonalInfoForm';
 import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
 import ColorPicker from '../Components/ColorPicker';
+import Summary from '../Components/Summary';
 
 const ResumeCreator = () => {
 
@@ -94,11 +95,17 @@ const ResumeCreator = () => {
                                         </button>
                                     </div>
                                 </div>
+
                                 {/* form content */}
+                                
                                 <div className='space-y-6' >
                                     {activeSection.id === 'personal' && (
                                         <PersonalInfoForm data={resumeData.personal_info} onChange={(data) => setResumeData(prev => ({ ...prev, personal_info: data }))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground} />
 
+                                    )}
+
+                                    {activeSection.id==='summary' && (
+                                        <Summary data={resumeData.Summary} onChange={(data)=> setResumeData(prev=>({...prev,Summary:data}))} setResumeData={setResumeData} />
                                     )}
 
                                 </div>
