@@ -3,8 +3,8 @@ import React, { useState } from "react";
 
 const ColorPicker = ({ selectedColor, onChange }) => {
   const colors = [
-    { name: "Midnight", value: "#1e3a8a" },
     { name: "Blue", value: "#3B82F6" },
+    { name: "Midnight", value: "#1e3a8a" },
     { name: "Indigo", value: "#6366F1" },
     { name: "Azure", value: "#0284c7" },
     { name: "Pink", value: "#EC4899" },

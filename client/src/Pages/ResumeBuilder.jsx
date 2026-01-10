@@ -8,6 +8,7 @@ import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
 import ColorPicker from '../Components/ColorPicker';
 import Summary from '../Components/Summary';
+import Experience from '../Components/Experience';
 
 const ResumeCreator = () => {
 
@@ -71,7 +72,7 @@ const ResumeCreator = () => {
                 <div className='max-w-7xl mx-auto px-4 pb-8'>
                     <div className='grid lg:grid-cols-12 gap-8'>
                         {/* left */}
-                        <div className='relative lg:col-span-5 rounded-lg overflow-hidden'>
+                        <div className='relative lg:col-span-5 rounded-lg '>
                             <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-7 pt-1'>
 
                                 {/* progress bar */}
@@ -97,16 +98,40 @@ const ResumeCreator = () => {
                                 </div>
 
                                 {/* form content */}
-                                
+
                                 <div className='space-y-6' >
                                     {activeSection.id === 'personal' && (
                                         <PersonalInfoForm data={resumeData.personal_info} onChange={(data) => setResumeData(prev => ({ ...prev, personal_info: data }))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground} />
 
                                     )}
 
-                                    {activeSection.id==='summary' && (
-                                        <Summary data={resumeData.Summary} onChange={(data)=> setResumeData(prev=>({...prev,Summary:data}))} setResumeData={setResumeData} />
+
+                                    {activeSection.id === 'summary' && (
+                                        <Summary
+                                            data={resumeData.professional_summary}
+                                            onChange={(data) =>
+                                                setResumeData(prev => ({
+                                                    ...prev,
+                                                    professional_summary: data
+                                                }))
+                                            }
+                                        />
                                     )}
+
+                                {activeSection.id === 'experience' && (
+  <Experience
+    data={resumeData.experience}
+    onChange={(data) =>
+      setResumeData(prev => ({
+        ...prev,
+        experience: data
+      }))
+    }
+  />
+)}
+
+
+
 
                                 </div>
 
