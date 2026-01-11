@@ -55,7 +55,7 @@ const Experience = ({ data = [], onChange }) => {
                     <p className='text-sm text-gray-500'>Add experience for your resume.</p>
                 </div>
 
-                <button onClick={addExperience} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-1 rounded-lg shadow-sm'>
+                <button onClick={addExperience} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
                     <PlusIcon className='size-4' />
                     Add Experience
                 </button>
@@ -140,8 +140,8 @@ const Experience = ({ data = [], onChange }) => {
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
                                     <label className='text-sm font-medium text-gray-700'>Job Description</label>
-                                    <button className='flex items-center gap-1 text-xs text-purple-600 hover:text-purple-800 transition-colors'>
-                                        <Sparkles className='w-3 h-3' />
+                                    <button className='flex items-center gap-1 text-xs  text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100  transition-colors shadow-sm hover:text-white'>
+                                        <Sparkles className='w-3 h-3 ' />
                                         Enhance with AI
                                     </button>
                                 </div>
