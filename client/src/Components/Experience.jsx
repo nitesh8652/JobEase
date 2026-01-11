@@ -1,5 +1,7 @@
-import { Briefcase, PlusIcon, Sparkles, Trash2Icon } from 'lucide-react'
+import { Briefcase, PlusIcon, Sparkles, Trash2Icon, Calendar } from 'lucide-react'
 import React from 'react'
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css"; // Don't forget this import!
 
 const Experience = ({ data = [], onChange }) => {
 
@@ -26,6 +28,25 @@ const Experience = ({ data = [], onChange }) => {
         onChange(updated)
     }
 
+    // HELPER 1: Convert "YYYY-MM" string -> Date Object (For the Picker)
+    const parseDate = (dateStr) => {
+        if (!dateStr) return null;
+        const [year, month] = dateStr.split('-');
+        return new Date(parseInt(year), parseInt(month) - 1);
+    }
+
+    // HELPER 2: Convert Date Object -> "YYYY-MM" string (For the State)
+    const formatDate = (date) => {
+        if (!date) return "";
+        // date.toISOString() can sometimes be off by a day due to timezones
+        // It's safer to manually construct the YYYY-MM string
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        return `${year}-${month}`;
+    }
+
+    const today = new Date();
+
     return (
         <div className='space-y-6'>
             <div className='flex items-center justify-between'>
@@ -48,9 +69,8 @@ const Experience = ({ data = [], onChange }) => {
                 </div>
             ) : (
                 <div className='space-y-4'>
-                    {/* FIX 1: Changed curly braces {} to parentheses () for implicit return */}
                     {data.map((experience, index) => (
-                        <div key={index} className='border border-gray-300 rounded-lg p-4 space-y-3'>
+                        <div key={index} className='border border-gray-300 rounded-lg p-4 space-y-3 bg-white'>
                             <div className='flex justify-between items-start'>
                                 <h4>Experience #{index + 1}</h4>
                                 <button onClick={() => removeExperience(index)} className='text-red-500 hover:text-red-700 transition-colors'>
@@ -58,48 +78,63 @@ const Experience = ({ data = [], onChange }) => {
                                 </button>
                             </div>
                             
-                            {/* FIX 2: Changed <iput> to <input> and added border classes so you can see them */}
                             <div className='grid md:grid-cols-2 gap-3'>
                                 <input 
                                     value={experience.company || ""} 
                                     onChange={(e) => updateExperience(index, "company", e.target.value)} 
                                     type="text" 
                                     placeholder="Company Name" 
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                                 />
                                 <input 
                                     value={experience.position || ""} 
                                     onChange={(e) => updateExperience(index, "position", e.target.value)} 
                                     type="text" 
                                     placeholder="Job Title" 
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                                 />
                             </div>
                             
                             <div className='grid md:grid-cols-2 gap-3'>
-                                <input 
-                                    value={experience.start_date || ""} 
-                                    onChange={(e) => updateExperience(index, "start_date", e.target.value)} 
-                                    type="month" 
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                <input 
-                                    value={experience.end_date || ""} 
-                                    onChange={(e) => updateExperience(index, "end_date", e.target.value)} 
-                                    type="month" 
-                                    disabled={experience.is_current} 
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
+                                {/* START DATE PICKER */}
+                                <div className='relative w-full'>
+                                    <DatePicker 
+                                        selected={parseDate(experience.start_date)} 
+                                        onChange={(date) => updateExperience(index, "start_date", formatDate(date))} 
+                                        dateFormat="MMM yyyy"
+                                        showMonthYearPicker
+                                        placeholderText="Start Date"
+                                        maxDate={today}
+                                        className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 pl-9"
+                                    />
+                                    {/* Icon overlay */}
+                                    <Calendar className='absolute left-2.5 top-2.5 size-4 text-gray-400 pointer-events-none' />
+                                </div>
+
+                                {/* END DATE PICKER */}
+                                <div className='relative w-full'>
+                                    <DatePicker 
+                                        selected={parseDate(experience.end_date)} 
+                                        onChange={(date) => updateExperience(index, "end_date", formatDate(date))} 
+                                        dateFormat="MMM yyyy"
+                                        showMonthYearPicker
+                                        placeholderText="End Date"
+                                        disabled={experience.is_current}
+                                        minDate={parseDate(experience.start_date)}
+                                        className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 pl-9"
+                                    />
+                                    <Calendar className='absolute left-2.5 top-2.5 size-4 text-gray-400 pointer-events-none' />
+                                </div>
                             </div>
 
-                            <label className='flex items-center gap-2 cursor-pointer'>
+                            <label className='flex items-center gap-2 cursor-pointer w-fit'>
                                 <input 
                                     type="checkbox" 
                                     checked={experience.is_current || false} 
                                     onChange={(e) => updateExperience(index, "is_current", e.target.checked)} 
                                     className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                                 />
-                                <span className='text-sm text-gray-700'>Currently Working here</span>
+                                <span className='text-sm text-gray-700 select-none'>Currently Working here</span>
                             </label>
 
                             <div className='space-y-2'>
