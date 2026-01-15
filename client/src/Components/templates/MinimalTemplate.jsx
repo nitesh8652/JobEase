@@ -86,30 +86,59 @@ const MinimalTemplate = ({ data, accentColor }) => {
             )}
 
             {/* Education */}
-            {data.education && data.education.length > 0 && (
-                <section className="mb-10">
-                    <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
-                        Education
-                    </h2>
+           {/* Education */}
+{data.education && data.education.length > 0 && (
+  <section className="mb-10">
+    <h2
+      className="text-sm uppercase tracking-widest mb-6 font-medium"
+      style={{ color: accentColor }}
+    >
+      Education
+    </h2>
 
-                    <div className="space-y-4">
-                        {data.education.map((edu, index) => (
-                            <div key={index} className="flex justify-between items-baseline">
-                                <div>
-                                    <h3 className="font-medium">
-                                        {edu.degree} {edu.field && `in ${edu.field}`}
-                                    </h3>
-                                    <p className="text-gray-600">{edu.institution}</p>
-                                    {edu.gpa && <p className="text-sm text-gray-500">GPA: {edu.gpa}</p>}
-                                </div>
-                                <span className="text-sm text-gray-500">
-                                    {formatDate(edu.graduation_date)}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+    <div className="space-y-4">
+      {data.education.map((edu, index) => (
+        <div key={index} className="flex justify-between items-baseline">
+          <div>
+            <h3 className="font-medium">
+              {edu.degree}
+            </h3>
+
+            {edu.institute && (
+              <p className="text-gray-600">
+                {edu.institute}
+              </p>
             )}
+
+            {edu.cgpa && !edu.has_backlogs && (
+              <p className="text-sm text-gray-500">
+                CGPA: {edu.cgpa}
+              </p>
+            )}
+
+            {edu.has_backlogs && (
+              <p className="text-sm text-gray-500">
+                Backlogs
+              </p>
+            )}
+
+            {edu.description && (
+              <p className="text-sm text-gray-600 mt-1 whitespace-pre-line">
+                {edu.description}
+              </p>
+            )}
+          </div>
+
+          <span className="text-sm text-gray-500">
+            {formatDate(edu.start_date)} –{" "}
+            {edu.is_current ? "Present" : formatDate(edu.end_date)}
+          </span>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
 
             {/* Skills */}
             {data.skills && data.skills.length > 0 && (

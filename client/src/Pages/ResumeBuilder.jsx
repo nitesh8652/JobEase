@@ -9,6 +9,7 @@ import TemplateSelector from '../Components/templates/TemplateSelector';
 import ColorPicker from '../Components/ColorPicker';
 import Summary from '../Components/Summary';
 import Experience from '../Components/Experience';
+import Education from '../Components/Education';
 
 const ResumeCreator = () => {
 
@@ -118,17 +119,29 @@ const ResumeCreator = () => {
                                         />
                                     )}
 
-                                {activeSection.id === 'experience' && (
-  <Experience
-    data={resumeData.experience}
-    onChange={(data) =>
-      setResumeData(prev => ({
-        ...prev,
-        experience: data
-      }))
-    }
-  />
-)}
+                                    {activeSection.id === 'experience' && (
+                                        <Experience
+                                            data={resumeData.experience}
+                                            onChange={(data) =>
+                                                setResumeData(prev => ({
+                                                    ...prev,
+                                                    experience: data
+                                                }))
+                                            }
+                                        />
+                                    )}
+                                    {activeSection.id === 'education' && (
+                                        <Education
+                                            data={resumeData.education}
+                                            onChange={(data) =>
+                                                setResumeData(prev => ({
+                                                    ...prev,
+                                                    education: data
+                                                }))
+                                            }
+                                            template={resumeData.template}
+                                        />
+                                    )}
 
 
 

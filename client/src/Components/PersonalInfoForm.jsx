@@ -1,4 +1,4 @@
-import { Globe2, Mail, Phone, User, User2 } from 'lucide-react'
+import { Globe2, LocateIcon, LocationEdit, Mail, Phone, User, User2 } from 'lucide-react'
 import React from 'react'
 
 const PersonalInfoForm = ({ data, onChange, removeBackground, setRemoveBackground }) => {
@@ -18,7 +18,7 @@ const PersonalInfoForm = ({ data, onChange, removeBackground, setRemoveBackgroun
             key: "phone", label: "Phone Number", type: "tel", required: true, icon: Phone
         },
         {
-            key: "location", label: "Location", type: "text", required: true, icon: Phone
+            key: "location", label: "Location", type: "text", required: true, icon: LocationEdit
         },
         {
             key: "profession", label: "Profession", type: "text", required: true, icon: User2

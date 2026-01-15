@@ -10,6 +10,21 @@ const ClassicTemplate = ({ data, accentColor }) => {
         });
     };
 
+    const formatRange = (start, end, isCurrent) => {
+    if (!start) return "";
+    const format = (dateStr) => {
+        if (!dateStr) return "";
+        const [year, month] = dateStr.split("-");
+        return new Date(year, month - 1).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short"
+        });
+    };
+
+    return `${format(start)} – ${isCurrent ? "Present" : format(end)}`;
+};
+
+
     return (
         <div className="max-w-4xl mx-auto p-8 bg-white text-gray-800 leading-relaxed">
             {/* Header */}
@@ -119,41 +134,52 @@ const ClassicTemplate = ({ data, accentColor }) => {
                         EDUCATION
                     </h2>
 
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         {data.education.map((edu, index) => (
-                            <div key={index} className="flex justify-between items-start">
-                                <div>
-                                    <h3 className="font-semibold text-gray-900">
-                                        {edu.degree} {edu.field && `in ${edu.field}`}
-                                    </h3>
-                                    <p className="text-gray-700">{edu.institution}</p>
-                                    {edu.gpa && <p className="text-sm text-gray-600">GPA: {edu.gpa}</p>}
+                            <div
+                                key={index}
+                                className="border-l-3 pl-4"
+                                style={{ borderColor: accentColor }}
+                            >
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900">
+                                            {edu.institute}
+                                        </h3>
+
+                                        {edu.institute && (
+                                            <p className="text-gray-700"> {edu.degree}</p>
+                                        )}
+
+                                        {edu.cgpa && !edu.has_backlogs && (
+                                            <p className="text-sm text-gray-600">
+                                                CGPA: {edu.cgpa}
+                                            </p>
+                                        )}
+
+                                        {edu.has_backlogs && (
+                                            <p className="text-sm text-gray-600">
+                                                Backlogs
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <div className="text-sm text-gray-600 text-right">
+                                        {formatRange(edu.start_date, edu.end_date, edu.is_current)}
+                                    </div>
                                 </div>
-                                <div className="text-sm text-gray-600">
-                                    <p>{formatDate(edu.graduation_date)}</p>
-                                </div>
+
+                                {edu.description && (
+                                    <p className="mt-2 text-gray-700 whitespace-pre-line">
+                                        {edu.description}
+                                    </p>
+                                )}
                             </div>
                         ))}
                     </div>
                 </section>
             )}
 
-            {/* Skills */}
-            {data.skills && data.skills.length > 0 && (
-                <section className="mb-6">
-                    <h2 className="text-xl font-semibold mb-4" style={{ color: accentColor }}>
-                        CORE SKILLS
-                    </h2>
-
-                    <div className="flex gap-4 flex-wrap">
-                        {data.skills.map((skill, index) => (
-                            <div key={index} className="text-gray-700">
-                                • {skill}
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
         </div>
     );
 }

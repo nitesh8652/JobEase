@@ -71,24 +71,54 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     </section>
 
                     {/* Education */}
-                    {data.education && data.education.length > 0 && (
-                        <section className="mb-8">
-                            <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
-                                EDUCATION
-                            </h2>
-                            <div className="space-y-4 text-sm">
-                                {data.education.map((edu, index) => (
-                                    <div key={index}>
-                                        <p className="font-semibold uppercase">{edu.degree}</p>
-                                        <p className="text-zinc-600">{edu.institution}</p>
-                                        <p className="text-xs text-zinc-500">
-                                            {formatDate(edu.graduation_date)}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                    )}
+                    {/* Education */}
+{data.education && data.education.length > 0 && (
+  <section className="mb-8">
+    <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
+      EDUCATION
+    </h2>
+
+    <div className="space-y-4 text-sm">
+      {data.education.map((edu, index) => (
+        <div key={index}>
+          <p className="font-semibold uppercase">
+            {edu.degree}
+          </p>
+
+          {edu.institute && (
+            <p className="text-zinc-600">
+              {edu.institute}
+            </p>
+          )}
+
+          <p className="text-xs text-zinc-500">
+            {formatDate(edu.start_date)} –{" "}
+            {edu.is_current ? "Present" : formatDate(edu.end_date)}
+          </p>
+
+          {edu.cgpa && !edu.has_backlogs && (
+            <p className="text-xs text-zinc-500">
+              CGPA: {edu.cgpa}
+            </p>
+          )}
+
+          {edu.has_backlogs && (
+            <p className="text-xs text-zinc-500">
+              Backlogs
+            </p>
+          )}
+
+          {/* {edu.description && (
+            <p className="text-xs text-zinc-600 mt-1 whitespace-pre-line">
+              {edu.description}
+            </p>
+          )} */}
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
 
                     {/* Skills */}
                     {data.skills && data.skills.length > 0 && (
