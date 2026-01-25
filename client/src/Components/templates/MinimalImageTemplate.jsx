@@ -18,7 +18,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     {/* Image */}
                     {data.personal_info?.image && typeof data.personal_info.image === 'string' ? (
                         <div className="mb-6">
-                            <img src={data.personal_info.image} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" style={{ background: accentColor+'70' }} />
+                            <img src={data.personal_info.image} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" style={{ background: accentColor + '70' }} />
                         </div>
                     ) : (
                         data.personal_info?.image && typeof data.personal_info.image === 'object' ? (
@@ -71,53 +71,49 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     </section>
 
                     {/* Education */}
-                    {/* Education */}
-{data.education && data.education.length > 0 && (
-  <section className="mb-8">
-    <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
-      EDUCATION
-    </h2>
 
-    <div className="space-y-4 text-sm">
-      {data.education.map((edu, index) => (
-        <div key={index}>
-          <p className="font-semibold uppercase">
-            {edu.degree}
-          </p>
+                    {data.education && data.education.length > 0 && (
+                        <section className="mb-8">
+                            <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
+                                EDUCATION
+                            </h2>
 
-          {edu.institute && (
-            <p className="text-zinc-600">
-              {edu.institute}
-            </p>
-          )}
+                            <div className="space-y-4 text-sm">
+                                {data.education.map((edu, index) => (
+                                    <div key={index}>
+                                        <p className="font-semibold uppercase">
+                                            {edu.degree}
+                                        </p>
 
-          <p className="text-xs text-zinc-500">
-            {formatDate(edu.start_date)} –{" "}
-            {edu.is_current ? "Present" : formatDate(edu.end_date)}
-          </p>
+                                        {edu.institute && (
+                                            <p className="text-zinc-600">
+                                                {edu.institute}
+                                            </p>
+                                        )}
 
-          {edu.cgpa && !edu.has_backlogs && (
-            <p className="text-xs text-zinc-500">
-              CGPA: {edu.cgpa}
-            </p>
-          )}
+                                        <p className="text-xs text-zinc-500">
+                                            {formatDate(edu.start_date)} –{" "}
+                                            {edu.is_current ? "Present" : formatDate(edu.end_date)}
+                                        </p>
 
-          {edu.has_backlogs && (
-            <p className="text-xs text-zinc-500">
-              Backlogs
-            </p>
-          )}
+                                        {edu.cgpa && !edu.has_backlogs && (
+                                            <p className="text-xs text-zinc-500">
+                                                CGPA: {edu.cgpa}
+                                            </p>
+                                        )}
 
-          {/* {edu.description && (
-            <p className="text-xs text-zinc-600 mt-1 whitespace-pre-line">
-              {edu.description}
-            </p>
-          )} */}
-        </div>
-      ))}
-    </div>
-  </section>
-)}
+                                        {edu.has_backlogs && (
+                                            <p className="text-xs text-zinc-500">
+                                                Backlogs
+                                            </p>
+                                        )}
+
+
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
 
 
                     {/* Skills */}
@@ -204,6 +200,23 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                                                 ))}
                                             </ul>
                                         )}
+                                        {project.link && (
+                                            <p className="text-sm mb-1">
+                                                <span className="mr-1" >
+                                                    Project Link:
+                                                </span>
+                                                <a
+                                                    href={project.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-600 underline break-all hover:text-blue-800"
+                                                    style={{ color: accentColor }}
+                                                >
+                                                    {project.link}
+                                                </a>
+                                            </p>
+                                        )}
+
                                     </div>
                                 ))}
                             </div>

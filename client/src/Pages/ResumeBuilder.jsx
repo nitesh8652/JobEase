@@ -10,6 +10,7 @@ import ColorPicker from '../Components/ColorPicker';
 import Summary from '../Components/Summary';
 import Experience from '../Components/Experience';
 import Education from '../Components/Education';
+import Project from '../Components/Project';
 
 const ResumeCreator = () => {
 
@@ -140,6 +141,18 @@ const ResumeCreator = () => {
                                                 }))
                                             }
                                             template={resumeData.template}
+                                        />
+                                    )}
+                                    {activeSection.id === 'projects' && (
+                                        <Project
+                                            data={resumeData.project}
+                                            onChange={(data) =>
+                                                setResumeData(prev => ({
+                                                    ...prev,
+                                                    project: data
+                                                }))
+                                            }
+                                            
                                         />
                                     )}
 

@@ -108,24 +108,45 @@ const ClassicTemplate = ({ data, accentColor }) => {
             )}
 
             {/* Projects */}
-            {data.project && data.project.length > 0 && (
-                <section className="mb-6">
-                    <h2 className="text-xl font-semibold mb-4" style={{ color: accentColor }}>
-                        PROJECTS
-                    </h2>
+          {/* Projects */}
+{data.project.map((proj, index) => (
+  <div key={index} className="flex flex-col gap-1">
+    {/* Project Name */}
+    <h3 className="text-lg font-medium">
+      {proj.name}
+    </h3>
 
-                    <ul className="space-y-3 ">
-                        {data.project.map((proj, index) => (
-                            <div key={index} className="flex justify-between items-start border-l-3 border-gray-300 pl-6">
-                                <div>
-                                    <li className="font-semibold text-gray-800 ">{proj.name}</li>
-                                    <p className="text-gray-600">{proj.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </ul>
-                </section>
-            )}
+    {/* ✅ Project Type */}
+    {proj.type && (
+      <span
+        className="text-xs uppercase tracking-widest text-gray-500"
+      >
+        {proj.type}
+      </span>
+    )}
+
+    {/* Description */}
+    {proj.description && (
+      <p className="text-gray-600 whitespace-pre-line mt-1">
+        {proj.description}
+      </p>
+    )}
+
+    {/* Project Link */}
+    {proj.link && (
+      <a
+        href={proj.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm underline mt-1"
+        style={{ color: accentColor }}
+      >
+        View Project →
+      </a>
+    )}
+  </div>
+))}
+
 
             {/* Education */}
             {data.education && data.education.length > 0 && (

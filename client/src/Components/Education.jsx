@@ -119,8 +119,8 @@ function Education({ data, onChange, template }) {
                             </div>
 
                             {/* ROW 2: Dates & CGPA */}
-                            <div className='grid md:grid-cols-2 gap-3'>
-                                <div className='grid grid-cols-2 gap-3'>
+                            <div className='grid md:grid-cols-2 gap-1'>
+                                <div className='grid grid-cols-2 gap-1'>
                                     {/* Start Date */}
                                     <div className='relative w-full'>
                                         <DatePicker
@@ -130,7 +130,7 @@ function Education({ data, onChange, template }) {
                                             showMonthYearPicker
                                             placeholderText="Start"
                                             maxDate={today}
-                                            className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 pl-9"
+                                            className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500  pl-9"
                                         />
                                         <Calendar className='absolute left-2.5 top-2.5 size-4 text-gray-400 pointer-events-none' />
                                     </div>

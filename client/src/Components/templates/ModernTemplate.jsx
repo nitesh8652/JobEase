@@ -126,6 +126,9 @@ const ModernTemplate = ({ data, accentColor }) => {
                       {exp.description}
                     </div>
                   )}
+
+                
+
                 </div>
               ))}
             </div>
@@ -133,36 +136,52 @@ const ModernTemplate = ({ data, accentColor }) => {
         )}
 
         {/* Projects */}
-        {data.project && data.project.length > 0 && (
-          <section className="mb-8">
-            <h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
-              Projects
-            </h2>
+      {data.project && data.project.length > 0 && (
+  <section className="mb-8">
+    <h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
+      Projects
+    </h2>
 
-            <div className="space-y-6">
-              {data.project.map((p, index) => (
-                <div
-                  key={index}
-                  className="relative pl-6 border-l border-gray-200"
-                  style={{ borderLeftColor: accentColor }}
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-900">
-                        {p.name}
-                      </h3>
-                    </div>
-                  </div>
-                  {p.description && (
-                    <div className="text-gray-700 leading-relaxed text-sm mt-3">
-                      {p.description}
-                    </div>
-                  )}
-                </div>
-              ))}
+    <div className="space-y-6">
+      {data.project.map((p, index) => (
+        <div
+          key={index}
+          className="relative pl-6 border-l border-gray-200"
+          style={{ borderLeftColor: accentColor }}
+        >
+          <h3 className="text-lg font-medium text-gray-900">
+            {p.name}
+          </h3>
+
+          {p.type && (
+            <p className="text-sm font-medium" style={{ color: accentColor }}>
+              {p.type}
+            </p>
+          )}
+
+          {p.description && (
+            <div className="text-gray-700 leading-relaxed text-sm mt-2 whitespace-pre-line">
+              {p.description}
             </div>
-          </section>
-        )}
+          )}
+
+          {/* ✅ PROJECT LINK */}
+          {p.link && (
+            <a
+              href={p.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-2 text-sm underline break-all"
+              style={{ color: accentColor }}
+            >
+             Link →
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+)}
 
         <div className="mb-8 gap-8">
           {/* Education */}
@@ -236,6 +255,9 @@ const ModernTemplate = ({ data, accentColor }) => {
               </div>
             </section>
           )}
+
+
+
         </div>
       </div>
     </div>

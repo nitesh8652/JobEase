@@ -68,22 +68,43 @@ const MinimalTemplate = ({ data, accentColor }) => {
             )}
 
             {/* Projects */}
-            {data.project && data.project.length > 0 && (
-                <section className="mb-10">
-                    <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
-                        Projects
-                    </h2>
+        {data.project.map((proj, index) => (
+  <div key={index} className="flex flex-col gap-1">
+    {/* Project Name */}
+    <h3 className="text-lg font-medium">
+      {proj.name}
+    </h3>
 
-                    <div className="space-y-4">
-                        {data.project.map((proj, index) => (
-                            <div key={index} className="flex flex-col gap-2 justify-between items-baseline">
-                                <h3 className="text-lg font-medium ">{proj.name}</h3>
-                                <p className="text-gray-600">{proj.description}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
+    {/* ✅ Project Type */}
+    {proj.type && (
+      <span
+        className="text-xs uppercase tracking-widest text-gray-500"
+      >
+        {proj.type}
+      </span>
+    )}
+
+    {/* Description */}
+    {proj.description && (
+      <p className="text-gray-600 whitespace-pre-line mt-1">
+        {proj.description}
+      </p>
+    )}
+
+    {/* Project Link */}
+    {proj.link && (
+      <a
+        href={proj.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm underline mt-1"
+        style={{ color: accentColor }}
+      >
+        View Project →
+      </a>
+    )}
+  </div>
+))}
 
             {/* Education */}
            {/* Education */}
