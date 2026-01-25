@@ -11,6 +11,7 @@ import Summary from '../Components/Summary';
 import Experience from '../Components/Experience';
 import Education from '../Components/Education';
 import Project from '../Components/Project';
+import Skills from '../Components/Skills';
 
 const ResumeCreator = () => {
 
@@ -150,6 +151,18 @@ const ResumeCreator = () => {
                                                 setResumeData(prev => ({
                                                     ...prev,
                                                     project: data
+                                                }))
+                                            }
+                                            
+                                        />
+                                    )}
+                                    {activeSection.id === 'skills' && (
+                                        <Skills
+                                            data={resumeData.skills}
+                                            onChange={(data) =>
+                                                setResumeData(prev => ({
+                                                    ...prev,
+                                                    skills: data
                                                 }))
                                             }
                                             
