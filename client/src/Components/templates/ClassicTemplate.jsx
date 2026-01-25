@@ -201,6 +201,30 @@ const ClassicTemplate = ({ data, accentColor }) => {
                 </section>
             )}
 
+{/* Skills */}
+{data.skills && data.skills.length > 0 && (
+  <section className="mb-6">
+    <h2
+      className="text-xl font-semibold mb-4"
+      style={{ color: accentColor }}
+    >
+      SKILLS
+    </h2>
+
+    <div className="flex flex-wrap gap-2">
+      {data.skills.map((skill, index) => (
+        <span
+          key={index}
+          className="px-3 py-1 border border-gray-300 text-sm text-gray-700 rounded"
+        >
+          {skill}
+        </span>
+      ))}
+    </div>
+  </section>
+)}
+
+
         </div>
     );
 }

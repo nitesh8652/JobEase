@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { Link, useParams } from 'react-router-dom';
 import { dummyResumeData } from '../assets/assets';
-import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from 'lucide-react';
+import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, DownloadCloudIcon, FileText, FolderIcon, GraduationCap, Sparkles, User } from 'lucide-react';
 import PersonalInfoForm from '../Components/PersonalInfoForm';
 import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
@@ -58,6 +58,8 @@ const ResumeCreator = () => {
     useEffect(() => {
         loadExistingResume()
     }, [])
+
+    
 
     return (
         <>
@@ -153,7 +155,6 @@ const ResumeCreator = () => {
                                                     project: data
                                                 }))
                                             }
-                                            
                                         />
                                     )}
                                     {activeSection.id === 'skills' && (
@@ -165,14 +166,13 @@ const ResumeCreator = () => {
                                                     skills: data
                                                 }))
                                             }
-                                            
                                         />
                                     )}
-
-
-
-
                                 </div>
+
+                                <button className='bg-gradient-to-b from-green-100 to-green-200 ring-green-300 text-green-700 ring hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm'>
+                                    Save Changes
+                                </button>
 
                             </div>
                         </div>
@@ -183,11 +183,14 @@ const ResumeCreator = () => {
                         {/* right */}
                         <div className='lg:col-span-7 max-lg:mt-6 '>
 
-                            <div>
+                            <div className='relative w-full '>
+                                
+
+                                <button className='flex items-center gap-2 px-6 py-3 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors ml-[80%] mb-2 '>
+                                    <DownloadCloudIcon className='size-4' /> Download
+                                </button>
+
                                 {/* buttons */}
-
-
-
                             </div>
                             <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
                         </div>

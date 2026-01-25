@@ -43,7 +43,7 @@ const Skills = ({ data, onChange }) => {
         <button
           onClick={addSkill}
           disabled={!newSkill.trim()}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:cursor-not-allowed"
+          className='flex items-center gap-1 text-sm   hover:bg-blue-500 bg-blue-900 text-white transition-all px-3 py-2 rounded-md shadow-sm'
         >
           <PlusIcon className="size-4" />
           Add Skill
