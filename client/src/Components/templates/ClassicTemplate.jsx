@@ -11,19 +11,17 @@ const ClassicTemplate = ({ data, accentColor }) => {
     };
 
     const formatRange = (start, end, isCurrent) => {
-    if (!start) return "";
-    const format = (dateStr) => {
-        if (!dateStr) return "";
-        const [year, month] = dateStr.split("-");
-        return new Date(year, month - 1).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short"
-        });
+        if (!start) return "";
+        const format = (dateStr) => {
+            if (!dateStr) return "";
+            const [year, month] = dateStr.split("-");
+            return new Date(year, month - 1).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short"
+            });
+        };
+        return `${format(start)} – ${isCurrent ? "Present" : format(end)}`;
     };
-
-    return `${format(start)} – ${isCurrent ? "Present" : format(end)}`;
-};
-
 
     return (
         <div className="max-w-4xl mx-auto p-8 bg-white text-gray-800 leading-relaxed">
@@ -107,46 +105,53 @@ const ClassicTemplate = ({ data, accentColor }) => {
                 </section>
             )}
 
-            {/* Projects */}
-          {/* Projects */}
-{data.project.map((proj, index) => (
-  <div key={index} className="flex flex-col gap-1">
-    {/* Project Name */}
-    <h3 className="text-lg font-medium">
-      {proj.name}
-    </h3>
+            {/* Projects - MODIFIED SECTION */}
+            {data.project && data.project.length > 0 && (
+                <section className="mb-6">
+                    <h2 className="text-xl font-semibold mb-4" style={{ color: accentColor }}>
+                        PROJECTS
+                    </h2>
+                    <div className="space-y-4">
+                        {data.project.map((proj, index) => (
+                            <div key={index} className="border-l-3 pl-4" style={{ borderColor: accentColor }}>
+                                <div className="flex flex-col gap-1">
+                                    {/* Project Name & Type Row */}
+                                    <div className="flex justify-between items-baseline">
+                                        <h3 className="text-lg font-medium">
+                                            {proj.name}
+                                        </h3>
+                                        {proj.type && (
+                                            <span className="text-xs uppercase tracking-widest text-gray-500">
+                                                {proj.type}
+                                            </span>
+                                        )}
+                                    </div>
 
-    {/* ✅ Project Type */}
-    {proj.type && (
-      <span
-        className="text-xs uppercase tracking-widest text-gray-500"
-      >
-        {proj.type}
-      </span>
-    )}
+                                    {/* Description */}
+                                    {proj.description && (
+                                        <p className="text-gray-600 whitespace-pre-line mt-1">
+                                            {proj.description}
+                                        </p>
+                                    )}
 
-    {/* Description */}
-    {proj.description && (
-      <p className="text-gray-600 whitespace-pre-line mt-1">
-        {proj.description}
-      </p>
-    )}
-
-    {/* Project Link */}
-    {proj.link && (
-      <a
-        href={proj.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-sm underline mt-1"
-        style={{ color: accentColor }}
-      >
-        View Project →
-      </a>
-    )}
-  </div>
-))}
-
+                                    {/* Project Link */}
+                                    {proj.link && (
+                                        <a
+                                            href={proj.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-sm underline mt-1 w-fit"
+                                            style={{ color: accentColor }}
+                                        >
+                                            View Project →
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* Education */}
             {data.education && data.education.length > 0 && (
@@ -168,7 +173,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
                                             {edu.institute}
                                         </h3>
 
-                                        {edu.institute && (
+                                        {edu.degree && (
                                             <p className="text-gray-700"> {edu.degree}</p>
                                         )}
 
@@ -201,30 +206,28 @@ const ClassicTemplate = ({ data, accentColor }) => {
                 </section>
             )}
 
-{/* Skills */}
-{data.skills && data.skills.length > 0 && (
-  <section className="mb-6">
-    <h2
-      className="text-xl font-semibold mb-4"
-      style={{ color: accentColor }}
-    >
-      SKILLS
-    </h2>
+            {/* Skills */}
+            {data.skills && data.skills.length > 0 && (
+                <section className="mb-6">
+                    <h2
+                        className="text-xl font-semibold mb-4"
+                        style={{ color: accentColor }}
+                    >
+                        SKILLS
+                    </h2>
 
-    <div className="flex flex-wrap gap-2">
-      {data.skills.map((skill, index) => (
-        <span
-          key={index}
-          className="px-3 py-1 border border-gray-300 text-sm text-gray-700 rounded"
-        >
-          {skill}
-        </span>
-      ))}
-    </div>
-  </section>
-)}
-
-
+                    <div className="flex flex-wrap gap-2">
+                        {data.skills.map((skill, index) => (
+                            <span
+                                key={index}
+                                className="px-3 py-1 border border-gray-300 text-sm text-gray-700 rounded"
+                            >
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
+                </section>
+            )}
         </div>
     );
 }

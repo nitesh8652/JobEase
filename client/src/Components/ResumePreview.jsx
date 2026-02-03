@@ -49,6 +49,8 @@ const ResumePreview = ({ data, template, accentColor, classes = '' }) => {
 
             #resume-preview, #resume-preview * {
               visibility: visible;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
 
             #resume-preview {
@@ -61,6 +63,7 @@ const ResumePreview = ({ data, template, accentColor, classes = '' }) => {
               padding: 0;
               box-shadow: none !important;
               border: none !important;
+              background-clip: padding-box;
             }
           }
         `}

@@ -59,7 +59,13 @@ const ResumeCreator = () => {
         loadExistingResume()
     }, [])
 
-    
+    const changeResumeVisibility = async () => {
+        setResumeData({...resumeData, public:!resumeData.public})
+    }
+
+    const downloadResume = () =>{
+        window.print()
+    }
 
     return (
         <>
@@ -186,7 +192,7 @@ const ResumeCreator = () => {
                             <div className='relative w-full '>
                                 
 
-                                <button className='flex items-center gap-2 px-6 py-3 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors ml-[80%] mb-2 '>
+                                <button onClick={downloadResume} className='flex items-center gap-2 px-6 py-3 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors ml-[80%] mb-2 '>
                                     <DownloadCloudIcon className='size-4' /> Download
                                 </button>
 
