@@ -1,7 +1,8 @@
 import { Briefcase, PlusIcon, Sparkles, Trash2Icon, Calendar } from 'lucide-react'
-import React from 'react'
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css"; // Don't forget this import!
+import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 
 const Experience = ({ data = [], onChange }) => {
 
@@ -28,7 +29,63 @@ const Experience = ({ data = [], onChange }) => {
         onChange(updated)
     }
 
-    // HELPER 1: Convert "YYYY-MM" string -> Date Object (For the Picker)
+    const genAI = new GoogleGenerativeAI(
+        import.meta.env.VITE_GEMINI_API_KEY
+    )
+
+    const enhanceAi = async (index) => {
+        const exp = data[index]
+
+        if (!exp.company || !exp.position) {
+            toast.error("Please fill in the Company and Position fields for AI enhancement!");
+            return;
+        }
+
+        if (!exp.description || exp.description.trim().length < 10) {
+            toast.error("Description cannot be empty for AI enhancement!");
+            return;
+        }
+
+        try {
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
+            const prompt = `
+  Act as a Senior Technical Recruiter and ATS Optimization Expert. 
+  Your task is to rewrite the following "Work Experience" description.
+
+  Goal: Maximum ATS score with High Readability.
+
+  Strict Rules:
+  1. Format the output strictly as 3 to 4 concise achievement statements (new lines only).
+  2. Start EVERY line with a strong, high-impact ACTION VERB.
+  3. **Vocabulary Rule:** Use clear, direct, and powerful verbs (e.g., "Led", "Developed", "Engineered", "Optimized") instead of overly complex or flowery ones (e.g., avoid "Orchestrated", "Synergized", "Galvanized") UNLESS the complex word is a specific industry standard term.
+  4. **ATS Priority:** Ensure all technical skills, tools, and metrics from the input are preserved and highlighted.
+  5. Remove all personal pronouns (I, me, my, we).
+  6. Transform basic duties into "Action + Context + Result" statements.
+  7. Eliminate fluff and buzzwords. Keep it direct.
+  8. Do NOT provide introductory or concluding remarks.
+  9. CRITICAL: Do NOT use bullet points, asterisks (*), or dashes (-) at the start. Just plain text lines.
+  10. use easy words as far as possible, but do not dumb down the content. The goal is to be ATS-friendly while still impactful for human readers.
+  11. include numbers and metrics (e.g., “increased sales by 30%”)
+  
+  Role:${exp.position || "Job Role"}
+  Company:${exp.company || "Company"}
+
+  Description:
+  "${exp.description}"
+`;
+
+            const result = await model.generateContent(prompt)
+            const enhancedtxt = result.response.text();
+            updateExperience(index, "description", enhancedtxt)
+
+        } catch (error) {
+            console.error(error)
+            toast.error("AI enhancement failed. Please try again.")
+        }
+
+    }
+
+    // HELPER Convert "YYYY-MM" string -> Date Object (For the Picker)
     const parseDate = (dateStr) => {
         if (!dateStr) return null;
         const [year, month] = dateStr.split('-');
@@ -60,7 +117,7 @@ const Experience = ({ data = [], onChange }) => {
                     Add Experience
                 </button>
             </div>
-            
+
             {data.length === 0 ? (
                 <div className='text-center py-8 text-gray-500'>
                     <Briefcase className='w-12 h-12 mx-auto mb-3 text-gray-300' />
@@ -77,30 +134,30 @@ const Experience = ({ data = [], onChange }) => {
                                     <Trash2Icon className='size-4' />
                                 </button>
                             </div>
-                            
+
                             <div className='grid md:grid-cols-2 gap-3'>
-                                <input 
-                                    value={experience.company || ""} 
-                                    onChange={(e) => updateExperience(index, "company", e.target.value)} 
-                                    type="text" 
-                                    placeholder="Company Name" 
+                                <input
+                                    value={experience.company || ""}
+                                    onChange={(e) => updateExperience(index, "company", e.target.value)}
+                                    type="text"
+                                    placeholder="Company Name"
                                     className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                                 />
-                                <input 
-                                    value={experience.position || ""} 
-                                    onChange={(e) => updateExperience(index, "position", e.target.value)} 
-                                    type="text" 
-                                    placeholder="Job Title" 
+                                <input
+                                    value={experience.position || ""}
+                                    onChange={(e) => updateExperience(index, "position", e.target.value)}
+                                    type="text"
+                                    placeholder="Job Title"
                                     className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                                 />
                             </div>
-                            
+
                             <div className='grid md:grid-cols-2 gap-3'>
                                 {/* START DATE PICKER */}
                                 <div className='relative w-full'>
-                                    <DatePicker 
-                                        selected={parseDate(experience.start_date)} 
-                                        onChange={(date) => updateExperience(index, "start_date", formatDate(date))} 
+                                    <DatePicker
+                                        selected={parseDate(experience.start_date)}
+                                        onChange={(date) => updateExperience(index, "start_date", formatDate(date))}
                                         dateFormat="MMM yyyy"
                                         showMonthYearPicker
                                         placeholderText="Start Date"
@@ -113,9 +170,9 @@ const Experience = ({ data = [], onChange }) => {
 
                                 {/* END DATE PICKER */}
                                 <div className='relative w-full'>
-                                    <DatePicker 
-                                        selected={parseDate(experience.end_date)} 
-                                        onChange={(date) => updateExperience(index, "end_date", formatDate(date))} 
+                                    <DatePicker
+                                        selected={parseDate(experience.end_date)}
+                                        onChange={(date) => updateExperience(index, "end_date", formatDate(date))}
                                         dateFormat="MMM yyyy"
                                         showMonthYearPicker
                                         placeholderText="End Date"
@@ -128,10 +185,10 @@ const Experience = ({ data = [], onChange }) => {
                             </div>
 
                             <label className='flex items-center gap-2 cursor-pointer w-fit'>
-                                <input 
-                                    type="checkbox" 
-                                    checked={experience.is_current || false} 
-                                    onChange={(e) => updateExperience(index, "is_current", e.target.checked)} 
+                                <input
+                                    type="checkbox"
+                                    checked={experience.is_current || false}
+                                    onChange={(e) => updateExperience(index, "is_current", e.target.checked)}
                                     className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                                 />
                                 <span className='text-sm text-gray-700 select-none'>Currently Working here</span>
@@ -140,18 +197,19 @@ const Experience = ({ data = [], onChange }) => {
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
                                     <label className='text-sm font-medium text-gray-700'>Job Description</label>
-                                    <button className='flex items-center gap-1 text-xs  text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100  transition-colors shadow-sm hover:text-white'>
+                                    <button onClick={() => enhanceAi(index)} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
+
                                         <Sparkles className='w-3 h-3 ' />
                                         Enhance with AI
                                     </button>
                                 </div>
-                                <textarea 
-                                    value={experience.description || ''} 
-                                    onChange={(e) => updateExperience(index, 'description', e.target.value)} 
-                                    rows={4} 
-                                    className='w-full text-sm px-3 py-2 rounded-lg resize-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500' 
+                                <textarea
+                                    value={experience.description || ''}
+                                    onChange={(e) => updateExperience(index, 'description', e.target.value)}
+                                    rows={4}
+                                    className='w-full text-sm px-3 py-2 rounded-lg resize-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
                                     placeholder='Describe your responsibilities!'
-                                /> 
+                                />
                             </div>
                         </div>
                     ))}

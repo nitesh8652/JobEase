@@ -1,5 +1,5 @@
 import { Plus, GraduationCapIcon, Trash2Icon, Sparkles, Calendar } from 'lucide-react'
-import React from 'react'
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -53,6 +53,58 @@ function Education({ data, onChange, template }) {
         };
         onChange(updated);
     }
+
+    const genAI = new GoogleGenerativeAI(
+        import.meta.env.VITE_GEMINI_API_KEY
+    );
+
+    const enhanceEducationWithAI = async (index) => {
+        const edu = data[index];
+
+        if (!edu.description || edu.description.trim().length < 8) {
+            alert("Please write some description first");
+            return;
+        }
+
+        try {
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+const prompt = `
+  Act as a Senior Technical Resume Writer. 
+  Your task is to rewrite the "Education Description" to highlight academic excellence, leadership roles, and valuable extra-curricular contributions.
+
+  Strict Rules:
+  1. Provide 2 to 3 concise achievement statements (new lines only).
+  2. Start each line with a strong ACTION VERB (e.g., Achieved, Spearheaded, Coordinated, Maintained).
+  3. **Leadership Focus:** If the input mentions "event head" or leading activities, use words like "Led", "Managed", or "Directed" to emphasize leadership.
+  4. **Simple Vocabulary:** Use clear and powerful words. Avoid overly complex language (e.g., use "Organized" instead of "Orchestrated") unless it's a standard academic/industry term.
+  5. **ATS Priority:** Include all specific honors and technical activities mentioned.
+  6. Remove all personal pronouns (I, me, my, we).
+  7. Do NOT use bullet points, asterisks (*), or dashes (-) at the start.
+  8. Do NOT provide introductory or concluding remarks. Just return the text.
+  9. The output should be ATS-friendly and pass AI resume screening tools.
+  10. Focus on readability and impact for both human recruiters and ATS systems.
+  
+  Degree: ${edu.degree || "Degree"}
+  Institute: ${edu.institute || "Institute"}
+
+  Description:
+  "${edu.description}"
+`;
+
+            const result = await model.generateContent(prompt);
+            const enhancedText = result.response.text();
+
+            // 🔥 Update only THIS education description
+            updateEducation(index, "description", enhancedText);
+
+        } catch (error) {
+            console.error(error);
+            alert("AI enhancement failed");
+        }
+    };
+
+
 
     const parseDate = (dateStr) => {
         if (!dateStr) return null;
@@ -198,7 +250,7 @@ function Education({ data, onChange, template }) {
                                 <div className='space-y-2'>
                                     <div className='flex items-center justify-between'>
                                         <label className='text-sm font-medium text-gray-700'>Description</label>
-                                        <button className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
+                                         <button onClick={() => enhanceEducationWithAI(index)}  className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
                                             <Sparkles className='w-3 h-3 ' />
                                             Enhance with AI
                                         </button>

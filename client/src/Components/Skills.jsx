@@ -1,12 +1,25 @@
 import { PlusIcon, WandSparklesIcon, X } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from "react-toastify";
 
 const Skills = ({ data, onChange }) => {
   const [newSkill, setNewSkill] = useState("");
 
   const addSkill = () => {
     const skill = newSkill.trim();
-    if (!skill || data.includes(skill)) return;
+   
+    if(!skill){
+      toast.error("Please enter a skill before adding!");
+      return;
+    }
+
+    if (data.includes(skill)) {
+      toast.error("This skill is already added!");
+    }
+
+    const removeSkill = (indexRemove) => {
+      onChange(data.filter((_index, index) => index !== indexRemove));
+    }
 
     onChange([...data, skill]);
     setNewSkill("");
@@ -22,6 +35,8 @@ const Skills = ({ data, onChange }) => {
       addSkill();
     }
   };
+
+
 
   return (
     <div className="space-y-4">

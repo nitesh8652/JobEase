@@ -1,7 +1,10 @@
 import { Sparkles } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
 const Summary = ({ data, onChange }) => {
+
+
 
     const tips = [
         'Tip: Keep it concise!',
@@ -17,6 +20,54 @@ const Summary = ({ data, onChange }) => {
     const [currentTipIndex, setCurrentTipIndex] = useState(0)
     const [fade, setFade] = useState(true)
 
+    const genAI = new GoogleGenerativeAI(
+        import.meta.env.VITE_GEMINI_API_KEY
+    );
+
+    const enhanceWithAI = async () => {
+        if (!data || data.trim().length < 10) {
+            alert("Please write some summary first");
+            return;
+        }
+
+        try {
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+            const prompt = `
+Act as a Senior Resume Writer and ATS Optimization Expert. 
+            Your task is to rewrite the following resume in a way to be high-impact, professional, and ATS-friendly.
+
+            Strict Rules:
+            1. Use strong ACTION VERBS (e.g., Developed, Spearheaded, Optimized, Managed).
+            2. Remove all personal pronouns (I, me, my, we).
+            3. Eliminate fluff, buzzwords, and redundant phrases.
+            4. Focus on measurable results and specific skills if implied in the text.
+            5. Correct all grammar and punctuation errors.
+            6. Do NOT use emojis, special characters, or bullet points  .
+            7. Do NOT provide introductory or concluding remarks (e.g., "Here is the rewritten text").
+            8. Output ONLY the enhanced text.
+            9.should be ats friendly and pass the ai resume screening tools.
+            10.should use easy words has far has possible
+            
+
+Summary:
+"${data}"
+        `;
+
+            const result = await model.generateContent(prompt);
+            const enhancedText = result.response.text();
+
+         
+            onChange(enhancedText);
+
+        } catch (error) {
+            console.error(error);
+            alert("AI enhancement failed");
+        }
+    };
+
+
+
     useEffect(() => {
         const interval = setInterval(() => {
             setFade(false) // fade out
@@ -31,6 +82,8 @@ const Summary = ({ data, onChange }) => {
         return () => clearInterval(interval)
     }, [])
 
+
+
     return (
         <div className='space-y-4'>
 
@@ -40,8 +93,7 @@ const Summary = ({ data, onChange }) => {
                     <p className='text-sm text-gray-500'>Add summary for your resume.</p>
                 </div>
 
-                <button className='flex items-center gap-1 text-sm text-blue-800
-                    bg-blue-50 hover:bg-blue-100 transition-all px-2 py-1 rounded-lg shadow-sm'>
+                <button onClick={enhanceWithAI} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
                     <Sparkles className='size-4' />
                     AI Enhance
                 </button>
@@ -58,9 +110,8 @@ const Summary = ({ data, onChange }) => {
                 />
 
                 <p
-                    className={`text-xs text-gray-500 mt-2 text-center transition-opacity duration-300 ${
-                        fade ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    className={`text-xs text-gray-500 mt-2 text-center transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'
+                        }`}
                 >
                     {tips[currentTipIndex]}
                 </p>
