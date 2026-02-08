@@ -11,6 +11,7 @@ import userRoutes from './Routes/UserRoutes.js';
 import { clerkMiddleware } from '@clerk/express'
 import User from './Models/User.js'
 
+
 const app = express();
 await connectDB();
 await connectCloudinary()
@@ -30,6 +31,7 @@ app.get('/', (req, res) => res.send("API Running"))
 app.use('/api/company', CompanyRoutes)
 app.use("/api/jobs", JobRoutes)
 app.use('/api/users', userRoutes)
+
 
 const PORT = process.env.PORT || 5000;
 
