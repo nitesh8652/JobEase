@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
+import Experiencebtt from './Buttons/Experiencebtt';
 
 const Experience = ({ data = [], onChange }) => {
 
@@ -112,10 +113,16 @@ const Experience = ({ data = [], onChange }) => {
                     <p className='text-sm text-gray-500'>Add experience for your resume.</p>
                 </div>
 
-                <button onClick={addExperience} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
+                
+                    <Experiencebtt onClick={addExperience} />
+
+                   
+                   
+              
+                {/* <button onClick={addExperience} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
                     <PlusIcon className='size-4' />
                     Add Experience
-                </button>
+                </button> */}
             </div>
 
             {data.length === 0 ? (

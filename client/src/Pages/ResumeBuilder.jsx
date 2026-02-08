@@ -15,6 +15,7 @@ import Skills from '../Components/Skills';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@clerk/clerk-react';
+import Download from '../Components/Buttons/Downloadbtt.jsx';
 
 const ResumeCreator = () => {
 
@@ -233,9 +234,10 @@ const ResumeCreator = () => {
                         {/* RIGHT COLUMN: PREVIEW */}
                         <div className='lg:col-span-7 max-lg:mt-6 '>
                             <div className='relative w-full '>
-                                <button onClick={downloadResume} className='flex items-center gap-2 px-6 py-3 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors ml-[80%] mb-2 '>
+                                <Download onClick={downloadResume} />
+                                {/* <button onClick={downloadResume} className='flex items-center gap-2 px-6 py-3 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors ml-[80%] mb-2 '>
                                     <DownloadCloudIcon className='size-4' /> Download
-                                </button>
+                                </button> */}
                             </div>
                             <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
                         </div>

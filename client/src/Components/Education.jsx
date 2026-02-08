@@ -2,6 +2,7 @@ import { Plus, GraduationCapIcon, Trash2Icon, Sparkles, Calendar } from 'lucide-
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Educationbttn from './Buttons/Educationbtt';
 
 function Education({ data, onChange, template }) {
 
@@ -129,10 +130,14 @@ const prompt = `
                     <p className='text-sm text-gray-500'>Add your educational background.</p>
                 </div>
 
-                <button onClick={addEducation} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
+                <div>
+                    <Educationbttn onClick={addEducation} />
+                    
+                </div>
+                {/* <button onClick={addEducation} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
                     <Plus className='size-4' />
                     Add Education
-                </button>
+                </button> */}
             </div>
 
             {data.length === 0 ? (

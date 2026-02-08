@@ -1,4 +1,5 @@
 import { Plus, Trash2Icon } from 'lucide-react'
+import Projectbtt from './Buttons/Projectbtt';
 
 const Project = ({ data, onChange }) => {
 
@@ -32,10 +33,12 @@ const Project = ({ data, onChange }) => {
                     <p className='text-sm text-gray-500'>Add your projects.</p>
                 </div>
 
-                <button onClick={addProject} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
+               
+              <Projectbtt  onClick={addProject} />
+                {/* <button onClick={addProject} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
                     <Plus className='size-4' />
                     Add Project
-                </button>
+                </button> */}
             </div>
 
 
