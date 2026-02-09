@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
-const Experiencebttn = ({onClick}) => {
+const Skillbttn = ({onClick}) => {
   return (
     <StyledWrapper>
       <button className="reward-btn" onClick={onClick} type="button">
@@ -23,7 +22,7 @@ const Experiencebttn = ({onClick}) => {
           </svg>
           <span className="coin" />
         </span>
-        <span className="text">Add Project</span>
+        <span className="text">Add Skill</span>
       </button>
     </StyledWrapper>
   );
@@ -31,7 +30,7 @@ const Experiencebttn = ({onClick}) => {
 
 const StyledWrapper = styled.div`
   .reward-btn {
-    width: 160px;
+    width: 110px;
     height: 40px;
     background-color: #101218;
     display: flex;
@@ -91,4 +90,4 @@ const StyledWrapper = styled.div`
     margin-top: 4px;
   }`;
 
-export default Experiencebttn;
+export default Skillbttn;

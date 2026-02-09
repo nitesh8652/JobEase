@@ -1,6 +1,7 @@
 import { PlusIcon, WandSparklesIcon, X } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from "react-toastify";
+import Skillbttn from './Buttons/Skillbtn';
 
 const Skills = ({ data, onChange }) => {
   const [newSkill, setNewSkill] = useState("");
@@ -54,15 +55,22 @@ const Skills = ({ data, onChange }) => {
           onChange={(e) => setNewSkill(e.target.value)}
           onKeyDown={handleKey}
         />
-
-        <button
+<Skillbttn onClick={addSkill} />
+        <div
+          onClick={addSkill}
+          disabled={!newSkill.trim()}
+          
+        >
+          
+        </div>
+        {/* <button
           onClick={addSkill}
           disabled={!newSkill.trim()}
           className='flex items-center gap-1 text-sm   hover:bg-blue-500 bg-blue-900 text-white transition-all px-3 py-2 rounded-md shadow-sm'
         >
           <PlusIcon className="size-4" />
           Add Skill
-        </button>
+        </button> */}
       </div>
 
       {data.length > 0 ? (

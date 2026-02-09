@@ -1,9 +1,14 @@
 import { Sparkles } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import { toast } from 'react-toastify';
+import AIOverlay from './AILoader.jsx';
+import AIsummry from './Buttons/AIsummry.jsx';
+
 
 const Summary = ({ data, onChange }) => {
 
+   const [loading, setLoading] = useState(false);
 
 
     const tips = [
@@ -26,11 +31,12 @@ const Summary = ({ data, onChange }) => {
 
     const enhanceWithAI = async () => {
         if (!data || data.trim().length < 10) {
-            alert("Please write some summary first");
+            toast.error("Please write some summary first");
             return;
         }
 
         try {
+            setLoading(true);
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const prompt = `
@@ -57,12 +63,14 @@ Summary:
             const result = await model.generateContent(prompt);
             const enhancedText = result.response.text();
 
-         
-            onChange(enhancedText);
 
+            onChange(enhancedText);
+            toast.success("Summary enhanced with AI!");
         } catch (error) {
             console.error(error);
-            alert("AI enhancement failed");
+            toast.error("AI enhancement failed please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -85,39 +93,46 @@ Summary:
 
 
     return (
-        <div className='space-y-4'>
 
-            <div className='flex items-center justify-between'>
-                <div>
-                    <h3 className='text-lg font-semibold text-gray-900'>Summary</h3>
-                    <p className='text-sm text-gray-500'>Add summary for your resume.</p>
+        <>
+            {loading && <AIOverlay />}
+
+            <div className='space-y-4'>
+
+                <div className='flex items-center justify-between'>
+                    <div>
+                        <h3 className='text-lg font-semibold text-gray-900'>Summary</h3>
+                        <p className='text-sm text-gray-500'>Add summary for your resume.</p>
+                    </div>
+
+                    <button onClick={enhanceWithAI} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
+                        <Sparkles className='size-4' />
+                        AI Enhance
+                    </button>
                 </div>
 
-                <button onClick={enhanceWithAI} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
-                    <Sparkles className='size-4' />
-                    AI Enhance
-                </button>
-            </div>
-
-            <div className='mt-6'>
-                <textarea
-                    value={data || ""}
-                    onChange={(e) => onChange(e.target.value)}
-                    rows={7}
-                    className='w-full p-3 px-4 mt-2 border text-sm border-gray-300 rounded-lg
+                <div className='mt-6'>
+                    <textarea
+                        value={data || ""}
+                        onChange={(e) => onChange(e.target.value)}
+                        rows={7}
+                        className='w-full p-3 px-4 mt-2 border text-sm border-gray-300 rounded-lg
                         focus:ring focus:ring-blue-500 focus:border-blue-500 outline-none resize-none'
-                    placeholder='Write a summary that highlights your career objectives!'
-                />
+                        placeholder='Write a summary that highlights your career objectives!'
+                    />
+                   <AIsummry onClick={enhanceWithAI} />
 
-                <p
-                    className={`text-xs text-gray-500 mt-2 text-center transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'
-                        }`}
-                >
-                    {tips[currentTipIndex]}
-                </p>
+                    <p
+                        className={`text-xs text-gray-500 mt-2 text-center transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'
+                            }`}
+                    >
+
+                        {tips[currentTipIndex]}
+                    </p>
+                </div>
+
             </div>
-
-        </div>
+        </>
     )
 }
 
