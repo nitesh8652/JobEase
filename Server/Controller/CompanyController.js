@@ -4,6 +4,8 @@ import { v2 as cloudinary } from 'cloudinary'
 import generateToken from "../Utils/generateToken.js";
 import Job from "../Models/Job.js";
 import JobApplication from "../Models/JobApplication.js";
+import crypto from 'crypto'
+import  nodemailer from 'nodemailer'
 
 export const registerCompany = async (req, res) => {
 
@@ -115,19 +117,19 @@ export const postJob = async (req, res) => {
 export const getCompanyJobApplicants = async (req, res) => {
 
     try {
-        const  companyId = req.company._id
+        const companyId = req.company._id
         //find job application 
-        const applications = await JobApplication.find({ companyId }).populate('userId','name image resume')
-        .populate('jobId','title description location salary level category').exec()
+        const applications = await JobApplication.find({ companyId }).populate('userId', 'name image resume')
+            .populate('jobId', 'title description location salary level category').exec()
 
-        return res.json({ success: true, applications } )
+        return res.json({ success: true, applications })
 
     } catch (error) {
         res.json({ success: false, message: error.message })
     }
 
 }
- 
+
 export const getCompanyPostedJobs = async (req, res) => {
 
     try {
@@ -148,25 +150,22 @@ export const getCompanyPostedJobs = async (req, res) => {
 }
 
 export const changeJobApplicationStatus = async (req, res) => {
-  try {
-    const id = req.headers["application-id"];
-    const status = req.headers["application-status"];
+    try {
+        const id = req.headers["application-id"];
+        const status = req.headers["application-status"];
 
-    if (!id || !status) {
-      return res.json({ success: false, message: "Missing id or status" });
+        if (!id || !status) {
+            return res.json({ success: false, message: "Missing id or status" });
+        }
+
+        await JobApplication.findByIdAndUpdate(id, { status });
+
+        return res.json({ success: true, message: "Status updated successfully" });
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
     }
-
-    await JobApplication.findByIdAndUpdate(id, { status });
-
-    return res.json({ success: true, message: "Status updated successfully" });
-
-  } catch (error) {
-    return res.json({ success: false, message: error.message });
-  }
 };
-
-
-
 
 export const changeVisibility = async (req, res) => {
 
@@ -183,8 +182,82 @@ export const changeVisibility = async (req, res) => {
         res.json({ success: false, message: error.message })
 
     }
-
 }
+
+    export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const company = await Company.findOne({ email });
+
+        if (!company) {
+            return res.json({ success: false, message: "Company not found" });
+        }
+
+        // Generate random token
+        const resetToken = crypto.randomBytes(20).toString("hex");
+
+        company.resetToken = resetToken;
+        company.resetTokenExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
+        await company.save();
+
+        // Send email
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: " JobEase. Password Reset ",
+            text: `Your password reset code for job portal is: ${resetToken}`
+        });
+
+        res.json({ success: true, message: "Reset token sent to email" });
+
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
+
+   export const resetPassword = async (req, res) => {
+    const { email, token, newPassword } = req.body;
+
+    try {
+        const company = await Company.findOne({
+            email,
+            resetToken: token,
+            resetTokenExpiry: { $gt: Date.now() }
+        });
+
+        if (!company) {
+            return res.json({ success: false, message: "Invalid or expired token" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(newPassword, salt);
+
+        company.password = hashPassword;
+        company.resetToken = undefined;
+        company.resetTokenExpiry = undefined;
+
+        await company.save();
+
+        res.json({ success: true, message: "Password reset successful" });
+
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
+
+
+
 
 
 

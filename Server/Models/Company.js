@@ -22,6 +22,12 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    resetToken :{
+        type: String,
+    },
+    resetTokenExpiry :{
+        type: Date,
+    }
 })
 
 const Company = mongoose.model('Company',CompanySchema)

@@ -9,7 +9,7 @@ import connectCloudinary from './Config/cloudinary.js';
 import JobRoutes from './Routes/JobRoutes.js';
 import userRoutes from './Routes/UserRoutes.js';
 import { clerkMiddleware } from '@clerk/express'
-import User from './Models/User.js'
+import User from './Models/User.js' 
 
 
 const app = express();
