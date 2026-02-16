@@ -14,11 +14,14 @@ import Project from '../Components/Project';
 import Skills from '../Components/Skills';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import Download from '../Components/Buttons/Downloadbtt.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const ResumeCreator = () => {
 
+    const {isSignedIn} = useUser();
+    const navigate = useNavigate();
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
     const { getToken } = useAuth();
     const { resumeId } = useParams();
@@ -132,8 +135,15 @@ const ResumeCreator = () => {
             toast.error(errorMessage);
         } finally {
             setIsSaving(false);
-        }
+        } 
     };
+ 
+    useEffect(()=>{
+        if(!isSignedIn){
+            toast.error("Please login to create resume!")
+            navigate('/')
+        }
+    },[isSignedIn, navigate])
 
     return (
         <>

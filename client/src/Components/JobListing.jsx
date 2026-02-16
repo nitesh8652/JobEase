@@ -74,11 +74,11 @@ const JobListing = () => {
 
         {/* Sidebar Filters */}
         <div className='lg:w-1/4 pl-[42px]'>
-          <div className="mt-10 relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7]">
-            <div className="bg-white rounded-2xl p-6 h-full w-full">
+          <div className=" relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7]">
+            <div className="bg-white rounded-2xl p-6 h-full w-full mb-[8px]">
 
-              <h4 className="text-xl font-black mb-4 bg-gradient-to-r from-[#00b3c7] to-[#008f9f] bg-clip-text text-transparent">
-                Login For FREE Perks!
+              <h4 className="text-xl font-black mb-4 bg-[#15163A] bg-clip-text text-transparent">
+                Login For Free Perks!
               </h4>
 
               <ul className="space-y-3">
@@ -93,7 +93,7 @@ const JobListing = () => {
                 </li>
 
 
-                <li className="flex items-start group/item cursor-pointer">
+                {/* <li className="flex items-start group/item cursor-pointer">
                   <span className="mt-1 mr-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#e0faff] text-[#00b3c7] group-hover/item:scale-110 transition-transform">
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" /></svg>
                   </span>
@@ -101,7 +101,7 @@ const JobListing = () => {
                     <button type="button" onClick={() => navigate("/resume/yourid")}  className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">ATS Score Checker</button >
                     <span className="text-xs text-gray-600">Get hired faster</span>
                   </div>
-                </li>
+                </li> */}
               </ul>
 
             </div>
@@ -112,8 +112,8 @@ const JobListing = () => {
           {
             issearched && (searchfilter.title !== "" || searchfilter.location !== "") && (
               <>
-                <div className='shadow bg-[#97CADC] p-5 w-full rounded-lg flex flex-col mb-6'>
-                  <h3 className='text-lg font-medium mb-4'>Your Current Filter</h3>
+                <div className='shadow bg-[#97CADC] mt-[28px] p-5 w-full rounded-lg flex flex-col mb-6'>
+                  <h3 className='text-lg font-medium mb-4 '>Your Current Filter</h3>
                   <div className='flex flex-wrap items-center gap-2 '>
                     {searchfilter.title && (
                       <span className='flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full'>

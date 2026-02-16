@@ -40,7 +40,8 @@ const Footer = () => {
                 rel="noreferrer"
                 className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
             >
-                <img src={assets.facebook_icon} alt="Facebook" className="w-5 h-5" />
+               
+                <img src={assets.facebook_icon} alt="Facebook" className="w-5 h-5 invert brightness-0" />
             </a>
             <a 
                 href="https://twitter.com" 
@@ -56,7 +57,7 @@ const Footer = () => {
                 rel="noreferrer"
                 className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
             >
-                <img src={assets.linkedin_icon} alt="LinkedIn" className="w-5 h-5" />
+                <img src={assets.linkedin_icon} alt="LinkedIn" className="w-5 h-5 invert brightness-0" />
             </a>
           </div>
         </div>

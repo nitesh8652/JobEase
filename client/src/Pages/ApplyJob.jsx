@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { assets } from '../assets/assets' 
+import { assets } from '../assets/assets'
 import Loading from '../Components/Loading'
 import Navbar from '../Components/Navbar'
 import kconvert from 'k-convert'
@@ -116,7 +116,8 @@ const ApplyJob = () => {
                                         <img src={assets.location_icon} alt="" />
                                         {jobdata.location}
                                     </span>
-                                    <span className='flex items-center -2' >
+
+                                    <span className='flex items-center gap-2' >
                                         <img src={assets.person_icon} alt="" />
                                         {jobdata.level}
                                     </span>
@@ -143,19 +144,19 @@ const ApplyJob = () => {
 
                         {/* {right sec} */}
                         <div className='w-full lg:w-1/3 mt-8 space-y-5'>
-                            <h2 className='bg-[#e3f8ff] p-3 rounded-2xl'>More Jobs From {jobdata?.companyId?.name}</h2>
+                            <h2 className='bg-[#e3f8ff] p-3 rounded-2xl flex justify-center'>More Jobs From {jobdata?.companyId?.name}</h2>
 
                             {/* FIX: Check if 'jobs' exists before filtering */}
                             {jobs && jobs.length > 0 ? (
-                                jobs.filter(job => 
+                                jobs.filter(job =>
                                     job._id !== jobdata._id &&
                                     job.companyId?._id === jobdata.companyId?._id
                                 )
-                                .filter(job =>{
-                                    //more jobs 
-                                    const appliedJobsId = new Set(userApplications.map(app => app.jobId && app.jobId._id));
-                                    return !appliedJobsId.has(job._id);
-                                })
+                                    .filter(job => {
+                                        //more jobs 
+                                        const appliedJobsId = new Set(userApplications.map(app => app.jobId && app.jobId._id));
+                                        return !appliedJobsId.has(job._id);
+                                    })
                                     .slice(0, 3)
                                     .map((job, index) => <JobCard key={index} job={job} />)
                             ) : null}
