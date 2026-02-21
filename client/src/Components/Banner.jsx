@@ -78,7 +78,7 @@ const Banner = () => {
 
         {/* Trusted By Section */}
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 bg-white py-10 px-4 sm:px-6 lg:px-8 shadow w-[90%] sm:w-[80%] md:w-[70%] rounded-[20px]"
+          className=" hidden lg:block absolute left-1/2 transform -translate-x-1/2 bg-white py-10 px-4 sm:px-6 lg:px-8 shadow w-[90%] sm:w-[80%] md:w-[70%] rounded-[20px]"
           style={{ top: '85%' }}
         >
           <h4 className="text-2xl font-semibold text-gray-800 text-center mb-8">

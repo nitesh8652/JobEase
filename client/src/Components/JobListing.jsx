@@ -69,12 +69,12 @@ const JobListing = () => {
   }, [jobs, selectedCategories, selectedLocations, searchfilter])
 
   return (
-    <div className='container 2xl:px-20 p-5 py-8 mt-40'>
+    <div className='container 2xl:px-20 p-5 py-8 mt-10 lg:mt-40'>
       <div className='lg:flex lg:gap-8 max-lg:space-y-8'>
 
         {/* Sidebar Filters */}
-        <div className='lg:w-1/4 pl-[42px]'>
-          <div className=" relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7]">
+        <div className='lg:w-1/4 lg:pl-[42px]'>
+         <div className="  relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7] ">
             <div className="bg-white rounded-2xl p-6 h-full w-full mb-[8px]">
 
               <h4 className="text-xl font-black mb-4 bg-[#15163A] bg-clip-text text-transparent">

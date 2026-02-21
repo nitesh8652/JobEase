@@ -21,15 +21,10 @@ const Navbar = () => {
         <img
           src={assets.mainlogo}
           onClick={() => navigate("/")}
-          className="h-10 cursor-pointer hidden md:block"
+        className="h-8 md:h-10 cursor-pointer"
           alt="JobEase"
         />
-        {/* <img
-          src={assets.mobileview}
-          onClick={() => navigate("/")}
-          className="h-8 cursor-pointer md:hidden"
-          alt="JobEase"
-        /> */}
+      
       </div>
 
       {/* Desktop Menu */}
