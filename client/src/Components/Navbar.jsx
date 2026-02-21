@@ -15,7 +15,7 @@ const Navbar = () => {
   // const showResumeButton = !location.pathname.includes('/resume');
 
   return (
-    <nav className="bg-white shadow-md px-4 md:px-10 h-16 flex items-center justify-between sticky top-0 z-50">
+    <nav className="bg-white shadow-md px-4 md:px-10 h-16 flex items-center justify-between sticky top-0 z-100">
       {/* Logo */}
       <div className="flex items-center gap-2">
         <img
