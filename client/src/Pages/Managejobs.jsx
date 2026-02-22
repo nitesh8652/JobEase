@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { manageJobsData } from "../assets/assets";
 import moment from "moment";
 import axios from "axios";
 import { useContext } from "react";

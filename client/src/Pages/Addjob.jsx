@@ -189,17 +189,16 @@ const Addjob = () => {
           {/* Experience */}
           <div>
             <label className="block mb-2 font-semibold text-gray-700">
-              Experience Level
+             Recrutement Type
             </label>
             <select
               onChange={(e) => setLevel(e.target.value)}
               value={level}
               className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
             >
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">5+ Years</option>
-              <option value="None">None</option>
+              <option value="Fulltime">Full Time</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Intern">Intern</option>
               <option value="Other">Other</option>
             </select>
 

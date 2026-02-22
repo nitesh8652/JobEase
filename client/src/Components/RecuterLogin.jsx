@@ -4,13 +4,14 @@ import { AppContext } from '../Context/AppContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { EyeClosed, EyeClosedIcon, EyeIcon } from 'lucide-react';
 
 const RecuterLogin = () => {
     const navigate = useNavigate();
 
     const [state, setState] = useState('Login');
     const [resetStep, setResetStep] = useState(1);
-
+    const [showPassword, setShowPassword] = useState(false);
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -185,10 +186,23 @@ const RecuterLogin = () => {
                                 className='outline-none text-sm w-full'
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                                type="password"
+                               type={showPassword ? "text" : "password"}
                                 placeholder='Password'
                                 required
                             />
+                          {showPassword ? (
+  <EyeClosedIcon
+    className="text-gray-400 cursor-pointer"
+    size={18}
+    onClick={() => setShowPassword(false)}
+  />
+) : (
+  <EyeIcon
+    className="text-gray-400 cursor-pointer"
+    size={18}
+    onClick={() => setShowPassword(true)}
+  />
+)}
                         </div>
                     </>
                 )}

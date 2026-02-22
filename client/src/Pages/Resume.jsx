@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { PlusIcon, UploadCloudIcon } from 'lucide-react'
-import { dummyResumeData } from "../assets/assets";
+
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 

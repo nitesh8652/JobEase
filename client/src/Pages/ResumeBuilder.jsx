@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { dummyResumeData } from '../assets/assets';
+
 import {
   ArrowLeftIcon,
   Briefcase,

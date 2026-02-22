@@ -1,6 +1,6 @@
 import Navbar from '../Components/Navbar'
 import { useState, useContext } from 'react'
-import { assets, jobsApplied } from '../assets/assets'
+
 import moment from 'moment'
 import Footer from '../Components/Footer'
 import { useUser, useAuth } from '@clerk/clerk-react'
