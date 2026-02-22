@@ -7,6 +7,7 @@ import { useUser, useAuth } from '@clerk/clerk-react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { AppContext } from '../Context/AppContext'
+import { EyeOffIcon } from 'lucide-react'
 
 
 const Application = () => {
@@ -123,8 +124,22 @@ const Application = () => {
   <h2 className='text-xl font-semibold mb-4'>Jobs Applied</h2>
 
   {/* Scroll Wrapper */}
-  <div className="overflow-x-auto rounded-lg border border-gray-300">
+  {/* Jobs Section */}
 
+{userApplications.length === 0 ? (
+
+  <div className="bg-white border border-gray-200 rounded-xl p-10 text-center">
+    <p className="text-gray-500 text-lg font-medium">
+      <EyeOffIcon className='flex mx-auto' /> No Jobs Applied
+    </p>
+    <p className="text-sm text-gray-400 mt-2">
+      Start applying to jobs and they will appear here.
+    </p>
+  </div>
+
+) : (
+
+  <div className="overflow-x-auto rounded-lg border border-gray-300">
     <table className="min-w-[700px] w-full bg-white border-collapse">
 
       <thead className="bg-gray-50">
@@ -145,7 +160,7 @@ const Application = () => {
               <img
                 className="w-8 h-8 object-contain"
                 src={job.companyId.image}
-                alt={job.company}
+                alt=""
               />
               <span className="whitespace-nowrap">
                 {job.companyId.name}
@@ -185,9 +200,9 @@ const Application = () => {
       </tbody>
 
     </table>
-
   </div>
 
+)}
 </div>
 
       <Footer />

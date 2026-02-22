@@ -128,59 +128,59 @@ const Navbar = () => {
   </button>
 
   {/* Mobile Dropdown Menu */ }
-  {
-    mobileMenu && (
-      <div className="absolute top-16 right-0 w-full bg-white shadow-lg py-4 md:hidden z-40">
-        <div className="flex flex-col items-center gap-4 text-sm font-medium">
-          {user ? (
-            <>
-              <Link
-                to="/application"
-                onClick={() => setMobileMenu(false)}
-                className="hover:text-[#00b3c7] transition"
-              >
-                Applied Jobs
-              </Link>
+  {mobileMenu && (
+  <div className="absolute top-16 right-0 w-full bg-white shadow-lg py-3 md:hidden z-40">
+    <div className="flex items-center justify-center gap-6 px-4 text-sm font-medium flex-wrap">
 
-              <button
-                onClick={() => {
-                  navigate("/resume/yourid");
-                  setMobileMenu(false);
-                }}
-                className="bg-[#00b3c7] text-white px-5 py-2 rounded-lg hover:bg-[#0096a7] transition"
-              >
-                Resume Builder
-              </button>
+      {user ? (
+        <>
+          <Link
+            to="/application"
+            onClick={() => setMobileMenu(false)}
+            className="hover:text-[#00b3c7] transition"
+          >
+            Applied Jobs
+          </Link>
 
-              <UserButton />
-            </>
-          ) : (
-            <>
-              <button
-                onClick={() => {
-                  setShowRecruiterLogin(true);
-                  setMobileMenu(false);
-                }}
-                className="hover:text-[#00b3c7] transition"
-              >
-                Recruiter Login
-              </button>
+          <button
+            onClick={() => {
+              navigate("/resume/yourid");
+              setMobileMenu(false);
+            }}
+            className="bg-[#00b3c7] text-white px-4 py-2 rounded-lg"
+          >
+            Resume Builder
+          </button>
 
-              <button
-                onClick={() => {
-                  openSignIn();
-                  setMobileMenu(false);
-                }}
-                className="bg-[#007bff] text-white px-6 py-2 rounded-full hover:bg-[#006ae0] transition"
-              >
-                Login
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    )
-  }
+          <UserButton />
+        </>
+      ) : (
+        <>
+          <button
+            onClick={() => {
+              setShowRecruiterLogin(true);
+              setMobileMenu(false);
+            }}
+            className="hover:text-[#00b3c7]"
+          >
+            Recruiter
+          </button>
+
+          <button
+            onClick={() => {
+              openSignIn();
+              setMobileMenu(false);
+            }}
+            className="bg-[#007bff] text-white px-4 py-2 rounded-full"
+          >
+            Login
+          </button>
+        </>
+      )}
+
+    </div>
+  </div>
+)}
     </nav >
   );
 };

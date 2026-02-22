@@ -5,6 +5,7 @@ import { AppContext } from '../Context/AppContext';
 import { MenuIcon, NotebookPen, PercentSquareIcon, PlusSquare } from 'lucide-react';
 import Footer from '../Components/Footer';
 
+
 const Dashboard = () => {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -18,11 +19,11 @@ const Dashboard = () => {
         navigate('/');
     };
 
-    useEffect(() => {
-        if (companyData) {
-            navigate('/dashboard/view-application');
-        }
-    }, [companyData, navigate]);
+    // useEffect(() => {
+    //     if (companyData) {
+    //         navigate('/dashboard/view-application');
+    //     }
+    // }, [companyData, navigate]);
 
     return (
         <div className='min-h-screen bg-gray-50 flex flex-col'>
@@ -141,13 +142,13 @@ const Dashboard = () => {
                     </div>
 
                     {/* Outlet renders AddJob, ManageJob, etc. */}
-                    <div className='p-4 sm:p-6 w-full max-w-full overflow-hidden'>
+                    <div className='p-4 sm:p-6 w-full max-w-full overflow-y-auto'>
                         <Outlet />
                     </div>
                 </div>
 
             </div>
-            <Footer/>
+            {/* <Footer/> */}
         </div>
     );
 }

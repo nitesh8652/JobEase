@@ -17,7 +17,6 @@ const Banner = () => {
     })
 
     // 2. logic to toggle "searched" state
-    // If both fields are empty, we are NOT searching (show all jobs)
     if (title.trim() === '' && location.trim() === '') {
         setsearched(false)
     } else {
