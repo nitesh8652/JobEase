@@ -142,7 +142,7 @@ const RecuterLogin = () => {
     };
 
     return (
-     <div className="fixed inset-0 z-[9999] backdrop-blur-sm bg-black/30 flex justify-center items-center">
+        <div className="fixed inset-0 z-[9999] backdrop-blur-sm bg-black/30 flex justify-center items-center">
 
             <form onSubmit={onSubmitHandler} className='relative bg-white p-10 rounded-xl text-slate-500 w-96'>
 
@@ -186,23 +186,23 @@ const RecuterLogin = () => {
                                 className='outline-none text-sm w-full'
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                               type={showPassword ? "text" : "password"}
+                                type={showPassword ? "text" : "password"}
                                 placeholder='Password'
                                 required
                             />
-                          {showPassword ? (
-  <EyeClosedIcon
-    className="text-gray-400 cursor-pointer"
-    size={18}
-    onClick={() => setShowPassword(false)}
-  />
-) : (
-  <EyeIcon
-    className="text-gray-400 cursor-pointer"
-    size={18}
-    onClick={() => setShowPassword(true)}
-  />
-)}
+                            {showPassword ? (
+                                <EyeClosedIcon
+                                    className="text-gray-400 cursor-pointer"
+                                    size={18}
+                                    onClick={() => setShowPassword(false)}
+                                />
+                            ) : (
+                                <EyeIcon
+                                    className="text-gray-400 cursor-pointer"
+                                    size={18}
+                                    onClick={() => setShowPassword(true)}
+                                />
+                            )}
                         </div>
                     </>
                 )}

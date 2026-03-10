@@ -19,11 +19,7 @@ const Dashboard = () => {
         navigate('/');
     };
 
-    // useEffect(() => {
-    //     if (companyData) {
-    //         navigate('/dashboard/view-application');
-    //     }
-    // }, [companyData, navigate]);
+    
 
     return (
         <div className='min-h-screen bg-gray-50 flex flex-col'>

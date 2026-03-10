@@ -105,10 +105,10 @@ Summary:
                         <p className='text-sm text-gray-500'>Add summary for your resume.</p>
                     </div>
 
-                    <button onClick={enhanceWithAI} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
+                    {/* <button onClick={enhanceWithAI} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
                         <Sparkles className='size-4' />
                         AI Enhance
-                    </button>
+                    </button> */}
                 </div>
 
                 <div className='mt-6'>

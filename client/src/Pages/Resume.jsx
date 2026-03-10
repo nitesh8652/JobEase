@@ -10,9 +10,6 @@ const Resume = () => {
   const navigate = useNavigate();
   const { user } = useUser();
 
-  useEffect(() => {
-    setallResumes(dummyResumeData)
-  }, [])
 
   return (
     <>

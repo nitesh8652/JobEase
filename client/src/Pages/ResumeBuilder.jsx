@@ -23,7 +23,6 @@ import Experience from '../Components/Experience';
 import Education from '../Components/Education';
 import Project from '../Components/Project';
 import Skills from '../Components/Skills';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import Download from '../Components/Buttons/Downloadbtt.jsx';
@@ -32,10 +31,7 @@ const ResumeCreator = () => {
 
   const { isSignedIn } = useUser();
   const navigate = useNavigate();
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-  const { getToken } = useAuth();
   const { resumeId } = useParams();
-
   const STORAGE_KEY = `resume_${resumeId}`;
 
   const [resumeData, setResumeData] = useState({
@@ -52,8 +48,7 @@ const ResumeCreator = () => {
   });
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
-  const [removeBackground, setRemoveBackground] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+
 
   const sections = [
     { id: "personal", name: "Personal Info", icon: User },
@@ -180,9 +175,7 @@ const ResumeCreator = () => {
                     onChange={(data) =>
                       setResumeData(prev => ({ ...prev, personal_info: data }))
                     }
-                    removeBackground={removeBackground}
-                    setRemoveBackground={setRemoveBackground}
-                    accentColor={resumeData.accent_color}
+                
                   />
                 )}
 

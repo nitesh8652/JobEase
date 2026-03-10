@@ -1,4 +1,4 @@
-import { PlusIcon, WandSparklesIcon, X } from 'lucide-react';
+import { WandSparklesIcon, X } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import Skillbttn from './Buttons/Skillbtn';
