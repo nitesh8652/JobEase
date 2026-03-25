@@ -5,10 +5,11 @@ const TemplateSelector = ({ selectedTemplate, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const templates = [
-    { id: 'Classic', name: 'Classic', preview: "A classic resume template with a clean and professional layout." },
-    { id: 'modern', name: 'Modern', preview: "A modern resume template with a sleek and modern design." },
-    { id: 'minimal-image', name: 'Minimal-Image', preview: "A minimal resume template that includes a profile image section." },
-    { id: 'minimal', name: 'Minimal', preview: "A minimal resume template with a clean and minimalistic design." },
+    { id: 'ats', name: 'ATS Friendly', preview: "Single-column ATS-optimised layout specially for developers. Clean sections with bullet points ideal for passing automated resume screening." },
+    { id: 'Classic', name: 'Classic', preview: "A classic resume template with a clean and professional layout. Suitable for every role." },
+    { id: 'modern', name: 'Modern', preview: "A modern resume template with a sleek and modern design. Ideal for modern job roles or professionals." },
+    { id: 'minimal-image', name: 'Minimal-Image', preview: "A minimal resume template that includes a profile image section. good for creatives job roles." },
+    { id: 'minimal', name: 'Minimal', preview: "A minimal resume template with a clean and simple ui. ideal fro simple roles." },
   ];
 
   return (
@@ -67,9 +68,16 @@ const TemplateSelector = ({ selectedTemplate, onChange }) => {
 
               {/* Template Info */}
               <div>
-                <h4 className="font-semibold text-gray-800 text-sm sm:text-base">
-                  {template.name}
-                </h4>
+                <div className="flex items-center gap-2">
+                  <h4 className="font-semibold text-gray-800 text-sm sm:text-base">
+                    {template.name}
+                  </h4>
+                  {template.id === 'ats' && (
+                    <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-[4px] tracking-wide">
+                      Recommended!
+                    </span>
+                  )}
+                </div>
 
                 <p className="text-xs mt-2 p-2 bg-blue-100 italic rounded text-gray-700 leading-relaxed">
                   {template.preview}

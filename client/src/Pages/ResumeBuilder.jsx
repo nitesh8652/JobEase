@@ -207,14 +207,17 @@ const ResumeCreator = () => {
                   />
                 )}
 
-                {activeSection.id === 'skills' && (
-                  <Skills
-                    data={resumeData.skills}
-                    onChange={(data) =>
-                      setResumeData(prev => ({ ...prev, skills: data }))
-                    }
-                  />
-                )}
+
+{activeSection.id === 'skills' && (
+  <Skills
+    data={resumeData.skills}
+    onChange={(data) =>
+      setResumeData(prev => ({ ...prev, skills: data }))
+    }
+    template={resumeData.template}
+  />
+)}
+
               </div>
 
             </div>
