@@ -1,8 +1,9 @@
 import { Check, PaletteIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const ColorPicker = ({ selectedColor, onChange }) => {
   const colors = [
+    { name: "Slate", value: "#475569" },
     { name: "Blue", value: "#3B82F6" },
     { name: "Midnight", value: "#1e3a8a" },
     { name: "Indigo", value: "#6366F1" },
@@ -13,18 +14,34 @@ const ColorPicker = ({ selectedColor, onChange }) => {
     { name: "Teal", value: "#0d9488" },
     { name: "Forest", value: "#14532d" },
     { name: "Olive", value: "#65a30d" },
-    { name: "Green", value: "#22C55E" },
+    { name: "Green",value:"#22C55" },
     { name: "Cyan", value: "#0891b2" },
     { name: "Red", value: "#EF4444" },
     { name: "Rose", value: "#e11d48" },
     { name: "Grey", value: "#64748B" },
-    { name: "Slate", value: "#475569" },
   ];
 
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
-    <div className="relative w-full sm:w-auto">
+    <div className="relative w-full sm:w-auto" ref={dropdownRef}>
 
       {/* Toggle Button */}
       <button

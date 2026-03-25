@@ -129,7 +129,7 @@ const Navbar = () => {
 
   {/* Mobile Dropdown Menu */ }
   {mobileMenu && (
-  <div className="absolute top-16 right-0 w-full bg-white shadow-lg py-3 md:hidden z-40">
+  <div className="absolute top-16 right-0 w-full bg-[#fafafa] shadow-lg py-3 md:hidden z-40">
     <div className="flex items-center justify-center gap-6 px-4 text-sm font-medium flex-wrap">
 
       {user ? (

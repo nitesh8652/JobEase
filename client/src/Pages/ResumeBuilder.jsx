@@ -18,13 +18,14 @@ import PersonalInfoForm from '../Components/PersonalInfoForm';
 import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
 import ColorPicker from '../Components/ColorPicker';
+import FontPicker from '../Components/Fontpicker.jsx';   // ← NEW
 import Summary from '../Components/Summary';
 import Experience from '../Components/Experience';
 import Education from '../Components/Education';
 import Project from '../Components/Project';
 import Skills from '../Components/Skills';
 import { toast } from 'react-toastify';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 import Download from '../Components/Buttons/Downloadbtt.jsx';
 
 const ResumeCreator = () => {
@@ -45,24 +46,23 @@ const ResumeCreator = () => {
     skills: [],
     template: "classic",
     accent_color: "#3B82F6",
+    font: "inter",          // ← NEW
   });
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
 
-
   const sections = [
-    { id: "personal", name: "Personal Info", icon: User },
-    { id: "summary", name: "Summary", icon: FileText },
-    { id: "experience", name: "Experience", icon: Briefcase },
-    { id: "education", name: "Education", icon: GraduationCap },
-    { id: "projects", name: "Projects", icon: FolderIcon },
-    { id: "skills", name: "Skills", icon: Sparkles },
+    { id: "personal",    name: "Personal Info", icon: User },
+    { id: "summary",     name: "Summary",       icon: FileText },
+    { id: "experience",  name: "Experience",    icon: Briefcase },
+    { id: "education",   name: "Education",     icon: GraduationCap },
+    { id: "projects",    name: "Projects",      icon: FolderIcon },
+    { id: "skills",      name: "Skills",        icon: Sparkles },
   ];
 
   const activeSection = sections[activeSectionIndex];
 
-
-
+  // Persist to localStorage whenever data changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
   }, [resumeData]);
@@ -112,6 +112,7 @@ const ResumeCreator = () => {
               {/* Navigation + Settings */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 mt-4 border-b pb-4">
 
+                {/* ── Toolbar: Template | Accent | Font ── */}
                 <div className="flex items-center gap-3 flex-wrap">
                   <TemplateSelector
                     selectedTemplate={resumeData.template}
@@ -125,14 +126,20 @@ const ResumeCreator = () => {
                       setResumeData(prev => ({ ...prev, accent_color: color }))
                     }
                   />
+                  {/* ── Font Picker ── */}
+                  <FontPicker
+                    selectedFont={resumeData.font}
+                    onChange={(font) =>
+                      setResumeData(prev => ({ ...prev, font }))
+                    }
+                  />
                 </div>
 
+                {/* Prev / Next */}
                 <div className="flex items-center gap-2">
                   {activeSectionIndex !== 0 && (
                     <button
-                      onClick={() =>
-                        setActiveSectionIndex(prev => prev - 1)
-                      }
+                      onClick={() => setActiveSectionIndex(prev => prev - 1)}
                       className="flex items-center gap-1 text-sm px-3 py-2 rounded-md hover:bg-gray-100 transition"
                     >
                       <ChevronLeft className="w-4 h-4" />
@@ -167,7 +174,6 @@ const ResumeCreator = () => {
                     onChange={(data) =>
                       setResumeData(prev => ({ ...prev, personal_info: data }))
                     }
-                
                   />
                 )}
 
@@ -195,6 +201,7 @@ const ResumeCreator = () => {
                     onChange={(data) =>
                       setResumeData(prev => ({ ...prev, education: data }))
                     }
+                    template={resumeData.template}
                   />
                 )}
 
@@ -207,17 +214,15 @@ const ResumeCreator = () => {
                   />
                 )}
 
-
-{activeSection.id === 'skills' && (
-  <Skills
-    data={resumeData.skills}
-    onChange={(data) =>
-      setResumeData(prev => ({ ...prev, skills: data }))
-    }
-    template={resumeData.template}
-  />
-)}
-
+                {activeSection.id === 'skills' && (
+                  <Skills
+                    data={resumeData.skills}
+                    onChange={(data) =>
+                      setResumeData(prev => ({ ...prev, skills: data }))
+                    }
+                    template={resumeData.template}
+                  />
+                )}
               </div>
 
             </div>
@@ -235,6 +240,7 @@ const ResumeCreator = () => {
                 data={resumeData}
                 template={resumeData.template}
                 accentColor={resumeData.accent_color}
+                font={resumeData.font}          // ← NEW
               />
             </div>
 

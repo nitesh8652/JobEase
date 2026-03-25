@@ -1,11 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ClassicTemplate from './templates/ClassicTemplate'
 import ModernTemplate from './templates/ModernTemplate'
 import MinimalTemplate from './templates/MinimalTemplate'
 import MinimalImageTemplate from './templates/MinimalImageTemplate'
 import ATSTemplate from './templates/AtsTemplate'
+import { FONT_MAP } from './Fontpicker'
 
-const ResumePreview = ({ data, template, accentColor, classes = '' }) => {
+// Inject a Google Fonts <link> into <head> dynamically
+const injectGoogleFont = (href) => {
+  if (!href) return;
+  const id = `gfont-${btoa(href).slice(0, 12)}`;
+  if (!document.getElementById(id)) {
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+};
+
+const ResumePreview = ({ data, template, accentColor, font = 'inter', classes = '' }) => {
+
+  // Resolve font metadata from the key
+  const fontMeta = FONT_MAP.find((f) => f.value === font) || FONT_MAP[0];
+
+  // Inject font into <head> whenever selection changes
+  useEffect(() => {
+    if (fontMeta.googleImport) {
+      injectGoogleFont(fontMeta.googleImport);
+    }
+  }, [fontMeta]);
 
   const renderTemplate = () => {
     switch (template) {
@@ -28,12 +52,20 @@ const ResumePreview = ({ data, template, accentColor, classes = '' }) => {
       <div
         id="resume-preview"
         className={"border border-gray-500 print:shadow-none print:border-none mt-3 " + classes}
+        // Apply selected font to the entire resume
+        style={{ fontFamily: fontMeta.fontFamily }}
       >
         {renderTemplate()}
       </div>
 
       <style>
         {`
+          /* ── Google Font imports for print ── */
+          ${fontMeta.googleImport
+            ? `@import url('${fontMeta.googleImport}');`
+            : ''
+          }
+
           @page {
             size: letter;
             margin: 0;
@@ -54,6 +86,8 @@ const ResumePreview = ({ data, template, accentColor, classes = '' }) => {
               visibility: visible;
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
+              /* Preserve font family during print */
+              font-family: ${fontMeta.fontFamily} !important;
             }
 
             #resume-preview {

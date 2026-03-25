@@ -266,13 +266,7 @@ function Education({ data, onChange, template }) {
 
                                 {template !== "minimal-image" && (
                                     <div className='space-y-2'>
-                                        <div className='flex items-center justify-between'>
-                                            <label className='text-sm font-medium text-gray-700'>Description</label>
-                                            <button onClick={() => enhanceEducationWithAI(index)} className='flex items-center gap-1 text-xs text-purple-800 hover:bg-[#052355] rounded-md py-2 px-3 bg-purple-100 transition-colors shadow-sm hover:text-white'>
-                                                <Sparkles className='w-3 h-3 ' />
-                                                Enhance with AI
-                                            </button>
-                                        </div>
+                                   
                                         <textarea
                                             value={education.description || ''}
                                             onChange={(e) => updateEducation(index, 'description', e.target.value)}

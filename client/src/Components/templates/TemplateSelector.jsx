@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Check, Layout } from 'lucide-react';
 
 const TemplateSelector = ({ selectedTemplate, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const templates = [
     { id: 'ats', name: 'ATS Friendly', preview: "Single-column ATS-optimised layout specially for developers. Clean sections with bullet points ideal for passing automated resume screening." },
-    { id: 'Classic', name: 'Classic', preview: "A classic resume template with a clean and professional layout. Suitable for every role." },
-    { id: 'modern', name: 'Modern', preview: "A modern resume template with a sleek and modern design. Ideal for modern job roles or professionals." },
+    { id: 'classic', name: 'Classic', preview: "A classic resume template with a clean and professional layout. Suitable for every role." },
+    { id: 'modern', name: 'Modern', preview: "A modern resume template with a sleek and modern design. Ideal for modern job roles er-index=0 reference-tracker>or professionals." },
     { id: 'minimal-image', name: 'Minimal-Image', preview: "A minimal resume template that includes a profile image section. good for creatives job roles." },
     { id: 'minimal', name: 'Minimal', preview: "A minimal resume template with a clean and simple ui. ideal fro simple roles." },
   ];
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="relative w-full sm:w-auto">
+    <div className="relative w-full sm:w-auto" ref={dropdownRef}>
 
       {/* Toggle Button */}
       <button
