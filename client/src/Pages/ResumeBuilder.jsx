@@ -61,15 +61,7 @@ const ResumeCreator = () => {
 
   const activeSection = sections[activeSectionIndex];
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setResumeData(JSON.parse(saved));
-    } else {
-      const resume = dummyResumeData.find(r => r._id === resumeId);
-      if (resume) setResumeData(resume);
-    }
-  }, []);
+
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));

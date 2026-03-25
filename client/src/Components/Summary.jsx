@@ -40,7 +40,7 @@ const Summary = ({ data, onChange }) => {
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const prompt = `
-Act as a Senior Resume Writer and ATS Optimization Expert. 
+            Act as a Senior Resume Writer and ATS Optimization Expert. 
             Your task is to rewrite the following resume in a way to be high-impact, professional, and ATS-friendly.
 
             Strict Rules:
