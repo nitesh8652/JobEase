@@ -25,8 +25,7 @@ app.use(cors({
 app.post('/webhooks', express.raw({ type: 'application/json' }), clerkwebhooks)
 
 app.use(express.json());
-app.use(clerkMiddleware());  // MUST be here, after express.json()
-
+app.use(clerkMiddleware());  
 app.get('/', (req, res) => res.send("API Running"))
 app.use('/api/company', CompanyRoutes)
 app.use("/api/jobs", JobRoutes)
