@@ -12,7 +12,7 @@ const Addjob = () => {
   const [title, setTitle] = useState('')
   const [location, setLocation] = useState('bangalore')
   const [category, setCategory] = useState('programming')
-  const [level, setLevel] = useState('beginner')
+  const [level, setLevel] = useState('Fulltime')
   const [salary, setSalary] = useState(0)
 
   const [locationQuery, setLocationQuery] = useState('')
@@ -56,7 +56,7 @@ const Addjob = () => {
         // Reset dropdowns to defaults
         setCategory('programming')
         setLocation('bangalore')
-        setLevel('beginner')
+        setLevel('')
 
         // Clear custom inputs
         setCustomCategory('')

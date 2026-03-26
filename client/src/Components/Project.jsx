@@ -51,27 +51,27 @@ const Project = ({ data, onChange }) => {
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const prompt = `
-  Act as a Senior Technical Resume Writer. 
-  Your task is to rewrite the "Project Description" to highlight technical implementation, specific tools used, and the project's functionality or impact.
+            Act as a Senior Technical Resume Writer. 
+            Your task is to rewrite the "Project Description" to highlight technical implementation, specific tools used, and the project's functionality or impact.
 
-  Strict Rules:
-  1. Provide 2 to 3 concise achievement statements (new lines only).
-  2. Start each line with a strong, clear ACTION VERB (e.g., Developed, Built, Deployed, Engineered, Designed).
-  3. Tech Stack Integration: You MUST mention specific technologies, languages, or libraries found in the input (e.g., React, Node.js, Arduino, Swift, Python) naturally within the sentences.
-  4. Simple Vocabulary: Use direct and professional words. Avoid overly complex or "fluff" words (e.g., use "Improved" instead of "Ameliorated", use "Built" instead of "Fabricated") to ensure readability.
-  5. Problem & Solution: Briefly mention what the project does or the problem it solves (e.g., "to automate data entry," "for real-time tracking," "to reduce server load").
-  6. Remove all personal pronouns (I, me, my, we).
-  7. Do NOT use bullet points, asterisks (*), or dashes (-) at the start of lines.
-  8. Do NOT provide introductory or concluding remarks. Just return the text.
-  9. The output should be ATS-friendly and focused on keywords relevant to the project type.
-  10. include numbers and metrics (e.g., "increased sales by 30%")
+            Strict Rules:
+            1. Provide 2 to 3 concise achievement statements (new lines only).
+            2. Start each line with a strong, clear ACTION VERB (e.g., Developed, Built, Deployed, Engineered, Designed).
+            3. Tech Stack Integration: You MUST mention specific technologies, languages, or libraries found in the input (e.g., React, Node.js, Arduino, Swift, Python) naturally within the sentences.
+            4. Simple Vocabulary: Use direct and professional words. Avoid overly complex or "fluff" words (e.g., use "Improved" instead of "Ameliorated", use "Built" instead of "Fabricated") to ensure readability.
+            5. Problem & Solution: Briefly mention what the project does or the problem it solves (e.g., "to automate data entry," "for real-time tracking," "to reduce server load").
+            6. Remove all personal pronouns (I, me, my, we).
+            7. Do NOT use bullet points, asterisks (*), or dashes (-) at the start of lines.
+            8. Do NOT provide introductory or concluding remarks. Just return the text.
+            9. The output should be ATS-friendly and focused on keywords relevant to the project type.
+            10. include numbers and metrics (e.g., "increased sales by 30%")
 
-  Project Title: ${project.name || "Project Name"}
-  Project Type: ${project.type || "Not specified"}
+            Project Title: ${project.name || "Project Name"}
+            Project Type: ${project.type || "Not specified"}
 
-  Description:
-  "${project.description}"
-`;
+            Description:
+            "${project.description}"
+            `;
             const result = await model.generateContent(prompt);
             const enhancedText = result.response.text();
 
