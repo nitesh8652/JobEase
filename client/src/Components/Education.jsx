@@ -147,10 +147,7 @@ function Education({ data, onChange, template }) {
                         <Educationbttn onClick={addEducation} />
 
                     </div>
-                    {/* <button onClick={addEducation} className='flex items-center gap-1 text-sm text-blue-800 bg-blue-50 hover:bg-blue-100 transition-all px-2 py-2 rounded-md shadow-sm'>
-                    <Plus className='size-4' />
-                    Add Education
-                </button> */}
+                  
                 </div>
 
                 {data.length === 0 ? (
