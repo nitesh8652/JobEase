@@ -138,7 +138,7 @@ const ViewApplication = () => {
                   {/* ACTION BUTTONS (MINIMAL STYLE) */}
                   <td className="p-2 sm:p-3 text-center">
 
-                    {applicant.status === "applied"
+                    {applicant.status === "Applied"
                       ?
 
                       <div className="flex gap-2 justify-center">

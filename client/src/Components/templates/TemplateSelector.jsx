@@ -6,8 +6,8 @@ const TemplateSelector = ({ selectedTemplate, onChange }) => {
   const dropdownRef = useRef(null);
 
   const templates = [
-    { id: 'ats', name: 'ATS Friendly', preview: "Single-column ATS-optimised layout specially for developers. Clean sections with bullet points ideal for passing automated resume screening." },
     { id: 'classic', name: 'Classic', preview: "A classic resume template with a clean and professional layout. Suitable for every role." },
+    { id: 'ats', name: 'ATS Friendly', preview: "Single-column ATS-optimised layout specially for developers. Clean sections with bullet points ideal for passing automated resume screening." },
     { id: 'modern', name: 'Modern', preview: "A modern resume template with a sleek and modern design. Ideal for modern job roles er-index=0 reference-tracker>or professionals." },
     { id: 'minimal-image', name: 'Minimal-Image', preview: "A minimal resume template that includes a profile image section. good for creatives job roles." },
     { id: 'minimal', name: 'Minimal', preview: "A minimal resume template with a clean and simple ui. ideal fro simple roles." },

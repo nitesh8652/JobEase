@@ -182,7 +182,7 @@ const Application = () => {
                     <td className="py-3 px-4">
                       <span
                         className={`
-                  text-sm font-medium rounded-full px-4 py-1.5 whitespace-nowrap
+                  text-sm font-medium rounded-[8px] px-4 py-1.5 whitespace-nowrap
                   ${job.status === 'Pending'
                             ? 'bg-blue-100 text-blue-700'
                             : job.status === 'Rejected'

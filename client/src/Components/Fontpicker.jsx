@@ -10,21 +10,21 @@ const fonts = [
     googleImport: null,
   },
   {
-    value: "roboto-slab",
-    label: "Roboto Slab",
-    displayName: "Roboto Slab",
-    fontFamily: '"Roboto Slab", serif',
-    googleImport:
-      "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap",
-  },
-  {
     value: "georgia",
     label: "Georgia",
     displayName: "Noto Sans Georgian",
     fontFamily: '"Noto Sans Georgian", Georgia, serif',
     googleImport:
-      "https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@100..900&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400..900&display=swap",
   },
+  {
+  value: "poppins",
+  label: "Poppins",
+  displayName: "Poppins",
+  fontFamily: '"Poppins", sans-serif',
+  googleImport: "https://fonts.googleapis.com/css2?family=Poppins:wght@400..900&display=swap",
+},
+
 ];
 
 export const FONT_MAP = fonts;
@@ -46,7 +46,7 @@ const FontPicker = ({ selectedFont, onChange }) => {
         "
       >
         <TypeIcon size={16} />
-        <span className="hidden sm:inline">Font</span>
+        <span className="hidden sm:inline">Typography</span>
       </button>
 
       {isOpen && (
@@ -96,12 +96,7 @@ const FontPicker = ({ selectedFont, onChange }) => {
                   {font.label}
                 </p>
 
-                <p
-                  className="text-xs text-gray-500 mt-0.5"
-                  style={{ fontFamily: font.fontFamily }}
-                >
-                  The quick brown fox jumps
-                </p>
+               
               </div>
             ))}
           </div>

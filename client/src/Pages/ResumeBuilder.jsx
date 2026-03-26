@@ -45,19 +45,19 @@ const ResumeCreator = () => {
     project: [],
     skills: [],
     template: "classic",
-    accent_color: "#3B82F6",
+    accent_color: "#475569",
     font: "inter",          // ← NEW
   });
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
 
   const sections = [
-    { id: "personal",    name: "Personal Info", icon: User },
-    { id: "summary",     name: "Summary",       icon: FileText },
-    { id: "experience",  name: "Experience",    icon: Briefcase },
-    { id: "education",   name: "Education",     icon: GraduationCap },
-    { id: "projects",    name: "Projects",      icon: FolderIcon },
-    { id: "skills",      name: "Skills",        icon: Sparkles },
+    { id: "personal", name: "Personal Info", icon: User },
+    { id: "summary", name: "Summary", icon: FileText },
+    { id: "experience", name: "Experience", icon: Briefcase },
+    { id: "education", name: "Education", icon: GraduationCap },
+    { id: "projects", name: "Projects", icon: FolderIcon },
+    { id: "skills", name: "Skills", icon: Sparkles },
   ];
 
   const activeSection = sections[activeSectionIndex];
@@ -103,7 +103,7 @@ const ResumeCreator = () => {
               {/* Progress Bar */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 rounded-t-xl" />
               <div
-                className="absolute top-0 left-0 h-1 bg-gradient-to-r from-green-500 to-green-600 rounded-t-xl transition-all duration-500"
+                className="absolute top-0 left-0 h-1 bg-gradient-to-r from-blue-300 to-blue-900 rounded-t-xl transition-all duration-500"
                 style={{
                   width: `${(activeSectionIndex / (sections.length - 1)) * 100}%`
                 }}
@@ -135,35 +135,7 @@ const ResumeCreator = () => {
                   />
                 </div>
 
-                {/* Prev / Next */}
-                <div className="flex items-center gap-2">
-                  {activeSectionIndex !== 0 && (
-                    <button
-                      onClick={() => setActiveSectionIndex(prev => prev - 1)}
-                      className="flex items-center gap-1 text-sm px-3 py-2 rounded-md hover:bg-gray-100 transition"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      Prev
-                    </button>
-                  )}
 
-                  <button
-                    onClick={() =>
-                      setActiveSectionIndex(prev =>
-                        Math.min(prev + 1, sections.length - 1)
-                      )
-                    }
-                    className={`flex items-center gap-1 text-sm px-3 py-2 rounded-md hover:bg-gray-100 transition ${
-                      activeSectionIndex === sections.length - 1
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={activeSectionIndex === sections.length - 1}
-                  >
-                    Next
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
 
               {/* Dynamic Form Sections */}
@@ -225,8 +197,42 @@ const ResumeCreator = () => {
                 )}
               </div>
 
+              {/* Prev / Next */}
+              <div className="flex items-center gap-2 justify-end mt-[23px]">
+                {activeSectionIndex !== 0 && (
+                  <button
+                    onClick={() => setActiveSectionIndex(prev => prev - 1)}
+                    className="flex items-center gap-1 text-sm px-3 py-2 rounded-md  hover:text-blue-950 transition bg-[#f7f7f7]"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    Prev
+                  </button>
+                )}
+
+                <button
+                  onClick={() =>
+                    setActiveSectionIndex(prev =>
+                      Math.min(prev + 1, sections.length - 1)
+                    )
+                  }
+                  className={`flex items-center gap-1 text-sm px-3 py-2 rounded-md  bg-blue-950 text-white hover:text-blue-950 transition hover:bg-[#f7f7f7] ${activeSectionIndex === sections.length - 1
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                    }`}
+                  disabled={activeSectionIndex === sections.length - 1}
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
             </div>
+
+
+
           </div>
+
+
 
           {/* RIGHT SIDE - PREVIEW */}
           <div className="lg:col-span-7 w-full mt-6 lg:mt-0">
@@ -245,6 +251,9 @@ const ResumeCreator = () => {
             </div>
 
           </div>
+
+
+
 
         </div>
       </div>

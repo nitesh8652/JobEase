@@ -14,7 +14,6 @@ const ColorPicker = ({ selectedColor, onChange }) => {
     { name: "Teal", value: "#0d9488" },
     { name: "Forest", value: "#14532d" },
     { name: "Olive", value: "#65a30d" },
-    { name: "Green",value:"#22C55" },
     { name: "Cyan", value: "#0891b2" },
     { name: "Red", value: "#EF4444" },
     { name: "Rose", value: "#e11d48" },
