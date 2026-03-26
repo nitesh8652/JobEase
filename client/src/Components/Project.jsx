@@ -1,4 +1,4 @@
-import { Plus, Trash2Icon } from 'lucide-react'
+import { Plus, ProjectorIcon, Trash2Icon } from 'lucide-react'
 import Projectbtt from './Buttons/Projectbtt';
 import AIproj from './Buttons/AIproj';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -97,57 +97,69 @@ const Project = ({ data, onChange }) => {
                 <Projectbtt onClick={addProject} />
             </div>
 
-            <div className='space-y-4 mt-6'>
-                {data.map((project, index) => (
-                    <div key={index} className='border border-gray-300 rounded-lg p-4 space-y-3 bg-white'>
-                        <div className='flex justify-between items-start'>
-                            <h4>Project #{index + 1}</h4>
-                            <button onClick={() => removeProject(index)} className='text-red-500 hover:text-red-700 transition-colors'>
-                                <Trash2Icon className='size-4' />
-                            </button>
+
+            {data.length === 0 ? (
+                <div className='text-center py-8 text-gray-500'>
+                    <ProjectorIcon className='w-12 h-12 mx-auto mb-3 text-gray-300' />
+                    <p>No Projects has been added yet!</p>
+                    <p className='text-sm '>Click 'Add Project' to showcase your skills!</p>
+                </div>
+            ) : (
+                <div className='space-y-4 mt-6'>
+                    {data.map((project, index) => (
+                        <div key={index} className='border border-gray-300 rounded-lg p-4 space-y-3 bg-white'>
+                            <div className='flex justify-between items-start'>
+                                <h4>Project #{index + 1}</h4>
+                                <button onClick={() => removeProject(index)} className='text-red-500 hover:text-red-700 transition-colors'>
+                                    <Trash2Icon className='size-4' />
+                                </button>
+                            </div>
+
+                            <div className='grid gap-3'>
+                                <input
+                                    value={project.name || ""}
+                                    onChange={(e) => updateProject(index, "name", e.target.value)}
+                                    type="text"
+                                    placeholder="Name of the project"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                />
+                                <input
+                                    value={project.type || ""}
+                                    onChange={(e) => updateProject(index, "type", e.target.value)}
+                                    type="text"
+                                    placeholder="Project Type (e.g Website, Application, etc)"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                />
+                                <input
+                                    value={project.link || ""}
+                                    onChange={(e) => updateProject(index, "link", e.target.value)}
+                                    type="text"
+                                    placeholder="Link to the live project or repository"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-blue-700"
+                                />
+                            </div>
+
+                            <div className='space-y-2'>
+                                <textarea
+                                    value={project.description || ''}
+                                    onChange={(e) => updateProject(index, 'description', e.target.value)}
+                                    rows={5}
+                                    className='w-full text-sm px-3 py-2 rounded-lg resize-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                    placeholder='Describe your project...'
+                                />
+                            </div>
+
+
+                            <AIproj onClick={() => enhanceProjectWithAI(index)} />
+
+
                         </div>
+                    ))}
+                </div>
 
-                        <div className='grid gap-3'>
-                            <input
-                                value={project.name || ""}
-                                onChange={(e) => updateProject(index, "name", e.target.value)}
-                                type="text"
-                                placeholder="Name of the project"
-                                className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                            />
-                            <input
-                                value={project.type || ""}
-                                onChange={(e) => updateProject(index, "type", e.target.value)}
-                                type="text"
-                                placeholder="Project Type (e.g Website, Application, etc)"
-                                className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                            />
-                            <input
-                                value={project.link || ""}
-                                onChange={(e) => updateProject(index, "link", e.target.value)}
-                                type="text"
-                                placeholder="Link to the live project or repository"
-                                className="px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-blue-700"
-                            />
-                        </div>
-
-                        <div className='space-y-2'>
-                            <textarea
-                                value={project.description || ''}
-                                onChange={(e) => updateProject(index, 'description', e.target.value)}
-                                rows={5}
-                                className='w-full text-sm px-3 py-2 rounded-lg resize-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                                placeholder='Describe your project...'
-                            />
-                        </div>
+            )}
 
 
-                        <AIproj onClick={() => enhanceProjectWithAI(index)} />
-
-
-                    </div>
-                ))}
-            </div>
         </>
     )
 }

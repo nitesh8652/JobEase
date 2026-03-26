@@ -135,7 +135,7 @@ function Education({ data, onChange, template }) {
 
     return (
         <>
-  {loadingIndex !== null && <AIOverlay />}
+            {loadingIndex !== null && <AIOverlay />}
             <div className='space-y-6'>
                 <div className='flex items-center justify-between'>
                     <div>
@@ -147,7 +147,7 @@ function Education({ data, onChange, template }) {
                         <Educationbttn onClick={addEducation} />
 
                     </div>
-                  
+
                 </div>
 
                 {data.length === 0 ? (
@@ -263,7 +263,7 @@ function Education({ data, onChange, template }) {
 
                                 {template !== "minimal-image" && (
                                     <div className='space-y-2'>
-                                   
+
                                         <textarea
                                             value={education.description || ''}
                                             onChange={(e) => updateEducation(index, 'description', e.target.value)}

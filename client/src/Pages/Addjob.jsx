@@ -197,11 +197,10 @@ const Addjob = () => {
               className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
             >
               <option value="Fulltime">Full Time</option>
-              <option value="Freelance">Freelance</option>
-              <option value="Intern">Intern</option>
+              <option value="Intern">Internship</option>
               <option value="Other">Other</option>
             </select>
-
+            
             {level === 'Other' && (
               <input
                 type="text"
