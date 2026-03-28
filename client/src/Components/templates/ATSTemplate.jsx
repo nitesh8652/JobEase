@@ -103,7 +103,7 @@ const ATSTemplate = ({ data, accentColor }) => {
       {/* ── PROFESSIONAL SUMMARY ────────────────────────────── */}
       {data.professional_summary && (
         <Section title="Summary" accent={accent}>
-          <p className="text-gray-800 text-[12.5px] leading-relaxed">
+          <p className="text-gray-800 text-sm leading-relaxed">
             {data.professional_summary}
           </p>
         </Section>
@@ -144,6 +144,7 @@ const ATSTemplate = ({ data, accentColor }) => {
       {/* ── TECHNICAL SKILLS ──────────────────────────────── */}
 
 {/* ── TECHNICAL SKILLS ──────────────────────────────── */}
+{/* ── TECHNICAL SKILLS ──────────────────────────────── */}
 {data.skills?.length > 0 && (
   <Section title="Technical Skills" accent={accent}>
     {Array.isArray(data.skills) && data.skills[0]?.category ? (
@@ -152,16 +153,16 @@ const ATSTemplate = ({ data, accentColor }) => {
         {data.skills.map((category, i) => (
           <p key={i} className="text-gray-800 text-[12.5px] leading-relaxed">
             <span className="font-semibold">{category.category}:</span>{" "}
-            {category.skills
+            {Array.isArray(category.skills) ? category.skills
               .map(s => s.primary ? `${s.name}` : s.name)
-              .join(", ")}
+              .join(", ") : ""}
           </p>
         ))}
       </div>
     ) : (
       // Simple format
       <p className="text-gray-800 text-[12.5px] leading-relaxed">
-        {data.skills.join(" • ")}
+        {Array.isArray(data.skills) ? data.skills.join(" • ") : ""}
       </p>
     )}
   </Section>
@@ -177,7 +178,7 @@ const ATSTemplate = ({ data, accentColor }) => {
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-bold text-gray-900">{proj.name}</span>
                   {proj.type && (
-                    <span className="text-gray-500 text-[11px] font-medium uppercase tracking-wide">
+                    <span className="text-gray-500 text-[11px] font-medium tracking-wide">
                       | {proj.type}
                     </span>
                   )}

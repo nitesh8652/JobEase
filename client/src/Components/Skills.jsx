@@ -7,12 +7,14 @@ import Skillbttn from './Buttons/Skillbtn';
 const Skills = ({ data = [], onChange, template = "classic" }) => {
   const [newSkill, setNewSkill] = useState("");
   const [collapsedCategories, setCollapsedCategories] = useState({});
+  // FIX: controlled state per category input to avoid uncontrolled→controlled warning
+  const [categoryInputs, setCategoryInputs] = useState({});
 
   // Guard against undefined/null data
   const safeData = Array.isArray(data) ? data : [];
 
   // Check if data is in ATS format (array of objects with categories)
-  const isATSFormat = safeData.length > 0 && safeData[0]?.category;
+  const isATSFormat = safeData.length > 0 && typeof safeData[0] === 'object' && safeData[0]?.category !== undefined;
 
   // Toggle collapse state for a category
   const toggleCollapse = (index) => {
@@ -45,18 +47,26 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
   const addCategory = () => {
     const newCategory = {
       category: "New Category",
-      skills: []
+      skills: []           // FIX: always initialise skills array
     };
     const newIndex = safeData.length;
     onChange([...safeData, newCategory]);
-    // New categories start expanded
     setCollapsedCategories(prev => ({ ...prev, [newIndex]: false }));
+    setCategoryInputs(prev => ({ ...prev, [newIndex]: "" }));
   };
 
   const removeCategory = (index) => {
     onChange(safeData.filter((_, i) => i !== index));
-    // Clean up collapse state and re-index
     setCollapsedCategories(prev => {
+      const updated = {};
+      Object.entries(prev).forEach(([key, val]) => {
+        const k = parseInt(key);
+        if (k < index) updated[k] = val;
+        else if (k > index) updated[k - 1] = val;
+      });
+      return updated;
+    });
+    setCategoryInputs(prev => {
       const updated = {};
       Object.entries(prev).forEach(([key, val]) => {
         const k = parseInt(key);
@@ -73,30 +83,43 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
     onChange(updated);
   };
 
+  // FIX: guard skills being undefined before calling .some()
   const addSkillToCategory = (catIndex, skillName, isPrimary = false) => {
     if (!skillName.trim()) {
       toast.error("Skill name cannot be empty");
       return;
     }
     const updated = [...safeData];
+    // ensure skills array exists
+    if (!updated[catIndex].skills) {
+      updated[catIndex] = { ...updated[catIndex], skills: [] };
+    }
     const skillExists = updated[catIndex].skills.some(s => s.name === skillName);
     if (skillExists) {
       toast.error("Skill already exists in this category");
       return;
     }
-    updated[catIndex].skills.push({ name: skillName, primary: isPrimary });
+    updated[catIndex] = {
+      ...updated[catIndex],
+      skills: [...updated[catIndex].skills, { name: skillName, primary: isPrimary }]
+    };
     onChange(updated);
   };
 
   const removeSkillFromCategory = (catIndex, skillIndex) => {
     const updated = [...safeData];
-    updated[catIndex].skills = updated[catIndex].skills.filter((_, i) => i !== skillIndex);
+    updated[catIndex] = {
+      ...updated[catIndex],
+      skills: (updated[catIndex].skills || []).filter((_, i) => i !== skillIndex)
+    };
     onChange(updated);
   };
 
   const togglePrimary = (catIndex, skillIndex) => {
     const updated = [...safeData];
-    updated[catIndex].skills[skillIndex].primary = !updated[catIndex].skills[skillIndex].primary;
+    const skills = [...(updated[catIndex].skills || [])];
+    skills[skillIndex] = { ...skills[skillIndex], primary: !skills[skillIndex].primary };
+    updated[catIndex] = { ...updated[catIndex], skills };
     onChange(updated);
   };
 
@@ -107,7 +130,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
     }
   };
 
-  // Render ATS format
+  // ── ATS format ────────────────────────────────────────────
   if (isATSFormat || template === "ats") {
     return (
       <div className="space-y-6">
@@ -118,7 +141,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
 
         <button
           onClick={addCategory}
-          className="flex items-center gap-2 text-sm bg-[#1a1f29] text-[#6289ff] px-4 py-2 rounded-lg "
+          className="flex items-center gap-2 text-sm bg-[#1a1f29] text-[#6289ff] px-4 py-2 rounded-lg"
         >
           <Plus className="w-4 h-4" />
           Add Category
@@ -127,6 +150,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
         <div className="space-y-4">
           {safeData.map((category, catIndex) => {
             const isCollapsed = !!collapsedCategories[catIndex];
+            const inputVal = categoryInputs[catIndex] ?? "";
 
             return (
               <div key={catIndex} className="border border-gray-300 rounded-lg p-4 bg-white">
@@ -134,28 +158,19 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
                 <div className="flex justify-between items-center mb-4">
                   <input
                     type="text"
-                    value={category.category}
+                    value={category.category ?? ""}
                     onChange={(e) => updateCategory(catIndex, "category", e.target.value)}
                     className="text-lg font-semibold px-2 py-1 border border-gray-200 rounded"
                     placeholder="Category name"
                   />
-
-                  {/* Right side: Chevron toggle + Delete */}
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleCollapse(catIndex)}
                       className="text-gray-500 hover:text-gray-800 transition-colors"
-                      title={isCollapsed ? "Expand category" : "Collapse category"}
                     >
-                      {isCollapsed
-                        ? <ChevronDown className="w-4 h-4" />
-                        : <ChevronUp className="w-4 h-4" />
-                      }
+                      {isCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
                     </button>
-                    <button
-                      onClick={() => removeCategory(catIndex)}
-                      className="text-red-500 hover:text-red-700"
-                    >
+                    <button onClick={() => removeCategory(catIndex)} className="text-red-500 hover:text-red-700">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -167,16 +182,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
                     <div className="space-y-3">
                       {(category.skills || []).map((skill, skillIndex) => (
                         <div key={skillIndex} className="flex items-center gap-2 bg-gray-50 p-2 rounded">
-                          <input
-                            type="checkbox"
-                            checked={skill.primary}
-                            onChange={() => togglePrimary(catIndex, skillIndex)}
-                            className="w-4 h-4 cursor-pointer hidden"
-                            title="Mark as primary skill"
-                          />
-                          <span className={skill.primary ? "font-bold" : ""}>
-                            {skill.name}
-                          </span>
+                          <span className={skill.primary ? "font-bold" : ""}>{skill.name}</span>
                           <button
                             onClick={() => removeSkillFromCategory(catIndex, skillIndex)}
                             className="ml-auto text-red-500 hover:text-red-700"
@@ -187,32 +193,33 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
                       ))}
                     </div>
 
+                    {/* FIX: use controlled state instead of direct DOM access */}
                     <div className="mt-3 flex gap-2">
                       <input
                         type="text"
-                        id={`skill-input-${catIndex}`}
-                        placeholder="Add skill (comma-separated for multiple skills)"
+                        value={inputVal}
+                        placeholder="Add skill (comma-separated for multiple)"
                         className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded"
+                        onChange={(e) =>
+                          setCategoryInputs(prev => ({ ...prev, [catIndex]: e.target.value }))
+                        }
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
-                            const input = e.target.value.trim();
-                            if (input) {
-                              input.split(",").forEach(s => {
-                                addSkillToCategory(catIndex, s.trim(), false);
-                              });
-                              e.target.value = "";
+                            e.preventDefault();
+                            const val = inputVal.trim();
+                            if (val) {
+                              val.split(",").forEach(s => addSkillToCategory(catIndex, s.trim(), false));
+                              setCategoryInputs(prev => ({ ...prev, [catIndex]: "" }));
                             }
                           }
                         }}
                       />
                       <button
                         onClick={() => {
-                          const input = document.getElementById(`skill-input-${catIndex}`);
-                          if (input.value.trim()) {
-                            input.value.split(",").forEach(s => {
-                              addSkillToCategory(catIndex, s.trim(), false);
-                            });
-                            input.value = "";
+                          const val = inputVal.trim();
+                          if (val) {
+                            val.split(",").forEach(s => addSkillToCategory(catIndex, s.trim(), false));
+                            setCategoryInputs(prev => ({ ...prev, [catIndex]: "" }));
                           }
                         }}
                         className="bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
@@ -237,7 +244,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
     );
   }
 
-  // Render simple format
+  // ── Simple format ─────────────────────────────────────────
   return (
     <div className="space-y-4">
       <div>
@@ -264,11 +271,8 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
               key={index}
               className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
             >
-              <span>{skill}</span>
-              <button
-                onClick={() => removeSimpleSkill(index)}
-                className="text-red-500 hover:text-red-700"
-              >
+              <span>{typeof skill === 'string' ? skill : skill.name}</span>
+              <button onClick={() => removeSimpleSkill(index)} className="text-red-500 hover:text-red-700">
                 <X className="w-3 h-3" />
               </button>
             </div>

@@ -18,7 +18,7 @@ import PersonalInfoForm from '../Components/PersonalInfoForm';
 import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
 import ColorPicker from '../Components/ColorPicker';
-import FontPicker from '../Components/Fontpicker.jsx';   // ← NEW
+import FontPicker from '../Components/Fontpicker.jsx';
 import Summary from '../Components/Summary';
 import Experience from '../Components/Experience';
 import Education from '../Components/Education';
@@ -27,6 +27,24 @@ import Skills from '../Components/Skills';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/clerk-react';
 import Download from '../Components/Buttons/Downloadbtt.jsx';
+
+// ── Helper: detect which format the skills array is in ──────
+const isATSSkills = (skills) =>
+  Array.isArray(skills) && skills.length > 0 &&
+  typeof skills[0] === 'object' && skills[0]?.category !== undefined;
+
+const isSimpleSkills = (skills) =>
+  Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'string';
+
+// Convert simple string[] → ATS [{category, skills:[]}]
+const toATSFormat = (skills) => [{
+  category: 'Technical Skills',
+  skills: skills.map(s => ({ name: s, primary: false }))
+}];
+
+// Convert ATS → simple string[]
+const toSimpleFormat = (skills) =>
+  skills.flatMap(cat => (cat.skills || []).map(s => (typeof s === 'string' ? s : s.name)));
 
 const ResumeCreator = () => {
 
@@ -46,7 +64,7 @@ const ResumeCreator = () => {
     skills: [],
     template: "classic",
     accent_color: "#475569",
-    font: "inter",          // ← NEW
+    font: "inter",
   });
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
@@ -77,6 +95,28 @@ const ResumeCreator = () => {
       navigate('/');
     }
   }, [isSignedIn]);
+
+  // ── FIX: auto-convert skills when switching templates ──────
+  const handleTemplateChange = (newTemplate) => {
+    setResumeData(prev => {
+      let skills = prev.skills ?? [];
+
+      if (newTemplate === 'ats') {
+        // switching TO ats → convert simple strings to categorised format
+        if (isSimpleSkills(skills)) {
+          skills = toATSFormat(skills);
+        }
+        // if already ATS format or empty, leave as-is
+      } else {
+        // switching AWAY from ats → flatten categorised back to strings
+        if (isATSSkills(skills)) {
+          skills = toSimpleFormat(skills);
+        }
+      }
+
+      return { ...prev, template: newTemplate, skills };
+    });
+  };
 
   return (
     <>
@@ -114,11 +154,10 @@ const ResumeCreator = () => {
 
                 {/* ── Toolbar: Template | Accent | Font ── */}
                 <div className="flex items-center gap-3 flex-wrap">
+                  {/* FIX: use handleTemplateChange instead of inline setter */}
                   <TemplateSelector
                     selectedTemplate={resumeData.template}
-                    onChange={(template) =>
-                      setResumeData(prev => ({ ...prev, template }))
-                    }
+                    onChange={handleTemplateChange}
                   />
                   <ColorPicker
                     selectedColor={resumeData.accent_color}
@@ -126,7 +165,6 @@ const ResumeCreator = () => {
                       setResumeData(prev => ({ ...prev, accent_color: color }))
                     }
                   />
-                  {/* ── Font Picker ── */}
                   <FontPicker
                     selectedFont={resumeData.font}
                     onChange={(font) =>
@@ -134,7 +172,6 @@ const ResumeCreator = () => {
                     }
                   />
                 </div>
-
 
               </div>
 
@@ -202,7 +239,7 @@ const ResumeCreator = () => {
                 {activeSectionIndex !== 0 && (
                   <button
                     onClick={() => setActiveSectionIndex(prev => prev - 1)}
-                    className="flex items-center gap-1 text-sm px-3 py-2 rounded-md  hover:text-blue-950 transition bg-[#f7f7f7]"
+                    className="flex items-center gap-1 text-sm px-3 py-2 rounded-md hover:text-blue-950 transition bg-[#f7f7f7]"
                   >
                     <ChevronLeft className="w-4 h-4" />
                     Prev
@@ -215,9 +252,9 @@ const ResumeCreator = () => {
                       Math.min(prev + 1, sections.length - 1)
                     )
                   }
-                  className={`flex items-center gap-1 text-sm px-3 py-2 rounded-md  bg-blue-950 text-white hover:text-blue-950 transition hover:bg-[#f7f7f7] ${activeSectionIndex === sections.length - 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
+                  className={`flex items-center gap-1 text-sm px-3 py-2 rounded-md bg-blue-950 text-white hover:text-blue-950 transition hover:bg-[#f7f7f7] ${activeSectionIndex === sections.length - 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                     }`}
                   disabled={activeSectionIndex === sections.length - 1}
                 >
@@ -227,12 +264,7 @@ const ResumeCreator = () => {
               </div>
 
             </div>
-
-
-
           </div>
-
-
 
           {/* RIGHT SIDE - PREVIEW */}
           <div className="lg:col-span-7 w-full mt-6 lg:mt-0">
@@ -246,14 +278,11 @@ const ResumeCreator = () => {
                 data={resumeData}
                 template={resumeData.template}
                 accentColor={resumeData.accent_color}
-                font={resumeData.font}          // ← NEW
+                font={resumeData.font}
               />
             </div>
 
           </div>
-
-
-
 
         </div>
       </div>
