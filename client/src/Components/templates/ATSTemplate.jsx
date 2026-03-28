@@ -141,9 +141,7 @@ const ATSTemplate = ({ data, accentColor }) => {
         </Section>
       )}
 
-      {/* ── TECHNICAL SKILLS ──────────────────────────────── */}
-
-{/* ── TECHNICAL SKILLS ──────────────────────────────── */}
+  
 {/* ── TECHNICAL SKILLS ──────────────────────────────── */}
 {data.skills?.length > 0 && (
   <Section title="Technical Skills" accent={accent}>
