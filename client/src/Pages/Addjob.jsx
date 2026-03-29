@@ -90,9 +90,6 @@ const Addjob = () => {
     >
 
       <div className="bg-white shadow-lg rounded-2xl p-5 sm:p-8 space-y-8">
-
-
-
         <h2 className="text-2xl font-bold text-gray-800">
           Post a New Job
         </h2>

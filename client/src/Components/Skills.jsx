@@ -7,7 +7,7 @@ import Skillbttn from './Buttons/Skillbtn';
 const Skills = ({ data = [], onChange, template = "classic" }) => {
   const [newSkill, setNewSkill] = useState("");
   const [collapsedCategories, setCollapsedCategories] = useState({});
-  // FIX: controlled state per category input to avoid uncontrolled→controlled warning
+ 
   const [categoryInputs, setCategoryInputs] = useState({});
 
   // Guard against undefined/null data
@@ -47,7 +47,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
   const addCategory = () => {
     const newCategory = {
       category: "New Category",
-      skills: []           // FIX: always initialise skills array
+      skills: []           //  always initialise skills array
     };
     const newIndex = safeData.length;
     onChange([...safeData, newCategory]);
@@ -83,7 +83,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
     onChange(updated);
   };
 
-  // FIX: guard skills being undefined before calling .some()
+  //  guard skills being undefined before calling .some()
   const addSkillToCategory = (catIndex, skillName, isPrimary = false) => {
     if (!skillName.trim()) {
       toast.error("Skill name cannot be empty");
@@ -193,7 +193,7 @@ const Skills = ({ data = [], onChange, template = "classic" }) => {
                       ))}
                     </div>
 
-                    {/* FIX: use controlled state instead of direct DOM access */}
+                    {/* use controlled state instead of direct DOM access */}
                     <div className="mt-3 flex gap-2">
                       <input
                         type="text"

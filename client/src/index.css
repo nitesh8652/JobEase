@@ -125,7 +125,6 @@
   color: #1e293b !important;
 }
 
-/* 3. THE LAYOUT FIX: 2 Rows x 6 Cols */
 /* The container holding the groups */
 .react-datepicker__month {
   margin: 0 !important;
@@ -145,8 +144,7 @@
 /* 4. The Individual Month Buttons */
 .react-datepicker__month-text {
   margin: 4px !important; /* Small gap */
-  width: 3rem !important; /* Fixed width for circles/squares */
-  height: 2.5rem !important;
+  width: 3rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;

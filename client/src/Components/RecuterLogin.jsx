@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { EyeClosed, EyeClosedIcon, EyeIcon } from 'lucide-react';
+import Loading from '../Components/Loading';
+
 
 const RecuterLogin = () => {
     const navigate = useNavigate();
@@ -22,6 +24,7 @@ const RecuterLogin = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const [signupStep, setSignupStep] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { setShowRecruiterLogin, backendUrl, setCompanyToken, setCompanyData } = useContext(AppContext);
 
@@ -36,6 +39,7 @@ const RecuterLogin = () => {
         e.preventDefault();
 
         try {
+            setIsLoading(true);
 
             // ================= LOGIN =================
             if (state === "Login") {
@@ -64,7 +68,7 @@ const RecuterLogin = () => {
                     return;
                 }
 
-                // Step 2: Validation (FIXED: Manual check instead of 'required' attribute)
+                // Step 2: Validation 
                 if (!image) {
                     toast.error("Please upload a company logo");
                     return;
@@ -138,11 +142,15 @@ const RecuterLogin = () => {
 
         } catch (error) {
             toast.error(error.response?.data?.message || error.message);
+        }finally{
+            setIsLoading(false);
         }
     };
 
     return (
         <div className="fixed inset-0 z-[9999] backdrop-blur-sm bg-black/30 flex justify-center items-center">
+            {isLoading && <Loading />
+}
 
             <form onSubmit={onSubmitHandler} className='relative bg-white p-10 rounded-xl text-slate-500 w-96'>
 
@@ -220,7 +228,7 @@ const RecuterLogin = () => {
                                 type="file"
                                 hidden
                                 id='image'
-                                // FIXED: Removed 'required' attribute to fix hidden input blocking submission
+                             
                                 onChange={(e) => setImage(e.target.files[0])}
                             />
                         </label>

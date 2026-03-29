@@ -3,7 +3,7 @@ import ClassicTemplate from './templates/ClassicTemplate'
 import ModernTemplate from './templates/ModernTemplate'
 import MinimalTemplate from './templates/MinimalTemplate'
 import MinimalImageTemplate from './templates/MinimalImageTemplate'
-import ATSTemplate from './templates/AtsTemplate'
+import ATSTemplate from './templates/ATSTemplate'
 import { FONT_MAP } from './Fontpicker'
 
 // Inject a Google Fonts <link> into <head> dynamically
@@ -58,53 +58,55 @@ const ResumePreview = ({ data, template, accentColor, font = 'inter', classes = 
         {renderTemplate()}
       </div>
 
-      <style>
-        {`
-          /* ── Google Font imports for print ── */
-          ${fontMeta.googleImport
-            ? `@import url('${fontMeta.googleImport}');`
-            : ''
-          }
 
-          @page {
-            size: letter;
-            margin: 0;
-          }
+<style>
+  {`
+    /* ── Google Font imports for print ── */
+    ${fontMeta.googleImport
+      ? `@import url('${fontMeta.googleImport}');`
+      : ''
+    }
 
-          @media print {
-            html, body {
-              height: 11in;
-              width: 8.5in;
-              overflow: hidden;
-            }
+    @page {
+      size: letter;
+      margin: 0.5in;
+    }
 
-            body * {
-              visibility: hidden;
-            }
+    @media print {
+      html, body {
+        height: 11in;
+        width: 8.5in;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
 
-            #resume-preview, #resume-preview * {
-              visibility: visible;
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
-              /* Preserve font family during print */
-              font-family: ${fontMeta.fontFamily} !important;
-            }
+      body * {
+        visibility: hidden;
+      }
 
-            #resume-preview {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: auto;
-              margin: 0;
-              padding: 0;
-              box-shadow: none !important;
-              border: none !important;
-              background-clip: padding-box;
-            }
-          }
-        `}
-      </style>
+      #resume-preview, #resume-preview * {
+        visibility: visible;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        font-family: ${fontMeta.fontFamily} !important;
+      }
+
+      #resume-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  `}
+</style>
+
 
     </div>
   )

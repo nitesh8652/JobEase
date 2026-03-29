@@ -3,6 +3,7 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
@@ -17,9 +18,12 @@ export const AppContextProvider = (props) => {
   const [companyData, setCompanyData] = useState(null);
   const [userData, setUserData] = useState(null);
   const [userApplications, setUserApplications] = useState([]); // <- initialized as empty array
+const [isLoadingJobs, setIsLoadingJobs] = useState(false)
+const [isLoadingUser, setIsLoadingUser] = useState(false)
 
   const fetchJobs = async () => {
     try {
+      setIsLoadingJobs(true);
       const { data } = await axios.get(`${backendUrl}/api/jobs`);
       if (data.success) {
         setJobs(data.jobs);
@@ -30,6 +34,8 @@ export const AppContextProvider = (props) => {
     } catch (error) {
       console.error("Error fetching jobs:", error);
       toast.error(error.message || "Error fetching jobs");
+    }finally{
+      setIsLoadingJobs(false);
     }
   };
 
@@ -53,9 +59,9 @@ export const AppContextProvider = (props) => {
 
   const fetchUserData = async () => {
     try {
+      setIsLoadingUser(true);
       const token = await getToken();
       const url = `${backendUrl}/api/users/user`;
-      console.log(userId);
       if (!token) {
         console.log("No Clerk token returned. User may not be signed in.");
         return;
@@ -74,6 +80,8 @@ export const AppContextProvider = (props) => {
       }
     } catch (error) {
       console.log("Error fetching user:", error.message);
+    }finally{
+      setIsLoadingUser(false)
     }
   };
 
@@ -140,6 +148,8 @@ export const AppContextProvider = (props) => {
     setUserApplications,
     fetchUserData,
     fetchUserApplications,
+    isLoadingJobs,
+    isLoadingUser
   };
 
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;

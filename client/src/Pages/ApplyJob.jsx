@@ -12,16 +12,19 @@ import axios from 'axios'
 import { useAuth, useUser } from '@clerk/clerk-react'
 import { AppContext } from "../Context/AppContext"
 
+
 const ApplyJob = () => {
     const { id } = useParams()
     const { getToken } = useAuth()
     const navigate = useNavigate()
     const [jobdata, setjobdata] = useState(null)
     const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
-
-    // Ensure jobs is defaulted to empty array if context is undefined
     const { jobs, backendUrl, userData, userApplications, fetchUserApplications } = useContext(AppContext)
+
+
     const { user } = useUser()
+
+
 
     const fetchjob = async () => {
         try {
@@ -45,7 +48,7 @@ const ApplyJob = () => {
                 navigate('/application')
                 return toast.info("Please upload your resume before applying")
             }
-
+           
             const token = await getToken()
 
             const { data } = await axios.post(
@@ -65,8 +68,10 @@ const ApplyJob = () => {
             }
         } catch (error) {
             toast.error(error.message)
-        }
+        } 
     }
+
+    
 
     const checkIfApplied = () => {
         const hasApplied = userApplications.some(
@@ -94,16 +99,16 @@ const ApplyJob = () => {
 
             <div className='min-h-screen flex flex-col py-8 sm:py-10 container px-4 sm:px-6 2xl:px-20 mx-auto'>
                 <div className='bg-white text-black sm:p-4 rounded-lg w-full'>
-                    
+
                     {/* Hero Section */}
                     <div className='flex flex-col md:flex-row items-center md:items-start justify-between gap-8 p-6 sm:p-10 md:px-14 md:py-16 mb-8 bg-sky-50 border border-[#00B3C7] rounded-xl'>
                         <div className='flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6 w-full md:w-auto'>
                             {/* Company Logo */}
                             <div className='bg-white rounded-lg p-3 sm:p-4 shrink-0 shadow-sm'>
-                                <img 
-                                    className='h-16 w-16 sm:h-20 sm:w-20 object-contain' 
-                                    src={jobdata?.companyId?.image || assets.suitcase_icon} 
-                                    alt="Company Logo" 
+                                <img
+                                    className='h-16 w-16 sm:h-20 sm:w-20 object-contain'
+                                    src={jobdata?.companyId?.image || assets.suitcase_icon}
+                                    alt="Company Logo"
                                 />
                             </div>
 
@@ -135,13 +140,12 @@ const ApplyJob = () => {
 
                         {/* Apply Action */}
                         <div className='flex flex-col items-center md:items-end justify-center w-full md:w-auto shrink-0'>
-                            <button 
-                                onClick={applyHandler} 
-                                className={`w-full md:w-auto px-10 py-3 text-white rounded-lg font-medium transition-colors ${
-                                    isAlreadyApplied ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-                                }`}
+                            <button
+                                onClick={applyHandler}
+                                className={`w-full md:w-auto px-10 py-3 text-white rounded-lg font-medium transition-colors ${isAlreadyApplied ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                                    }`}
                                 disabled={isAlreadyApplied}
-                            > 
+                            >
                                 {isAlreadyApplied ? "Applied" : "Apply Now"}
                             </button>
                             <p className='text-gray-500 text-sm mt-3'>
@@ -152,54 +156,52 @@ const ApplyJob = () => {
 
                     {/* Content Section */}
                     <div className='flex flex-col lg:flex-row gap-10 lg:gap-16 items-start'>
-                        
+
                         {/* Left column: Description */}
                         <div className='w-full lg:w-[65%]'>
                             <h2 className='font-bold text-xl sm:text-2xl mb-4 sm:mb-6 text-gray-900'>
                                 Job Description
                             </h2>
-                            <div 
-                                className='rich-text text-gray-700 leading-relaxed' 
+                            <div
+                                className='rich-text text-gray-700 leading-relaxed'
                                 dangerouslySetInnerHTML={{ __html: jobdata.description }}
                             />
-                            <button 
-                                onClick={applyHandler} 
-                                className={`mt-8 sm:mt-10 px-10 py-3 w-full sm:w-auto text-white rounded-lg font-medium transition-colors ${
-                                    isAlreadyApplied ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-                                }`}
+                            <button
+                                onClick={applyHandler}
+                                className={`mt-8 sm:mt-10 px-10 py-3 w-full sm:w-auto text-white rounded-lg font-medium transition-colors ${isAlreadyApplied ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                                    }`}
                                 disabled={isAlreadyApplied}
-                            > 
-                                {isAlreadyApplied ? "Applied" : "Apply Now"} 
+                            >
+                                {isAlreadyApplied ? "Applied" : "Apply Now"}
                             </button>
                         </div>
 
                         {/* Right column: More Jobs Sidebar */}
-                       {/* Right column: More Jobs Sidebar */}
-{jobs && jobs.some(job =>
-    job._id !== jobdata._id &&
-    job.companyId?._id === jobdata.companyId?._id
-) && (
-    <div className='w-full lg:w-[35%] space-y-5 bg-gray-50/50 p-4 sm:p-6 rounded-xl border border-gray-100'>
-        <h2 className='bg-[#e3f8ff] text-blue-900 font-medium p-3 rounded-lg flex justify-center text-center'>
-            More Jobs From {jobdata?.companyId?.name}
-        </h2>
+                        {jobs && jobs.some(job =>
+                            job._id !== jobdata._id &&
+                            job.companyId?._id === jobdata.companyId?._id
+                        ) && (
+                                <div className='w-full lg:w-[35%] space-y-5 bg-gray-50/50 p-4 sm:p-6 rounded-xl border border-gray-100'>
+                                    <h2 className='bg-[#e3f8ff] text-blue-900 font-medium p-3 rounded-lg flex justify-center text-center'>
+                                        More Jobs From {jobdata?.companyId?.name}
+                                    </h2>
 
-        <div className="flex flex-col gap-4">
-            {jobs
-                .filter(job =>
-                    job._id !== jobdata._id &&
-                    job.companyId?._id === jobdata.companyId?._id
-                )
-                .filter(job => {
-                    const appliedJobsId = new Set(userApplications.map(app => app.jobId && app.jobId._id));
-                    return !appliedJobsId.has(job._id);
-                })
-                .slice(0, 3)
-                .map((job, index) => <JobCard key={index} job={job} />)
-            }
-        </div>
-    </div>
-)}
+                                    <div className="flex flex-col gap-4">
+                                        {jobs
+                                            .filter(job =>
+                                                job._id !== jobdata._id &&
+                                                job.companyId?._id === jobdata.companyId?._id
+                                            )
+                                            .filter(job => {
+                                                const appliedJobsId = new Set(userApplications.map(app => app.jobId && app.jobId._id));
+                                                return !appliedJobsId.has(job._id);
+                                            })
+                                            .slice(0, 3)
+                                            .map((job, index) => <JobCard key={index} job={job} />)
+                                        }
+                                    </div>
+                                </div>
+                            )}
 
 
                     </div>

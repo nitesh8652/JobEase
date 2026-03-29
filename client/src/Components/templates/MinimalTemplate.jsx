@@ -118,7 +118,7 @@ const MinimalTemplate = ({ data, accentColor }) => {
         </section>
       )}
 
-      {/* Skills – FIX */}
+      {/* Skills  */}
       {skillList.length > 0 && (
         <section className="break-inside-avoid">
           <h2 className="text-sm uppercase tracking-widest mb-3 font-medium" style={{ color: accentColor }}>

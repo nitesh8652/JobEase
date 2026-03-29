@@ -100,7 +100,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
             </section>
           )}
 
-          {/* Skills – FIX */}
+          {/* Skills  */}
           {skillList.length > 0 && (
             <section>
               <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">SKILLS</h2>

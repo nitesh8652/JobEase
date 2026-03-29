@@ -237,7 +237,7 @@ function Education({ data, onChange, template }) {
                                         <input
                                             type="checkbox"
                                             checked={education.is_current || false}
-                                            // FIX: Use the new single-update handler
+                                         
                                             onChange={(e) => handleCurrentStudyChange(index, e.target.checked)}
                                             className='rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer'
                                         />
@@ -248,7 +248,7 @@ function Education({ data, onChange, template }) {
                                         <input
                                             type="checkbox"
                                             checked={education.has_backlogs || false}
-                                            // FIX: Use the new single-update handler
+                                           
                                             onChange={(e) => handleBacklogChange(index, e.target.checked)}
                                             className='rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer'
                                         />

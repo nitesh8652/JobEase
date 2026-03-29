@@ -127,7 +127,7 @@ const StyledWrapper = styled.div`
     /* Removed margin-right, handled by parent 'gap' */
   }
 
-  /* TEXT WRAPPER - GRID FIX */
+  
   .txt-wrapper {
     display: grid; /* Allows overlap without absolute positioning issues */
     grid-template-areas: "stack"; /* Both texts go to the same cell */

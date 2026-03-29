@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import {
   ArrowLeftIcon,
@@ -10,6 +11,7 @@ import {
   FileText,
   FolderIcon,
   GraduationCap,
+  Loader2,
   Sparkles,
   User
 } from 'lucide-react';
@@ -19,6 +21,7 @@ import ResumePreview from '../Components/ResumePreview';
 import TemplateSelector from '../Components/templates/TemplateSelector';
 import ColorPicker from '../Components/ColorPicker';
 import FontPicker from '../Components/Fontpicker.jsx';
+import { FONT_MAP } from '../Components/Fontpicker.jsx';
 import Summary from '../Components/Summary';
 import Experience from '../Components/Experience';
 import Education from '../Components/Education';
@@ -52,6 +55,9 @@ const ResumeCreator = () => {
   const navigate = useNavigate();
   const { resumeId } = useParams();
   const STORAGE_KEY = `resume_${resumeId}`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const [resumeData, setResumeData] = useState({
     _id: '',
@@ -85,10 +91,6 @@ const ResumeCreator = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
   }, [resumeData]);
 
-  const downloadResume = () => {
-    window.print();
-  };
-
   useEffect(() => {
     if (!isSignedIn) {
       toast.error("Please login to create resume!");
@@ -96,19 +98,16 @@ const ResumeCreator = () => {
     }
   }, [isSignedIn]);
 
-  // ── FIX: auto-convert skills when switching templates ──────
+  // auto-convert skills when switching templates ──────
   const handleTemplateChange = (newTemplate) => {
     setResumeData(prev => {
       let skills = prev.skills ?? [];
 
       if (newTemplate === 'ats') {
-        // switching TO ats → convert simple strings to categorised format
         if (isSimpleSkills(skills)) {
           skills = toATSFormat(skills);
         }
-        // if already ATS format or empty, leave as-is
       } else {
-        // switching AWAY from ats → flatten categorised back to strings
         if (isATSSkills(skills)) {
           skills = toSimpleFormat(skills);
         }
@@ -116,6 +115,63 @@ const ResumeCreator = () => {
 
       return { ...prev, template: newTemplate, skills };
     });
+  };
+
+  /**
+   * downloadResume — sends the rendered resume HTML to the backend
+   * where Puppeteer generates a PDF with proper @page margins on
+   * every page (including page 2+, which window.print() gets wrong).
+   */
+  const downloadResume = async () => {
+    const element = document.getElementById('resume-preview');
+    if (!element) {
+      toast.error('Resume preview not found');
+      return;
+    }
+
+    setIsDownloading(true);
+    toast.info('Generating PDF, please wait…');
+
+    try {
+      // 1. Grab the rendered resume HTML
+      const html = element.outerHTML;
+
+      // 2. Collect any <style> blocks injected by React (e.g. styled-components)
+      const customCss = Array.from(document.querySelectorAll('style'))
+        .map(s => s.textContent)
+        .join('\n');
+
+      // 3. Resolve the Google Font URL for the currently selected font
+      const fontMeta = FONT_MAP.find(f => f.value === resumeData.font) || FONT_MAP[0];
+      const fontUrl = fontMeta.googleImport || null;
+
+      // 4. POST to the Puppeteer backend endpoint
+      const response = await axios.post(
+        `${backendUrl}/api/pdf/generate`,
+        { html, css: customCss, fontUrl },
+        { responseType: 'blob', timeout: 60000 }
+      );
+
+      // 5. Trigger browser download
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'application/pdf' })
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      const name = resumeData.personal_info?.full_name?.replace(/\s+/g, '_') || 'resume';
+      link.setAttribute('download', `${name}_resume.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast.success('Resume downloaded!');
+    } catch (error) {
+      console.error('PDF download error:', error);
+      toast.error('PDF generation failed. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -152,9 +208,8 @@ const ResumeCreator = () => {
               {/* Navigation + Settings */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 mt-4 border-b pb-4">
 
-                {/* ── Toolbar: Template | Accent | Font ── */}
+                {/* Toolbar: Template | Accent | Font */}
                 <div className="flex items-center gap-3 flex-wrap">
-                  {/* FIX: use handleTemplateChange instead of inline setter */}
                   <TemplateSelector
                     selectedTemplate={resumeData.template}
                     onChange={handleTemplateChange}
@@ -269,8 +324,19 @@ const ResumeCreator = () => {
           {/* RIGHT SIDE - PREVIEW */}
           <div className="lg:col-span-7 w-full mt-6 lg:mt-0">
 
+            {/* Download button — shows spinner while generating */}
             <div className="flex justify-end mb-4">
-              <Download onClick={downloadResume} />
+              {isDownloading ? (
+                <button
+                  disabled
+                  className="flex items-center gap-2 bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed text-sm font-semibold w-full max-w-[720px] justify-center"
+                >
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Generating PDF…
+                </button>
+              ) : (
+                <Download onClick={downloadResume} />
+              )}
             </div>
 
             <div className="bg-gray-100 p-4 sm:p-6 rounded-xl overflow-x-auto">
