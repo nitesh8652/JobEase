@@ -1,10 +1,9 @@
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
-// ── Helper: normalise skills to a flat string[] regardless of format ──
+
 const flattenSkills = (skills) => {
   if (!Array.isArray(skills) || skills.length === 0) return [];
   if (typeof skills[0] === 'string') return skills;
-  // ATS categorised format
   return skills.flatMap(cat =>
     (cat.skills || []).map(s => (typeof s === 'string' ? s : s.name))
   );
@@ -187,7 +186,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
         </section>
       )}
 
-      {/* Skills – FIX: use flattened string list */}
+      {/* Skills */}
       {skillList.length > 0 && (
         <section className="break-inside-avoid">
           <h2 className="text-base font-semibold mb-3" style={{ color: accentColor }}>

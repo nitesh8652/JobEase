@@ -97,8 +97,7 @@ const ATSTemplate = ({ data, accentColor }) => {
         </div>
       </header>
 
-      {/* ── DIVIDER ─────────────────────────────────────────── */}
-      {/* <hr className="border-t-2 mb-3" style={{ borderColor: accent }} /> */}
+     
 
       {/* ── PROFESSIONAL SUMMARY ────────────────────────────── */}
       {data.professional_summary && (

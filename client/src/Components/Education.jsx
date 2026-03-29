@@ -38,7 +38,6 @@ function Education({ data, onChange, template }) {
         onChange(updated)
     }
 
-    // FIX: Special handler for "Currently Studying" to handle both logic steps at once
     const handleCurrentStudyChange = (index, isChecked) => {
         const updated = [...data];
         updated[index] = {
@@ -50,7 +49,6 @@ function Education({ data, onChange, template }) {
         onChange(updated);
     }
 
-    // FIX: Special handler for "Backlogs" to handle both logic steps at once
     const handleBacklogChange = (index, isChecked) => {
         const updated = [...data];
         updated[index] = {
@@ -79,32 +77,32 @@ function Education({ data, onChange, template }) {
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const prompt = `
-  Act as a Senior Technical Resume Writer. 
-  Your task is to rewrite the "Education Description" to highlight academic excellence, leadership roles, and valuable extra-curricular contributions.
+            Act as a Senior Technical Resume Writer. 
+            Your task is to rewrite the "Education Description" to highlight academic excellence, leadership roles, and valuable extra-curricular contributions.
 
-  Strict Rules:
-  1. Provide 2 to 3 concise achievement statements (new lines only).
-  2. Start each line with a strong ACTION VERB (e.g., Achieved, Spearheaded, Coordinated, Maintained).
-  3. **Leadership Focus:** If the input mentions "event head" or leading activities, use words like "Led", "Managed", or "Directed" to emphasize leadership.
-  4. **Simple Vocabulary:** Use clear and powerful words. Avoid overly complex language (e.g., use "Organized" instead of "Orchestrated") unless it's a standard academic/industry term.
-  5. **ATS Priority:** Include all specific honors and technical activities mentioned.
-  6. Remove all personal pronouns (I, me, my, we).
-  7. Do NOT use bullet points, asterisks (*), or dashes (-) at the start.
-  8. Do NOT provide introductory or concluding remarks. Just return the text.
-  9. The output should be ATS-friendly and pass AI resume screening tools.
-  10. Focus on readability and impact for both human recruiters and ATS systems.
+            Strict Rules:
+            1. Provide 2 to 3 concise achievement statements (new lines only).
+            2. Start each line with a strong ACTION VERB (e.g., Achieved, Spearheaded, Coordinated, Maintained).
+            3. **Leadership Focus:** If the input mentions "event head" or leading activities, use words like "Led", "Managed", or "Directed" to emphasize leadership.
+            4. **Simple Vocabulary:** Use clear and powerful words. Avoid overly complex language (e.g., use "Organized" instead of "Orchestrated") unless it's a standard academic/industry term.
+            5. **ATS Priority:** Include all specific honors and technical activities mentioned.
+            6. Remove all personal pronouns (I, me, my, we).
+            7. Do NOT use bullet points, asterisks (*), or dashes (-) at the start.
+            8. Do NOT provide introductory or concluding remarks. Just return the text.
+            9. The output should be ATS-friendly and pass AI resume screening tools.
+            10. Focus on readability and impact for both human recruiters and ATS systems.
   
-  Degree: ${edu.degree || "Degree"}
-  Institute: ${edu.institute || "Institute"}
+            Degree: ${edu.degree || "Degree"}
+            Institute: ${edu.institute || "Institute"}
 
-  Description:
-  "${edu.description}"
-`;
+            Description:
+            "${edu.description}"
+            `;
 
             const result = await model.generateContent(prompt);
             const enhancedText = result.response.text();
 
-            // 🔥 Update only THIS education description
+        
             updateEducation(index, "description", enhancedText);
             toast.success("Education enhanced with AI!");
 
@@ -115,7 +113,6 @@ function Education({ data, onChange, template }) {
             setLoadingIndex(null);
         }
     };
-
 
 
     const parseDate = (dateStr) => {

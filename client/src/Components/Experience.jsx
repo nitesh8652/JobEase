@@ -60,30 +60,30 @@ const Experience = ({ data = [], onChange }) => {
 
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
             const prompt = `
-  Act as a Senior Technical Recruiter and ATS Optimization Expert. 
-  Your task is to rewrite the following "Work Experience" description.
+            Act as a Senior Technical Recruiter and ATS Optimization Expert. 
+            Your task is to rewrite the following "Work Experience" description.
 
-  Goal: Maximum ATS score with High Readability.
+            Goal: Maximum ATS score with High Readability.
 
-  Strict Rules:
-  1. Format the output strictly as 3 to 4 concise achievement statements (new lines only).
-  2. Start EVERY line with a strong, high-impact ACTION VERB.
-  3. **Vocabulary Rule:** Use clear, direct, and powerful verbs (e.g., "Led", "Developed", "Engineered", "Optimized") instead of overly complex or flowery ones (e.g., avoid "Orchestrated", "Synergized", "Galvanized") UNLESS the complex word is a specific industry standard term.
-  4. **ATS Priority:** Ensure all technical skills, tools, and metrics from the input are preserved and highlighted.
-  5. Remove all personal pronouns (I, me, my, we).
-  6. Transform basic duties into "Action + Context + Result" statements.
-  7. Eliminate fluff and buzzwords. Keep it direct.
-  8. Do NOT provide introductory or concluding remarks.
-  9. CRITICAL: Do NOT use bullet points, asterisks (*), or dashes (-) at the start. Just plain text lines.
-  10. use easy words as far as possible, but do not dumb down the content. The goal is to be ATS-friendly while still impactful for human readers.
-  11. include numbers and metrics (e.g., “increased sales by 30%”)
-  
-  Role:${exp.position || "Job Role"}
-  Company:${exp.company || "Company"}
+            Strict Rules:
+            1. Format the output strictly as 3 to 4 concise achievement statements (new lines only).
+            2. Start EVERY line with a strong, high-impact ACTION VERB.
+            3. **Vocabulary Rule:** Use clear, direct, and powerful verbs (e.g., "Led", "Developed", "Engineered", "Optimized") instead of overly complex or flowery ones (e.g., avoid "Orchestrated", "Synergized", "Galvanized") UNLESS the complex word is a specific industry standard term.
+            4. **ATS Priority:** Ensure all technical skills, tools, and metrics from the input are preserved and highlighted.
+            5. Remove all personal pronouns (I, me, my, we).
+            6. Transform basic duties into "Action + Context + Result" statements.
+            7. Eliminate fluff and buzzwords. Keep it direct.
+            8. Do NOT provide introductory or concluding remarks.
+            9. CRITICAL: Do NOT use bullet points, asterisks (*), or dashes (-) at the start. Just plain text lines.
+            10. use easy words as far as possible, but do not dumb down the content. The goal is to be ATS-friendly while still impactful for human readers.
+            11. include numbers and metrics (e.g., “increased sales by 30%”)
+            
+            Role:${exp.position || "Job Role"}
+            Company:${exp.company || "Company"}
 
-  Description:
-  "${exp.description}"
-`;
+            Description:
+            "${exp.description}"
+            `;
 
             const result = await model.generateContent(prompt)
             const enhancedtxt = result.response.text();

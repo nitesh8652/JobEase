@@ -13,7 +13,7 @@ const PersonalInfoForm = ({ data, onChange, accentColor }) => {
         }
     }
 
-    // 📌 Convert file → base64 (for localStorage)
+    //  Convert file → base64 (for localStorage)
     const handleImageUpload = (file) => {
         if (!file) return
 

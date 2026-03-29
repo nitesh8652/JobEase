@@ -18,12 +18,12 @@ const fonts = [
       "https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400..900&display=swap",
   },
   {
-  value: "poppins",
-  label: "Poppins",
-  displayName: "Poppins",
-  fontFamily: '"Poppins", sans-serif',
-  googleImport: "https://fonts.googleapis.com/css2?family=Poppins:wght@400..900&display=swap",
-},
+    value: "poppins",
+    label: "Poppins",
+    displayName: "Poppins",
+    fontFamily: '"Poppins", sans-serif',
+    googleImport: "https://fonts.googleapis.com/css2?family=Poppins:wght@400..900&display=swap",
+  },
 
 ];
 
@@ -72,10 +72,9 @@ const FontPicker = ({ selectedFont, onChange }) => {
                   relative cursor-pointer
                   px-3 py-2.5 rounded-lg
                   border transition-all
-                  ${
-                    selectedFont === font.value
-                      ? "border-emerald-400 bg-emerald-50"
-                      : "border-transparent hover:bg-gray-50 hover:border-gray-200"
+                  ${selectedFont === font.value
+                    ? "border-emerald-400 bg-emerald-50"
+                    : "border-transparent hover:bg-gray-50 hover:border-gray-200"
                   }
                 `}
                 onClick={() => {
@@ -96,7 +95,7 @@ const FontPicker = ({ selectedFont, onChange }) => {
                   {font.label}
                 </p>
 
-               
+
               </div>
             ))}
           </div>

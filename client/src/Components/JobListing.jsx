@@ -38,12 +38,10 @@ const JobListing = () => {
       selectedCategories.length === 0 || selectedCategories.includes(job.category)
 
     // 2. Filter by Location (Checkboxes)
-    // FIX: Changed selectedCategories.length to selectedLocations.length
     const matchesLocation = job =>
       selectedLocations.length === 0 || selectedLocations.includes(job.location)
 
     // 3. Filter by Search Title (Search Bar)
-    // FIX: Now checks if Title OR Category contains the search text
     const matchesTitleSearch = job =>
       searchfilter.title === "" ||
       job.title.toLowerCase().includes(searchfilter.title.toLowerCase()) ||
@@ -55,7 +53,6 @@ const JobListing = () => {
       job.location.toLowerCase().includes(searchfilter.location.toLowerCase())
 
     // Apply all filters
-    // FIX: Added matchesLocation(job) to the chain
     const newFilteredJobs = jobs.slice().reverse().filter(
       job => matchesCategory(job) &&
         matchesLocation(job) &&
@@ -91,23 +88,10 @@ const JobListing = () => {
                     <button className="text-xs text-gray-600 hover:text-gray-600 cursor-pointer text-left">Build resumes instantly</button>
                   </div>
                 </li>
-
-
-                {/* <li className="flex items-start group/item cursor-pointer">
-                  <span className="mt-1 mr-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#e0faff] text-[#00b3c7] group-hover/item:scale-110 transition-transform">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" /></svg>
-                  </span>
-                  <div className="flex flex-col">
-                    <button type="button" onClick={() => navigate("/resume/yourid")}  className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">ATS Score Checker</button >
-                    <span className="text-xs text-gray-600">Get hired faster</span>
-                  </div>
-                </li> */}
               </ul>
 
             </div>
           </div>
-
-
 
           {
             issearched && (searchfilter.title !== "" || searchfilter.location !== "") && (
@@ -189,9 +173,6 @@ const JobListing = () => {
                 ))
               }
             </ul>
-
-
-
           </div>
         </div>
 
