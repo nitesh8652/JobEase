@@ -12,11 +12,12 @@ import Addjob from './Pages/Addjob'
 import Managejobs from './Pages/Managejobs'
 import ViewApplication from './Pages/ViewApplication'
 import ResumeCreator from './Pages/ResumeBuilder'
+import ProtectedRoute from './Components/Protected/ProtectedRoute'
 import 'quill/dist/quill.snow.css'
 import { ToastContainer, toast } from 'react-toastify';
 
-const AppContent = () => { 
-  const { showRecruiterLogin , companyToken } = useContext(AppContext)
+const AppContent = () => {
+  const { showRecruiterLogin, companyToken } = useContext(AppContext)
 
   return (
     <div>
@@ -27,14 +28,18 @@ const AppContent = () => {
         <Route path='/apply-job/:id' element={<ApplyJob />} />
         <Route path='/application' element={<Application />} />
         <Route path='/resume/:id' element={<Resume />} />
-      <Route path='/resume-create/:id' element={<ResumeCreator />} />
-        <Route path='/dashboard' element={<Dashboard />} >
-        {companyToken ? <> 
-        <Route path='add-job' element={<Addjob />} />
+        <Route path='/resume-create/:id' element={<ResumeCreator />} />
+        <Route
+          path='/dashboard'
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        >
+          <Route path='add-job' element={<Addjob />} />
           <Route path='manage-job' element={<Managejobs />} />
           <Route path='view-application' element={<ViewApplication />} />
-         </>:null}
-         
         </Route>
       </Routes>
     </div>

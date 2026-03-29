@@ -53,7 +53,7 @@ const RecuterLogin = () => {
                     setCompanyToken(data.token);
                     localStorage.setItem('companyToken', data.token);
                     setShowRecruiterLogin(false);
-                    navigate('/dashboard');
+                    navigate('/dashboard/add-job');
                 } else {
                     toast.error(data.message);
                 }
