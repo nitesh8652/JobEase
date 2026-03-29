@@ -40,7 +40,7 @@ const Navbar = () => {
 
             {!location.pathname.startsWith("/resume") && (
               <button
-                onClick={() => navigate("/resume/yourid")}
+                onClick={() => navigate(`/resume/${user?.id}`)}
                 className="group relative outline-0 [--sz-btn:35px] [--space:calc(var(--sz-btn)/5.5)]
                 [--gen-sz:calc(var(--space)*2)] [--sz-text:calc(var(--sz-btn)-var(--gen-sz))]
                 h-[var(--sz-btn)] w-fit px-4 border border-solid border-transparent rounded-xl
@@ -144,7 +144,7 @@ const Navbar = () => {
 
                 <button
                   onClick={() => {
-                    navigate("/resume/yourid");
+                    navigate(`/resume/${user?.id}`);
                     setMobileMenu(false);
                   }}
                   className="bg-[#00b3c7] text-white px-4 py-2 rounded-lg"

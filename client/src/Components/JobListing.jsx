@@ -84,7 +84,7 @@ const JobListing = () => {
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" /></svg>
                   </span>
                   <div type="button" className="flex flex-col">
-                    <button onClick={() => navigate("/resume/yourid")} className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">AI Resume Maker</button>
+                    <button onClick={() => navigate(`/resume/${user?.id}`)} className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">AI Resume Maker</button>
                     <button className="text-xs text-gray-600 hover:text-gray-600 cursor-pointer text-left">Build resumes instantly</button>
                   </div>
                 </li>

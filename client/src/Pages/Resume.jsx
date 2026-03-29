@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
-import { PlusIcon, UploadCloudIcon } from 'lucide-react'
+import { UploadCloudIcon } from 'lucide-react'
 
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
@@ -23,7 +23,7 @@ const Resume = () => {
          
           {/* Upload Button */}
           <button 
-            onClick={() => navigate('/resume-create/res123')} 
+            onClick={() => navigate(`/resume-create/${user?.id}`)} 
             className="relative w-full sm:max-w-80 h-56 flex flex-col items-center justify-center rounded-xl gap-3 border transition-all duration-300 cursor-pointer bg-[linear-gradient(135deg,#f5eaff,#e2c6ff)] border-[#9333ea] hover:shadow-lg group"
           >
             <UploadCloudIcon className='size-11 transition-all duration-300 p-2.5 bg-gradient-to-br from-indigo-300 to-indigo-500 text-white rounded-full' />

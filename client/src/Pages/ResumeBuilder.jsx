@@ -31,6 +31,7 @@ import { toast } from 'react-toastify';
 import { useUser } from '@clerk/clerk-react';
 import Download from '../Components/Buttons/Downloadbtt.jsx';
 
+
 // ── Helper: detect which format the skills array is in ──────
 const isATSSkills = (skills) =>
   Array.isArray(skills) && skills.length > 0 &&
@@ -51,7 +52,7 @@ const toSimpleFormat = (skills) =>
 
 const ResumeCreator = () => {
 
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
   const navigate = useNavigate();
   const { resumeId } = useParams();
   const STORAGE_KEY = `resume_${resumeId}`;
@@ -182,7 +183,7 @@ const ResumeCreator = () => {
 
         {/* Back Button */}
         <Link
-          to={'/resume/yourid'}
+          to={`/resume/${user?.id}`}
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition"
         >
           <ArrowLeftIcon className="w-4 h-4" />
