@@ -147,180 +147,170 @@ const RecuterLogin = () => {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-[9999] backdrop-blur-sm bg-black/30 flex justify-center items-center">
-            {isLoading && <Loading />
-}
+  return (
+    <div className="fixed inset-0 z-[9999] backdrop-blur-sm bg-black/30 flex justify-center items-center px-4">
+        
+        {isLoading && <Loading />}
 
-            <form onSubmit={onSubmitHandler} className='relative bg-white p-10 rounded-xl text-slate-500 w-96'>
+        <form
+            onSubmit={onSubmitHandler}
+            className="relative bg-white w-full max-w-md sm:max-w-lg p-6 sm:p-10 rounded-xl text-slate-500"
+        >
 
-                <h1 className='text-center text-2xl text-neutral-700 font-medium'>
-                    Recruiter {state}
-                </h1>
+            <h1 className="text-center text-xl sm:text-2xl text-neutral-700 font-medium">
+                 {state}
+            </h1>
 
-                {/* ================= LOGIN + SIGNUP FIELDS ================= */}
-
-                {(state === "Login" || state === "Sign Up") && !signupStep && (
-                    <>
-                        {state === "Sign Up" && (
-                            <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
-                                <img src={assets.person_icon} alt="" />
-                                <input
-                                    className='outline-none text-sm w-full'
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
-                                    type="text"
-                                    placeholder='Company Name'
-                                    required
-                                />
-                            </div>
-                        )}
-
-                        <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
-                            <img src={assets.email_icon} alt="" />
+            {/* ================= LOGIN + SIGNUP ================= */}
+            {(state === "Login" || state === "Sign Up") && !signupStep && (
+                <>
+                    {state === "Sign Up" && (
+                        <div className="border flex px-3 sm:px-4 py-2 items-center gap-2 rounded-full mt-4 sm:mt-5">
+                            <img src={assets.person_icon} alt="" className="w-4 sm:w-5" />
                             <input
-                                className='outline-none text-sm w-full'
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                type="email"
-                                placeholder='Company Email'
+                                className="outline-none text-sm w-full"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                type="text"
+                                placeholder="Company Name"
                                 required
                             />
                         </div>
+                    )}
 
-                        <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
-                            <img src={assets.lock_icon} alt="" />
-                            <input
-                                className='outline-none text-sm w-full'
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                type={showPassword ? "text" : "password"}
-                                placeholder='Password'
-                                required
-                            />
-                            {showPassword ? (
-                                <EyeClosedIcon
-                                    className="text-gray-400 cursor-pointer"
-                                    size={18}
-                                    onClick={() => setShowPassword(false)}
-                                />
-                            ) : (
-                                <EyeIcon
-                                    className="text-gray-400 cursor-pointer"
-                                    size={18}
-                                    onClick={() => setShowPassword(true)}
-                                />
-                            )}
-                        </div>
-                    </>
-                )}
-
-                {/* SIGNUP STEP 2 */}
-                {state === "Sign Up" && signupStep && (
-                    <div className='mt-5 flex items-center gap-4 my-10'>
-                        <label htmlFor='image'>
-                            <img
-                                className='w-16 rounded-full'
-                                src={image ? URL.createObjectURL(image) : assets.upload_area}
-                                alt=""
-                            />
-                            <input
-                                type="file"
-                                hidden
-                                id='image'
-                             
-                                onChange={(e) => setImage(e.target.files[0])}
-                            />
-                        </label>
-                        <p>Upload Company Logo</p>
-                    </div>
-                )}
-
-                {/* ================= FORGOT PASSWORD ================= */}
-
-                {state === "Forgot Password" && resetStep === 1 && (
-                    <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
-                        <img src={assets.email_icon} alt="" />
+                    <div className="border flex px-3 sm:px-4 py-2 items-center gap-2 rounded-full mt-4 sm:mt-5">
+                        <img src={assets.email_icon} alt="" className="w-4 sm:w-5" />
                         <input
-                            className='outline-none text-sm w-full'
+                            className="outline-none text-sm w-full"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                             type="email"
-                            placeholder='Enter your email'
+                            placeholder="Company Email"
                             required
                         />
                     </div>
-                )}
 
-                {state === "Forgot Password" && resetStep === 2 && (
-                    <>
-                        <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
+                    <div className="border flex px-3 sm:px-4 py-2 items-center gap-2 rounded-full mt-4 sm:mt-5">
+                        <img src={assets.lock_icon} alt="" className="w-4 sm:w-5" />
+                        <input
+                            className="outline-none text-sm w-full"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            required
+                        />
+                        {showPassword ? (
+                            <EyeClosedIcon
+                                className="text-gray-400 cursor-pointer"
+                                size={18}
+                                onClick={() => setShowPassword(false)}
+                            />
+                        ) : (
+                            <EyeIcon
+                                className="text-gray-400 cursor-pointer"
+                                size={18}
+                                onClick={() => setShowPassword(true)}
+                            />
+                        )}
+                    </div>
+                </>
+            )}
+
+            {/* SIGNUP STEP 2 */}
+            {state === "Sign Up" && signupStep && (
+                <div className="mt-5 flex flex-col sm:flex-row items-center gap-4 my-6 sm:my-10 text-center sm:text-left">
+                    <label htmlFor="image">
+                        <img
+                            className="w-14 sm:w-16 rounded-full mx-auto sm:mx-0"
+                            src={image ? URL.createObjectURL(image) : assets.upload_area}
+                            alt=""
+                        />
+                        <input
+                            type="file"
+                            hidden
+                            id="image"
+                            onChange={(e) => setImage(e.target.files[0])}
+                        />
+                    </label>
+                    <p className="text-sm">Upload Company Logo</p>
+                </div>
+            )}
+
+            {/* FORGOT PASSWORD */}
+            {state === "Forgot Password" && resetStep === 1 && (
+                <div className="border flex px-3 sm:px-4 py-2 items-center gap-2 rounded-full mt-5">
+                    <img src={assets.email_icon} alt="" className="w-4 sm:w-5" />
+                    <input
+                        className="outline-none text-sm w-full"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        type="email"
+                        placeholder="Enter your email"
+                        required
+                    />
+                </div>
+            )}
+
+            {state === "Forgot Password" && resetStep === 2 && (
+                <>
+                    {[token, newPassword, confirmPassword].map((_, i) => (
+                        <div key={i} className="border flex px-3 sm:px-4 py-2 items-center gap-2 rounded-full mt-4">
                             <input
-                                className='outline-none text-sm w-full'
-                                value={token}
-                                onChange={e => setToken(e.target.value)}
-                                type="text"
-                                placeholder='Enter token from email'
+                                className="outline-none text-sm w-full"
+                                value={[token, newPassword, confirmPassword][i]}
+                                onChange={(e) =>
+                                    [setToken, setNewPassword, setConfirmPassword][i](e.target.value)
+                                }
+                                type={i === 0 ? "text" : "password"}
+                                placeholder={
+                                    i === 0
+                                        ? "Enter token"
+                                        : i === 1
+                                            ? "New Password"
+                                            : "Confirm Password"
+                                }
                                 required
                             />
                         </div>
+                    ))}
+                </>
+            )}
 
-                        <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
-                            <input
-                                className='outline-none text-sm w-full'
-                                value={newPassword}
-                                onChange={e => setNewPassword(e.target.value)}
-                                type="password"
-                                placeholder='New Password'
-                                required
-                            />
-                        </div>
-
-                        <div className='border flex px-4 py-2 items-center gap-2 rounded-full mt-5'>
-                            <input
-                                className='outline-none text-sm w-full'
-                                value={confirmPassword}
-                                onChange={e => setConfirmPassword(e.target.value)}
-                                type="password"
-                                placeholder='Confirm Password'
-                                required
-                            />
-                        </div>
-                    </>
-                )}
-
-                {/* ================= FORGOT PASSWORD LINK ================= */}
-
-                {state === "Login" && (
-                    <p
-                        onClick={() => {
-                            setState("Forgot Password");
-                            setResetStep(1);
-                        }}
-                        className='cursor-pointer text-sm text-blue-600 my-5 text-center'
-                    >
-                        Forgot Password?
-                    </p>
-                )}
-
-                <button
-                    type='submit'
-                    className='bg-blue-600 w-full text-white py-2 rounded-full mt-6'
+            {/* Forgot link */}
+            {state === "Login" && (
+                <p
+                    onClick={() => {
+                        setState("Forgot Password");
+                        setResetStep(1);
+                    }}
+                    className="cursor-pointer text-xs sm:text-sm text-blue-600 my-4 text-center"
                 >
-                    {state === "Login"
-                        ? "Login"
-                        : state === "Sign Up"
-                            ? signupStep ? "Create Account" : "Next"
-                            : resetStep === 1 ? "Send Token" : "Reset Password"}
-                </button>
+                    Forgot Password?
+                </p>
+            )}
 
-                {/* Toggle */}
+            {/* Button */}
+            <button
+                type="submit"
+                className="bg-blue-600 w-full text-white py-2.5 rounded-full mt-5 text-sm sm:text-base"
+            >
+                {state === "Login"
+                    ? "Login"
+                    : state === "Sign Up"
+                        ? signupStep ? "Create Account" : "Next"
+                        : resetStep === 1 ? "Send Token" : "Reset Password"}
+            </button>
 
+            {/* Toggle */}
+            <p className="mt-4 text-center text-xs sm:text-sm">
                 {state !== "Forgot Password" ? (
-                    <p className='mt-4 text-center'>
-                        {state === "Login" ? "Don't have an account?" : "Already have an account?"}
+                    <>
+                        {state === "Login"
+                            ? "Don't have an account?"
+                            : "Already have an account?"}
                         <span
-                            className='text-blue-600 cursor-pointer ml-1'
+                            className="text-blue-600 cursor-pointer ml-1"
                             onClick={() => {
                                 setState(state === "Login" ? "Sign Up" : "Login");
                                 setSignupStep(false);
@@ -328,27 +318,27 @@ const RecuterLogin = () => {
                         >
                             {state === "Login" ? "Sign Up" : "Login"}
                         </span>
-                    </p>
+                    </>
                 ) : (
-                    <p className='mt-4 text-center'>
-                        <span
-                            className='text-blue-600 cursor-pointer'
-                            onClick={() => setState("Login")}
-                        >
-                            Back to Login
-                        </span>
-                    </p>
+                    <span
+                        className="text-blue-600 cursor-pointer"
+                        onClick={() => setState("Login")}
+                    >
+                        Back to Login
+                    </span>
                 )}
+            </p>
 
-                <img
-                    onClick={() => setShowRecruiterLogin(false)}
-                    className='absolute top-5 right-5 cursor-pointer'
-                    src={assets.cross_icon}
-                    alt=""
-                />
-            </form>
-        </div>
-    );
+            {/* Close Button */}
+            <img
+                onClick={() => setShowRecruiterLogin(false)}
+                className="absolute top-4 right-4 w-4 sm:w-5 cursor-pointer"
+                src={assets.cross_icon}
+                alt=""
+            />
+        </form>
+    </div>
+);  
 };
 
 export default RecuterLogin;
