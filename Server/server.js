@@ -10,6 +10,7 @@ import JobRoutes from './Routes/JobRoutes.js';
 import userRoutes from './Routes/UserRoutes.js';
 import { clerkMiddleware } from '@clerk/express'
 import User from './Models/User.js' 
+import PdfRoutes from './Routes/PdfRoutes.js'
 
 
 const app = express();
@@ -21,15 +22,18 @@ app.use(cors({
   credentials: true
 }))
 
-// Webhook BEFORE everything else
+
 app.post('/webhooks', express.raw({ type: 'application/json' }), clerkwebhooks)
 
+app.use(express.json({limit:'5mb'}))
 app.use(express.json());
 app.use(clerkMiddleware());  
 app.get('/', (req, res) => res.send("API Running"))
 app.use('/api/company', CompanyRoutes)
 app.use("/api/jobs", JobRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/pdf', PdfRoutes)
+
 
 
 const PORT = process.env.PORT || 5000;
