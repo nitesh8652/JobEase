@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AppContext } from "../Context/AppContext";
-import { assets } from "../assets/assets";
+import { AppContext } from "../../Context/AppContext";
+import { assets } from "../../assets/assets";
 import Loading from "../Components/Loading";
 
 const ViewApplication = () => {

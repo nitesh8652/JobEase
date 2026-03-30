@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '../Context/AppContext'
-import { assets, JobCategories, JobLocations } from '../assets/assets'
+import { AppContext } from '../../Context/AppContext'
+import { assets, JobCategories, JobLocations } from '../../assets/assets'
 import JobCard from './JobCard'
 import { Link, useNavigate } from 'react-router-dom'
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";

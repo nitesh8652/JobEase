@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
-import { JobCategories, JobLocations } from '../assets/assets'
+import { JobCategories, JobLocations } from '../../assets/assets'
 import axios from 'axios'
 import { useContext } from 'react'
-import { AppContext } from '../Context/AppContext'
+import { AppContext } from '../../Context/AppContext'
 import { toast } from 'react-toastify'
 
 

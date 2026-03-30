@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Loader from './Buttons/AIloader.jsx';
+import Loader from '../Components/Buttons/AIloader.jsx';
 
 const AIOverlay = () => {
   return (

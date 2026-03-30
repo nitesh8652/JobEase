@@ -1,8 +1,8 @@
 import React from 'react'
-import Navbar from '../Components/Navbar'
-import Banner from '../Components/Banner'
-import JobListing from '../Components/JobListing'
-import Footer from '../Components/Footer'
+import Navbar from '../Features/Components/Navbar'
+import Banner from '../Features/Components/Banner'
+import JobListing from '../Features/Jobs/JobListing'
+import Footer from '../Features/Components/Footer'
 
 const Home = () => {
   return (

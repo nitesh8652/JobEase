@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "../../Context/AppContext";
 
 const Navbar = () => {
   const { openSignIn } = useClerk();

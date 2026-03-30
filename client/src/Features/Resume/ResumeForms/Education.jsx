@@ -2,9 +2,9 @@ import { Plus, GraduationCapIcon, Trash2Icon, Sparkles, Calendar } from 'lucide-
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import Educationbttn from './Buttons/Educationbtt';
-import AIedu from './Buttons/AIedu';
-import AIOverlay from './AILoader.jsx';
+import Educationbttn from '../../Components/Buttons/Educationbtt.jsx';
+import AIedu from '../../Components/Buttons/AIedu.jsx';
+import AIOverlay from '../../Components/AILoader.jsx';
 import { toast } from 'react-toastify';
 import { useState } from "react";
 

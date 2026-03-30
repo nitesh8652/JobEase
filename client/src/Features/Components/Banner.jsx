@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { assets } from '../assets/assets'
-import { AppContext } from '../Context/AppContext'
+import { assets } from '../../assets/assets'
+import { AppContext } from '../../Context/AppContext'
 
 const Banner = () => {
   const [title, setTitle] = useState('')

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import ClassicTemplate from './templates/ClassicTemplate'
-import ModernTemplate from './templates/ModernTemplate'
-import MinimalTemplate from './templates/MinimalTemplate'
-import MinimalImageTemplate from './templates/MinimalImageTemplate'
-import ATSTemplate from './templates/ATSTemplate'
-import { FONT_MAP } from './Fontpicker'
+import ClassicTemplate from '../templates/ClassicTemplate'
+import ModernTemplate from '../templates/ModernTemplate'
+import MinimalTemplate from '../templates/MinimalTemplate'
+import MinimalImageTemplate from '../templates/MinimalImageTemplate'
+import ATSTemplate from '../templates/ATSTemplate'
+import { FONT_MAP } from '../ResumeUtils/Fontpicker'
 
 // Inject a Google Fonts <link> into <head> dynamically
 const injectGoogleFont = (href) => {

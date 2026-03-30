@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../Components/Navbar'
+import Navbar from '../../Components/Navbar.jsx'
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,20 +16,20 @@ import {
   User
 } from 'lucide-react';
 
-import PersonalInfoForm from '../Components/PersonalInfoForm';
-import ResumePreview from '../Components/ResumePreview';
-import TemplateSelector from '../Components/templates/TemplateSelector';
-import ColorPicker from '../Components/ColorPicker';
-import FontPicker from '../Components/Fontpicker.jsx';
-import { FONT_MAP } from '../Components/Fontpicker.jsx';
-import Summary from '../Components/Summary';
-import Experience from '../Components/Experience';
-import Education from '../Components/Education';
-import Project from '../Components/Project';
-import Skills from '../Components/Skills';
+import PersonalInfoForm from '../ResumeForms/PersonalInfoForm.jsx';
+import ResumePreview from '../ResumeEssentials/ResumePreview';
+import TemplateSelector from '../templates/TemplateSelector.jsx';
+import ColorPicker from '../ResumeUtils/ColorPicker.jsx';
+import FontPicker from '../ResumeUtils/Fontpicker.jsx';
+import { FONT_MAP } from '../ResumeUtils/Fontpicker.jsx';
+import Summary from '../ResumeForms/Summary.jsx';
+import Experience from '../ResumeForms/Experience';
+import Education from '../ResumeForms/Education';
+import Project from '../ResumeForms/Project.jsx';
+import Skills from '../ResumeForms/Skills';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/clerk-react';
-import Download from '../Components/Buttons/Downloadbtt.jsx';
+import Download from '../../Components/Buttons/Downloadbtt.jsx';
 
 
 // ── Helper: detect which format the skills array is in ──────
