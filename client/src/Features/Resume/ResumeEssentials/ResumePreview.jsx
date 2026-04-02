@@ -61,22 +61,15 @@ const ResumePreview = ({ data, template, accentColor, font = 'inter', classes = 
 
 <style>
   {`
-    /* ── Google Font imports for print ── */
-    ${fontMeta.googleImport
-      ? `@import url('${fontMeta.googleImport}');`
-      : ''
-    }
+    ${fontMeta.googleImport ? `@import url('${fontMeta.googleImport}');` : ''}
 
     @page {
-      size: letter;
-      margin: 0.5in;
+      size: A4;
+      margin: 0.3in 0;
     }
 
     @media print {
       html, body {
-        height: 11in;
-        width: 8.5in;
-        overflow: hidden;
         margin: 0;
         padding: 0;
       }

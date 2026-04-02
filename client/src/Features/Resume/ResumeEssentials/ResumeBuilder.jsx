@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../Components/Navbar.jsx'
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import {
   ArrowLeftIcon,
@@ -11,7 +10,6 @@ import {
   FileText,
   FolderIcon,
   GraduationCap,
-  Loader2,
   Sparkles,
   User
 } from 'lucide-react';
@@ -21,12 +19,12 @@ import ResumePreview from '../ResumeEssentials/ResumePreview';
 import TemplateSelector from '../templates/TemplateSelector.jsx';
 import ColorPicker from '../ResumeUtils/ColorPicker.jsx';
 import FontPicker from '../ResumeUtils/Fontpicker.jsx';
-import { FONT_MAP } from '../ResumeUtils/Fontpicker.jsx';
 import Summary from '../ResumeForms/Summary.jsx';
 import Experience from '../ResumeForms/Experience';
 import Education from '../ResumeForms/Education';
 import Project from '../ResumeForms/Project.jsx';
 import Skills from '../ResumeForms/Skills';
+import Loading from '../../Components/Loading.jsx';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/clerk-react';
 import Download from '../../Components/Buttons/Downloadbtt.jsx';
@@ -52,14 +50,14 @@ const toSimpleFormat = (skills) =>
 
 const ResumeCreator = () => {
 
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn, user, isLoaded } = useUser();
   const navigate = useNavigate();
   const { resumeId } = useParams();
-  const STORAGE_KEY = `resume_${resumeId}`;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+   const STORAGE_KEY = user?.id ? `resume_${user.id}_${resumeId}` : null;
+  
 
   const [isDownloading, setIsDownloading] = useState(false);
-
   const [resumeData, setResumeData] = useState({
     _id: '',
     title: '',
@@ -87,17 +85,45 @@ const ResumeCreator = () => {
 
   const activeSection = sections[activeSectionIndex];
 
+    useEffect(() => {
+    if (isLoaded && isSignedIn && STORAGE_KEY) {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          setResumeData(JSON.parse(saved));
+        } catch (e) {
+          console.error('Failed to parse saved resume:', e);
+        }
+      }
+    }
+  }, [isLoaded, isSignedIn, STORAGE_KEY]);
+
+    useEffect(() => {
+    if (STORAGE_KEY) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
+    }
+  }, [resumeData, STORAGE_KEY])
+
   // Persist to localStorage whenever data changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
   }, [resumeData]);
 
-  useEffect(() => {
-    if (!isSignedIn) {
+useEffect(() => {
+    if (isLoaded && !isSignedIn) {
       toast.error("Please login to create resume!");
       navigate('/');
     }
-  }, [isSignedIn]);
+  }, [isLoaded, isSignedIn, navigate]);
+
+   if (!isLoaded) {
+    return <Loading />;
+  }
+
+  // Redirect if not signed in (after isLoaded is true)
+  if (!isSignedIn) {
+    return null;
+  }
 
   // auto-convert skills when switching templates ──────
   const handleTemplateChange = (newTemplate) => {
@@ -118,61 +144,8 @@ const ResumeCreator = () => {
     });
   };
 
-  /**
-   * downloadResume — sends the rendered resume HTML to the backend
-   * where Puppeteer generates a PDF with proper @page margins on
-   * every page (including page 2+, which window.print() gets wrong).
-   */
-  const downloadResume = async () => {
-    const element = document.getElementById('resume-preview');
-    if (!element) {
-      toast.error('Resume preview not found');
-      return;
-    }
-
-    setIsDownloading(true);
-    toast.info('Generating PDF, please wait…');
-
-    try {
-      // 1. Grab the rendered resume HTML
-      const html = element.outerHTML;
-
-      // 2. Collect any <style> blocks injected by React (e.g. styled-components)
-      const customCss = Array.from(document.querySelectorAll('style'))
-        .map(s => s.textContent)
-        .join('\n');
-
-      // 3. Resolve the Google Font URL for the currently selected font
-      const fontMeta = FONT_MAP.find(f => f.value === resumeData.font) || FONT_MAP[0];
-      const fontUrl = fontMeta.googleImport || null;
-
-      // 4. POST to the Puppeteer backend endpoint
-      const response = await axios.post(
-        `${backendUrl}/api/pdf/generate`,
-        { html, css: customCss, fontUrl },
-        { responseType: 'blob', timeout: 60000 }
-      );
-
-      // 5. Trigger browser download
-      const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: 'application/pdf' })
-      );
-      const link = document.createElement('a');
-      link.href = url;
-      const name = resumeData.personal_info?.full_name?.replace(/\s+/g, '_') || 'resume';
-      link.setAttribute('download', `${name}_resume.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-
-      toast.success('Resume downloaded!');
-    } catch (error) {
-      console.error('PDF download error:', error);
-      toast.error('PDF generation failed. Please try again.');
-    } finally {
-      setIsDownloading(false);
-    }
+  const downloadResume = () => {
+    window.print();
   };
 
   return (
@@ -325,19 +298,9 @@ const ResumeCreator = () => {
           {/* RIGHT SIDE - PREVIEW */}
           <div className="lg:col-span-7 w-full mt-6 lg:mt-0">
 
-            {/* Download button — shows spinner while generating */}
+            {/* Download button */}
             <div className="flex justify-end mb-4">
-              {isDownloading ? (
-                <button
-                  disabled
-                  className="flex items-center gap-2 bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed text-sm font-semibold w-full max-w-[720px] justify-center"
-                >
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Generating PDF…
-                </button>
-              ) : (
-                <Download onClick={downloadResume} />
-              )}
+              <Download onClick={downloadResume} />
             </div>
 
             <div className="bg-gray-100 p-4 sm:p-6 rounded-xl overflow-x-auto">

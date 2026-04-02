@@ -71,7 +71,7 @@ const JobListing = () => {
 
         {/* Sidebar Filters */}
         <div className='lg:w-1/4 lg:pl-[42px]'>
-         <div className="  relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7] ">
+          <div className="  relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7] ">
             <div className="bg-white rounded-2xl p-6 h-full w-full mb-[8px]">
 
               <h4 className="text-xl font-black mb-4 bg-[#15163A] bg-clip-text text-transparent">
@@ -96,11 +96,11 @@ const JobListing = () => {
           {
             issearched && (searchfilter.title !== "" || searchfilter.location !== "") && (
               <>
-                <div className='shadow bg-[#97CADC] mt-[28px] p-5 w-full rounded-lg flex flex-col mb-6'>
-                  <h3 className='text-lg font-medium mb-4 '>Your Current Filter</h3>
+                <div className="bg-white rounded-2xl shadow-md p-5 mb-6 border mt-[45px] border-gray-100">
+                  <h3 className="font-semibold text-lg mb-4 text-gray-800">Your Current Filter</h3>
                   <div className='flex flex-wrap items-center gap-2 '>
                     {searchfilter.title && (
-                      <span className='flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full'>
+                      <span className='flex items-center gap-2 bg-[#042352] text-white px-4 py-2 rounded-full'>
                         {searchfilter.title}
                         <img
                           onClick={() => setSearchFilter(prev => ({ ...prev, title: "" }))}
@@ -136,44 +136,85 @@ const JobListing = () => {
           </button>
 
           {/* Filter Lists */}
-          <div className={showFilter ? "" : "max-lg:hidden"} >
+          {/* Filter Lists */}
+          <div className={showFilter ? "" : "max-lg:hidden"}>
 
-            {/* Category Filter */}
-            <h4 className='font-bold text-lg py-4 '>Filter By Top Categories! </h4>
-            <ul className='space-y-4 text-gray-600'>
-              {
-                JobCategories.map((Category, index) => (
-                  <li className='flex gap-3 items-center' key={index}>
-                    <input
-                      className='scale-125 cursor-pointer'
-                      type="checkbox"
-                      onChange={() => handleCategoryChange(Category)}
-                      checked={selectedCategories.includes(Category)}
-                    />
-                    <label className='cursor-pointer'>{Category}</label>
-                  </li>
-                ))
-              }
-            </ul>
+            {/* Categories */}
+            <div className="bg-white rounded-2xl shadow-md p-5 mb-6 border mt-[45px] border-gray-100">
+              <h4 className="font-semibold text-lg mb-4 text-gray-800">
+                🎯 Categories
+              </h4>
 
-            {/* Location Filter */}
-            <h4 className='font-bold text-lg py-4 pt-14'>Filter By Top Locations!</h4>
-            <ul className='space-y-4 text-gray-600'>
-              {
-                JobLocations.map((location, index) => (
-                  <li className='flex gap-3 items-center' key={index}>
-                    <input
-                      className='scale-125 cursor-pointer'
-                      type="checkbox"
-                      onChange={() => handleLocationChange(location)}
-                      checked={selectedLocations.includes(location)}
-                    />
-                    <label className='cursor-pointer'>{location}</label>
+              <ul className="space-y-2">
+                {JobCategories.map((category) => (
+                  <li key={category}>
+                    <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-blue-50 transition">
+
+                      <input
+                        type="checkbox"
+                        onChange={() => handleCategoryChange(category)}
+                        checked={selectedCategories.includes(category)}
+                        className="bg-[#042352] w-4 h-4 cursor-pointer"
+                      />
+
+                      <span className="text-gray-700 text-sm font-medium">
+                        {category}
+                      </span>
+                    </label>
                   </li>
-                ))
-              }
-            </ul>
+                ))}
+              </ul>
+            </div>
+
+            {/* Locations */}
+            <div className="bg-white rounded-2xl shadow-md p-5 border border-gray-100">
+              <h4 className="font-semibold text-lg mb-4 text-gray-800">
+                📍 Locations
+              </h4>
+
+              <ul className="space-y-2">
+                {JobLocations.map((location) => (
+                  <li key={location}>
+                    <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-green-50 transition">
+
+                      <input
+                        type="checkbox"
+                        onChange={() => handleLocationChange(location)}
+                        checked={selectedLocations.includes(location)}
+                        className="accent-green-500 w-4 h-4 cursor-pointer"
+                      />
+
+                      <span className="text-gray-700 text-sm font-medium">
+                        {location}
+                      </span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+
+  {(selectedCategories  || selectedLocations ) && (
+    <button
+      onClick={() => {
+        setSelectedCategories([]);
+        setSelectedLocations([]);
+      }}
+      className="mt-6 rounded-2xl shadow-md p-5 border border-gray-100"
+    >
+     🧹 Clear All Filters
+    </button>
+  )}
+
+            {/* <div className="mt-6 rounded-2xl shadow-md p-5 border border-gray-100">
+
+              <h4 className="font-semibold text-lg  text-gray-800">
+                Clear All Filters
+              </h4>
+            </div> */}
+
           </div>
+
         </div>
 
         {/* Job Cards Section */}
