@@ -124,7 +124,7 @@ const ViewApplication = () => {
                       href={applicant.userId.resume}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-blue-600 hover:underline text-xs sm:text-sm"
+                      className="flex items-center gap-1 text-blue-600 bg-blu hover:underline text-xs sm:text-sm"
                     >
                       Resume
                       <img
