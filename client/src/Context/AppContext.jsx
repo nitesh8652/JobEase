@@ -27,7 +27,7 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
       const { data } = await axios.get(`${backendUrl}/api/jobs`);
       if (data.success) {
         setJobs(data.jobs);
-        // console.log("Jobs Fetched", data.jobs);
+        console.log("Jobs Fetched", data.jobs);
       } else {
         toast.error(data.message || "Failed to fetch jobs");
       }
@@ -47,7 +47,7 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
       });
       if (data.success) {
         setCompanyData(data.company);
-        // console.log("Company Data Fetched", data);
+        console.log("Company Data Fetched", data);
       } else {
         toast.error(data.message || "Failed to fetch company data");
       }
@@ -71,10 +71,10 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
           token: `${userId}`,
         },
       });
-      // console.log("User fetch response:", data);
+      console.log("User fetch response:", data);
       if (data.success) {
         setUserData(data.user);
-        // console.log("User Data Fetched", data.user);
+        console.log("User Data Fetched", data.user);
       } else {
         console.log("User fetch failed:", data.message);
       }
