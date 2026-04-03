@@ -5,26 +5,26 @@ import { AppContext } from '../../Context/AppContext'
 const Banner = () => {
   const [title, setTitle] = useState('')
   const [location, setLocation] = useState('')
-  
+
   const { setSearchFilter, setsearched } = useContext(AppContext)
 
   // UPDATED LOGIC HERE:
   useEffect(() => {
     // 1. Always update the search terms in context
     setSearchFilter({
-        title: title,
-        location: location
+      title: title,
+      location: location
     })
 
     // 2. logic to toggle "searched" state
     if (title.trim() === '' && location.trim() === '') {
-        setsearched(false)
+      setsearched(false)
     } else {
-        // If there is text, we ARE searching
-        setsearched(true)
+      // If there is text, we ARE searching
+      setsearched(true)
     }
-    
-  }, [title, location, setSearchFilter, setsearched]) 
+
+  }, [title, location, setSearchFilter, setsearched])
 
   return (
     <div className="w-full">
@@ -38,7 +38,7 @@ const Banner = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-4xl mx-auto">
-            
+
             {/* Title Input */}
             <div className="flex items-center bg-white rounded-lg px-4 py-3 w-full sm:flex-1 shadow-lg">
               <img src={assets.search_icon} alt="Search" className="w-5 h-5 mr-3" />
@@ -80,15 +80,25 @@ const Banner = () => {
           className=" hidden lg:block absolute left-1/2 transform -translate-x-1/2 bg-white py-10 px-4 sm:px-6 lg:px-8 shadow w-[90%] sm:w-[80%] md:w-[70%] rounded-[20px]"
           style={{ top: '85%' }}
         >
-          <h4 className="text-2xl font-semibold text-gray-800 text-center mb-8">
-            Trusted By
-          </h4>
+
+
+          <div className="flex items-center justify-center mb-10">
+
+            <div className="grow border-t border-gray-300"></div>
+
+            <span className="mx-4 text-gray-600 font-semibold tracking-wide text-lg">
+              Trusted By
+            </span>
+
+            <div className="grow border-t border-gray-300"></div>
+
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 ">
-            <img className="h-8 opacity-70 hover:opacity-100 transition-opacity md:w-[12%] sm:w-[35%]" src={assets.microsoft_logo} alt="Microsoft" />
-            <img className="h-8 opacity-70 hover:opacity-100 transition-opacity md:w-[12%] sm:w-[35%]" src={assets.walmart_logo} alt="Walmart" />
-            <img className="h-8 opacity-70 hover:opacity-100 transition-opacity md:w-[12%] sm:w-[35%]" src={assets.adobe_logo} alt="Adobe" />
-            <img className="h-9 opacity-70 hover:opacity-100 transition-opacity md:w-[12%] sm:w-[20%]" src={assets.accenture_logo} alt="Accenture" />
-            <img className="h-9 opacity-70 hover:opacity-100 transition-opacity md:w-[12%] sm:w-[35%]" src={assets.samsung_logo} alt="Samsung" />
+            <img className="h-8 hover:scale-110 transition duration-300 md:w-[12%] sm:w-[35%]" src={assets.microsoft_logo} alt="Microsoft" />
+            <img className="h-8 hover:scale-110 transition duration-300 md:w-[12%] sm:w-[35%]" src={assets.walmart_logo} alt="Walmart" />
+            <img className="h-8 hover:scale-110 transition duration-300 md:w-[12%] sm:w-[35%]" src={assets.adobe_logo} alt="Adobe" />
+            <img className="h-9 hover:scale-110 transition duration-300 md:w-[12%] sm:w-[20%]" src={assets.accenture_logo} alt="Accenture" />
+            <img className="h-9 hover:scale-110 transition duration-300 md:w-[12%] sm:w-[35%]" src={assets.samsung_logo} alt="Samsung" />
           </div>
         </div>
       </div>
