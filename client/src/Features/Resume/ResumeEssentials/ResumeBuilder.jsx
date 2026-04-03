@@ -104,10 +104,7 @@ const ResumeCreator = () => {
     }
   }, [resumeData, STORAGE_KEY])
 
-  // Persist to localStorage whenever data changes
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
-  }, [resumeData]);
+
 
 useEffect(() => {
     if (isLoaded && !isSignedIn) {

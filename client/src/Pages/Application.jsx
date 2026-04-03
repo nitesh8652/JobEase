@@ -123,9 +123,6 @@ const Application = () => {
         {/* Jobs Section */}
         <h2 className='text-xl font-semibold mb-4'>Jobs Applied</h2>
 
-
-
-
         {userApplications.length === 0 ? (
 
           <div className="bg-white border border-gray-200 rounded-xl p-10 text-center">
