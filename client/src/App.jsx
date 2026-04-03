@@ -15,6 +15,7 @@ import ResumeCreator from './Features/Resume/ResumeEssentials/ResumeBuilder'
 import ProtectedRoute from './Features/Protected/ProtectedRoute'
 import 'quill/dist/quill.snow.css'
 import { ToastContainer, toast } from 'react-toastify';
+import UserProtectedRoute from './Features/Protected/UserProtected'
 
 const AppContent = () => {
   const { showRecruiterLogin, companyToken } = useContext(AppContext)
@@ -28,7 +29,14 @@ const AppContent = () => {
         <Route path='/apply-job/:id' element={<ApplyJob />} />
         <Route path='/application' element={<Application />} />
         <Route path='/resume/:id' element={<Resume />} />
-        <Route path='/resume-create/:id' element={<ResumeCreator />} />
+        <Route
+          path='/resume-create/:id'
+          element={
+            <UserProtectedRoute>
+              <ResumeCreator />
+            </UserProtectedRoute>
+          }
+        />
         <Route
           path='/dashboard'
           element={
