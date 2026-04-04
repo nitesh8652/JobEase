@@ -41,7 +41,7 @@ const RecuterLogin = () => {
         try {
             setIsLoading(true);
 
-            // ================= LOGIN =================
+            //  LOGIN 
             if (state === "Login") {
                 const { data } = await axios.post(
                     backendUrl + '/api/company/login',
@@ -59,7 +59,7 @@ const RecuterLogin = () => {
                 }
             }
 
-            // ================= SIGN UP =================
+            //  SIGN UP 
             else if (state === "Sign Up") {
 
                 // Step 1: Just move to next step
@@ -96,7 +96,7 @@ const RecuterLogin = () => {
                 }
             }
 
-            // ================= FORGOT PASSWORD =================
+            //  FORGOT PASSWORD 
             else if (state === "Forgot Password") {
 
                 // STEP 1 → Send token

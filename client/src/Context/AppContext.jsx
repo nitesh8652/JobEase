@@ -6,7 +6,31 @@ import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
+/**
+ * @desc Global state provider using React Context API
+ * 
+ * @purpose
+ * - Centralizes application state (jobs, user, company, filters)
+ * - Avoids prop drilling across components
+ * 
+ * @why Context API?
+ * - Allows sharing data globally without passing props manually
+ * - Simpler alternative to Redux for medium-scale apps
+ */
+
 export const AppContextProvider = (props) => {
+
+  /**
+ * @state searchfilter → stores job search inputs (title, location)
+ * @state issearched → tracks whether user initiated search
+ * @state jobs → stores all fetched job data
+ * @state companyToken → JWT token for recruiter authentication
+ * @state companyData → logged-in recruiter data
+ * @state userData → logged-in user profile data
+ * @state userApplications → stores jobs user has applied to
+ * @state isLoadingJobs / isLoadingUser → handles loading UI states
+ */
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   const { user, isSignedIn } = useUser();
   const { getToken, userId } = useAuth();
@@ -17,9 +41,23 @@ export const AppContextProvider = (props) => {
   const [companyToken, setCompanyToken] = useState(null);
   const [companyData, setCompanyData] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [userApplications, setUserApplications] = useState([]); // <- initialized as empty array
-const [isLoadingJobs, setIsLoadingJobs] = useState(false)
-const [isLoadingUser, setIsLoadingUser] = useState(false)
+  const [userApplications, setUserApplications] = useState([]); 
+  const [isLoadingJobs, setIsLoadingJobs] = useState(false)
+  const [isLoadingUser, setIsLoadingUser] = useState(false)
+
+
+  /**
+ * @desc Fetch all available jobs from backend
+ * 
+ * @logic
+ * - Set loading state
+ * - Call backend API (/api/jobs)
+ * - Store jobs in global state
+ * - Handle errors using toast notifications
+ * 
+ * @why global?
+ * - Jobs are used across multiple components (home, search, dashboard)
+ */
 
   const fetchJobs = async () => {
     try {
@@ -34,7 +72,7 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
     } catch (error) {
       console.error("Error fetching jobs:", error);
       toast.error(error.message || "Error fetching jobs");
-    }finally{
+    } finally {
       setIsLoadingJobs(false);
     }
   };
@@ -56,6 +94,19 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
       toast.error(error.message || "Error fetching company data");
     }
   };
+
+  /**
+ * @desc Fetch user data using Clerk authentication
+ * 
+ * @logic
+ * - Get Clerk token (authentication check)
+ * - Send userId in headers to backend
+ * - Store user profile in state
+ * 
+ * @why Clerk?
+ * - Handles authentication externally
+ * - Reduces backend complexity
+ */
 
   const fetchUserData = async () => {
     try {
@@ -80,12 +131,22 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
       }
     } catch (error) {
       console.log("Error fetching user:", error.message);
-    }finally{
+    } finally {
       setIsLoadingUser(false)
     }
   };
 
-  // user applied jobs to get
+  /**
+ * @desc Fetch all jobs applied by the user
+ * 
+ * @logic
+ * - Call backend API with userId
+ * - Store applications in global state
+ * 
+ * @usage
+ * - Used in user dashboard to show applied jobs
+ */
+
   const fetchUserApplications = async () => {
     try {
       const token = await getToken();
@@ -124,7 +185,7 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
       fetchUserApplications();
     } else {
       setUserData(null);
-      setUserApplications([]); // clear on sign out
+      setUserApplications([]);
     }
   }, [isSignedIn, user]);
 
@@ -144,7 +205,7 @@ const [isLoadingUser, setIsLoadingUser] = useState(false)
     backendUrl,
     userData,
     setUserData,
-    userApplications, // <- exposed
+    userApplications,
     setUserApplications,
     fetchUserData,
     fetchUserApplications,
