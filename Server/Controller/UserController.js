@@ -4,6 +4,18 @@ import Job from "../Models/Job.js"
 import { clerkClient } from "@clerk/clerk-sdk-node"
 import { v2 as cloudinary } from "cloudinary"
 
+/**
+ * @desc Get user data (from DB or Clerk)
+ * @route GET /api/user/me
+ * @access Private
+ * 
+ * @logic
+ * - Get userId from headers (token)
+ * - Check if user exists in local DB
+ * - If not → fetch from Clerk (external auth provider)
+ * - Store user in DB for future use (caching strategy)
+ */
+
 export const getUserData = async (req, res) => {
     try {
         console.log('token header:', req.headers.token);
@@ -49,6 +61,16 @@ export const getUserData = async (req, res) => {
     }
 }
 
+/**
+ * @desc Apply for a job
+ * @route POST /api/user/apply
+ * @access Private
+ * 
+ * @logic
+ * - Prevent duplicate applications
+ * - Validate job existence
+ * - Store application with userId, jobId, companyId
+ */
 
 export const applyForJob = async (req, res) => {
     try {
@@ -79,6 +101,16 @@ export const applyForJob = async (req, res) => {
     }
 }
 
+/**
+ * @desc Get all jobs applied by user
+ * @route GET /api/user/applications
+ * @access Private
+ * 
+ * @logic
+ * - Fetch all applications by userId
+ * - Populate job details + company details
+ */
+
 export const getUserJobApplication = async (req, res) => {
   try {
     const userId = req.headers.token;
@@ -102,6 +134,16 @@ export const getUserJobApplication = async (req, res) => {
   }
 };
 
+/**
+ * @desc Upload or update user resume
+ *  * @access Private
+ * 
+ * @logic
+ * - Validate authentication
+ * - Validate file upload
+ * - Upload resume to Cloudinary
+ * - Store resume URL in DB
+ */
 
 export const updateUserResume = async (req, res) => {
     try {

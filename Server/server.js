@@ -10,7 +10,7 @@ import JobRoutes from './Routes/JobRoutes.js';
 import userRoutes from './Routes/UserRoutes.js';
 import { clerkMiddleware } from '@clerk/express'
 import User from './Models/User.js' 
-import PdfRoutes from './Routes/PdfRoutes.js'
+
 
 
 const app = express();
@@ -43,7 +43,7 @@ app.get('/', (req, res) => res.send("API Running"))
 app.use('/api/company', CompanyRoutes)
 app.use("/api/jobs", JobRoutes)
 app.use('/api/users', userRoutes)
-app.use('/api/pdf', PdfRoutes)
+
 
 
 

@@ -7,6 +7,22 @@ import JobApplication from "../Models/JobApplication.js";
 import crypto from 'crypto'
 import  nodemailer from 'nodemailer'
 
+
+/**
+ * @desc Register a new company
+ * @route POST /api/company/register
+ * @access Public
+ * 
+ * @steps
+ * 1. Validate input fields
+ * 2. Check if company already exists
+ * 3. Hash password using bcrypt
+ * 4. Upload company image to Cloudinary
+ * 5. Save company in DB
+ * 6. Generate JWT token
+ */
+
+
 export const registerCompany = async (req, res) => {
 
     const { name, email, password } = req.body;
@@ -49,6 +65,16 @@ export const registerCompany = async (req, res) => {
     }
 }
 
+/**
+ * @desc Login company
+ * @route POST /api/company/login
+ * @access Public
+ * 
+ * @logic
+ * - Find company by email
+ * - Compare hashed password using bcrypt
+ * - Generate JWT token if valid
+ */
 
 export const loginCompany = async (req, res) => {
 
@@ -79,6 +105,15 @@ export const loginCompany = async (req, res) => {
 
 }
 
+/**
+ * @desc Get logged-in company data
+ * @route GET /api/company/me
+ * @access Private
+ * 
+ * @note
+ * - req.company is injected via authentication middleware (JWT verification)
+ */
+
 export const getCompanyData = async (req, res) => {
 
     try {
@@ -89,6 +124,17 @@ export const getCompanyData = async (req, res) => {
     }
 
 }
+
+/**
+ * @desc Post a new job
+ * @route POST /api/company/post-job
+ * @access Private (Company only)
+ * 
+ * @logic
+ * - Extract job details
+ * - Attach companyId from authenticated user
+ * - Save job in DB
+ */
 
 export const postJob = async (req, res) => {
 
@@ -114,6 +160,16 @@ export const postJob = async (req, res) => {
 
 }
 
+/**
+ * @desc Get all applicants for company's jobs
+ * @route GET /api/company/applicants
+ * @access Private
+ * 
+ * @important
+ * - Uses Mongoose populate to fetch related data:
+ *   user details + job details
+ */
+
 export const getCompanyJobApplicants = async (req, res) => {
 
     try {
@@ -129,6 +185,17 @@ export const getCompanyJobApplicants = async (req, res) => {
     }
 
 }
+
+/**
+ * @desc Get all jobs posted by company
+ * @route GET /api/company/jobs
+ * @access Private
+ * 
+ * @logic
+ * - Fetch all jobs by companyId
+ * - Count number of applicants per job
+ * - Merge applicant count into job object
+ */
 
 export const getCompanyPostedJobs = async (req, res) => {
 
@@ -149,6 +216,15 @@ export const getCompanyPostedJobs = async (req, res) => {
 
 }
 
+/**
+ * @desc Update job application status (Accepted/Rejected)
+ * @route PUT /api/company/application-status
+ * @access Private
+ * 
+ * @note
+ * - Uses headers instead of body (not recommended but works)
+ */
+
 export const changeJobApplicationStatus = async (req, res) => {
     try {
         const id = req.headers["application-id"];
@@ -167,6 +243,14 @@ export const changeJobApplicationStatus = async (req, res) => {
     }
 };
 
+/**
+ * @desc Toggle job visibility (hide/show job)
+ * @access Private
+ * @logic
+ * - Only job owner can toggle visibility
+ * - Flips boolean value of "visible"
+ */
+
 export const changeVisibility = async (req, res) => {
 
     try {
@@ -184,6 +268,17 @@ export const changeVisibility = async (req, res) => {
     }
 }
 
+/**
+ * @desc Send password reset token to email
+ * @route POST /api/company/forgot-password
+ * @access Public
+ * 
+ * @steps
+ * - Generate random token using crypto
+ * - Store token + expiry in DB
+ * - Send email via nodemailer
+ */
+
     export const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
@@ -194,7 +289,6 @@ export const changeVisibility = async (req, res) => {
             return res.json({ success: false, message: "Company not found" });
         }
 
-        // Generate random token
         const resetToken = crypto.randomBytes(20).toString("hex");
 
         company.resetToken = resetToken;
@@ -224,32 +318,35 @@ export const changeVisibility = async (req, res) => {
     }
 };
 
+/**
+ * @desc Reset password using token
+ * @route POST /api/company/reset-password
+ * @access Public
+ * 
+ * @logic
+ * - Validate token + expiry
+ * - Hash new password
+ * - Clear reset token fields
+ */
 
    export const resetPassword = async (req, res) => {
     const { email, token, newPassword } = req.body;
-
     try {
         const company = await Company.findOne({
             email,
             resetToken: token,
             resetTokenExpiry: { $gt: Date.now() }
         });
-
         if (!company) {
             return res.json({ success: false, message: "Invalid or expired token" });
         }
-
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(newPassword, salt);
-
         company.password = hashPassword;
         company.resetToken = undefined;
         company.resetTokenExpiry = undefined;
-
         await company.save();
-
         res.json({ success: true, message: "Password reset successful" });
-
     } catch (error) {
         res.json({ success: false, message: error.message });
     }

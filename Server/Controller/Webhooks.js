@@ -1,6 +1,24 @@
 import { Webhook } from "svix";
 import User from '../Models/User.js'
 
+/**
+ * @desc Handle Clerk webhook events (user sync with MongoDB)
+ * @route POST /api/webhooks/clerk
+ * @access Public (secured via webhook signature)
+ * 
+ * @logic
+ * - Verify webhook authenticity using Svix (security layer)
+ * - Parse event type and data from Clerk
+ * - Perform DB operations based on event:
+ *    → user.created → create user in DB
+ *    → user.updated → update user in DB
+ *    → user.deleted → remove user from DB
+ * 
+ * @why webhooks?
+ * - Enables real-time synchronization between Clerk and database
+ * - Eliminates need for manual user management
+ */
+
 const clerkwebhooks = async (req, res) => {
     try {
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
