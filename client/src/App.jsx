@@ -27,13 +27,20 @@ const AppContent = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/apply-job/:id' element={<ApplyJob />} />
-        <Route path='/application' element={<Application />} />
         <Route path='/resume/:id' element={<Resume />} />
         <Route
           path='/resume-create/:id'
           element={
             <UserProtectedRoute>
               <ResumeCreator />
+            </UserProtectedRoute>
+          }
+        />
+        <Route
+          path='/application'
+          element={
+            <UserProtectedRoute>
+              <Application />
             </UserProtectedRoute>
           }
         />
@@ -62,4 +69,4 @@ const App = () => {
   )
 }
 
-export default App 
+export default App

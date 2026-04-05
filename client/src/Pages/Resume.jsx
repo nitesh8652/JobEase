@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
-import { UploadCloudIcon, ArrowLeftIcon } from 'lucide-react'
+import { UploadCloudIcon, ArrowLeftIcon, Cloud, Edit, UploadCloud } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { toast } from 'react-toastify';
@@ -24,6 +24,9 @@ const Resume = () => {
           <ArrowLeftIcon className="w-4 h-4" />
           Go Back
         </Link>
+       
+
+
         <div className='flex flex-wrap gap-5 mt-6'>
           {/* Upload Button */}
           <button 
@@ -35,10 +38,28 @@ const Resume = () => {
             }} 
             className="relative w-full sm:max-w-80 h-56 flex flex-col items-center justify-center rounded-xl gap-3 border transition-all duration-300 cursor-pointer bg-[linear-gradient(135deg,#f5eaff,#e2c6ff)] border-[#9333ea] hover:shadow-lg group"
           >
-            <UploadCloudIcon className='size-11 transition-all duration-300 p-2.5 bg-linear-to-br from-indigo-300 to-indigo-500 text-white rounded-full' />
+            <Edit className='size-11 transition-all duration-300 p-2.5 bg-linear-to-br from-indigo-300 to-indigo-500 text-white rounded-full' />
             <p className='text-sm group-hover:text-[#9333EA] transition-all duration-300'>Create Resume</p>
           </button>
         </div>
+
+        
+        <div className='flex flex-wrap gap-5 mt-6'>
+          {/* Upload Button */}
+          <button 
+            onClick={() => {
+             
+              navigate('/application')
+              // navigate(`/application${user?.id}`)
+            }} 
+            className="relative w-full sm:max-w-80 h-56 flex flex-col items-center justify-center rounded-xl gap-3 border transition-all duration-300 cursor-pointer bg-[linear-gradient(135deg,#f5eaff,#e2c6ff)] border-[#9333ea] hover:shadow-lg group"
+          >
+            <UploadCloud className='size-11 transition-all duration-300 p-2.5 bg-linear-to-br from-indigo-300 to-indigo-500 text-white rounded-full' />
+            <p className='text-sm group-hover:text-[#9333EA] transition-all duration-300'>Upload Resume</p>
+          </button>
+        </div>
+        
+          
       </div>
     </>
   )

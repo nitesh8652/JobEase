@@ -1,6 +1,6 @@
+import {useParams} from 'react-router-dom'
 import Navbar from '../Components/Navbar'
 import { useState, useContext } from 'react'
-
 import moment from 'moment'
 import Footer from '../Components/Footer'
 import { useUser, useAuth } from '@clerk/clerk-react'
@@ -9,14 +9,17 @@ import axios from 'axios'
 import { AppContext } from '../Context/AppContext'
 import { EyeOffIcon } from 'lucide-react'
 
-
 const Application = () => {
   const { user } = useUser()
+  const {id} = useParams()
   const { getToken, userId } = useAuth()
   const [isedit, setisedit] = useState(false)
   const [resume, setResume] = useState(null)
   const { userData, userApplications, fetchUserData } = useContext(AppContext)
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  
+   
+
   const handleFileSelect = (file) => {
     setResume(file || null)
   }
