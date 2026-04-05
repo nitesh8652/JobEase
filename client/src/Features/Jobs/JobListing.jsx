@@ -4,17 +4,19 @@ import { assets, JobCategories, JobLocations } from '../../assets/assets'
 import JobCard from './JobCard'
 import { Link, useNavigate } from 'react-router-dom'
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { toast } from 'react-toastify';
 
 const JobListing = () => {
-  const { issearched, searchfilter, setSearchFilter, jobs } = useContext(AppContext)
 
-  const [showFilter, setShowFilter] = useState(false)
-  const [selectedCategories, setSelectedCategories] = useState([])
+  const { issearched, searchfilter, setSearchFilter, jobs } = useContext(AppContext)
   const [selectedLocations, setSelectedLocations] = useState([])
-  const [currentpage, setcurrentpage] = useState(1)
-  const jobsPerPage = 9
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [filteredjobs, setfilterjobs] = useState(jobs)
+  const [showFilter, setShowFilter] = useState(false)
+  const [currentpage, setcurrentpage] = useState(1)
   const navigate = useNavigate()
+  const { user } = useUser()
+  const jobsPerPage = 9
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(prev =>
@@ -70,9 +72,9 @@ const JobListing = () => {
       <div className='lg:flex lg:gap-8 max-lg:space-y-8'>
 
         {/* Sidebar Filters */}
-        <div className='lg:w-1/4 lg:pl-[42px]'>
-          <div className="  relative group rounded-2xl p-[2px] bg-gradient-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7] ">
-            <div className="bg-white rounded-2xl p-6 h-full w-full mb-[8px]">
+        <div className='lg:w-1/4 lg:pl-10.05'>
+          <div className="  relative group rounded-2xl p-0.5 bg-linear-to-r from-[#00b3c7] via-[#4de8dd] to-[#00b3c7] ">
+            <div className="bg-white rounded-2xl p-6 h-full w-full mb-2">
 
               <h4 className="text-xl font-black mb-4 bg-[#15163A] bg-clip-text text-transparent">
                 Login For Free Perks!
@@ -84,7 +86,10 @@ const JobListing = () => {
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" /></svg>
                   </span>
                   <div type="button" className="flex flex-col">
-                    <button onClick={() => navigate(`/resume/${user?.id}`)} className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">AI Resume Maker</button>
+                    <button onClick={() => 
+                      navigate(`/resume/${user?.id}`)
+                    }
+                      className="font-bold text-gray-800 group-hover/item:text-[#00b3c7] transition-colors">AI Resume Maker</button>
                     <button className="text-xs text-gray-600 hover:text-gray-600 cursor-pointer text-left">Build resumes instantly</button>
                   </div>
                 </li>
@@ -96,7 +101,7 @@ const JobListing = () => {
           {
             issearched && (searchfilter.title !== "" || searchfilter.location !== "") && (
               <>
-                <div className="bg-white rounded-2xl shadow-md p-5 mb-6 border mt-[45px] border-gray-100">
+                <div className="bg-white rounded-2xl shadow-md p-5 mb-6 border mt-11.25 border-gray-100">
                   <h3 className="font-semibold text-lg mb-4 text-gray-800">Your Current Filter</h3>
                   <div className='flex flex-wrap items-center gap-2 '>
                     {searchfilter.title && (
@@ -135,12 +140,12 @@ const JobListing = () => {
             {showFilter ? "Close" : "Filters"}
           </button>
 
-          {/* Filter Lists */}
+
           {/* Filter Lists */}
           <div className={showFilter ? "" : "max-lg:hidden"}>
 
             {/* Categories */}
-            <div className="bg-white rounded-2xl shadow-md p-5 mb-6 border mt-[45px] border-gray-100">
+            <div className="bg-white rounded-2xl shadow-md p-5 mb-6 border mt-11.25 border-gray-100">
               <h4 className="font-semibold text-lg mb-4 text-gray-800">
                 🎯 Categories
               </h4>
@@ -194,27 +199,19 @@ const JobListing = () => {
             </div>
 
 
-  {(selectedCategories  || selectedLocations ) && (
-    <button
-      onClick={() => {
-        setSelectedCategories([]);
-        setSelectedLocations([]);
-      }}
-      className="mt-6 rounded-2xl shadow-md p-5 border border-gray-100"
-    >
-     🧹 Clear All Filters
-    </button>
-  )}
-
-            {/* <div className="mt-6 rounded-2xl shadow-md p-5 border border-gray-100">
-
-              <h4 className="font-semibold text-lg  text-gray-800">
-                Clear All Filters
-              </h4>
-            </div> */}
+            {(selectedCategories || selectedLocations) && (
+              <button
+                onClick={() => {
+                  setSelectedCategories([]);
+                  setSelectedLocations([]);
+                }}
+                className="mt-6 rounded-2xl shadow-md p-5 border border-gray-100"
+              >
+                🧹 Clear All Filters
+              </button>
+            )}
 
           </div>
-
         </div>
 
         {/* Job Cards Section */}
