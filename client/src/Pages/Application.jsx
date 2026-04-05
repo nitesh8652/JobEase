@@ -1,4 +1,4 @@
-import {useParams} from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import Navbar from '../Components/Navbar'
 import { useState, useContext } from 'react'
 import moment from 'moment'
@@ -8,17 +8,18 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import { AppContext } from '../Context/AppContext'
 import { EyeOffIcon } from 'lucide-react'
+import {  ArrowLeftIcon} from 'lucide-react'
 
 const Application = () => {
   const { user } = useUser()
-  const {id} = useParams()
+  const { id } = useParams()
   const { getToken, userId } = useAuth()
   const [isedit, setisedit] = useState(false)
   const [resume, setResume] = useState(null)
   const { userData, userApplications, fetchUserData } = useContext(AppContext)
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-  
-   
+
+
 
   const handleFileSelect = (file) => {
     setResume(file || null)
@@ -68,8 +69,16 @@ const Application = () => {
       <Navbar />
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[65vh] my-8'>
 
+        <Link
+          to={'/'}
+          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition"
+        >
+          <ArrowLeftIcon className="w-4 h-4" />
+          Go Back
+        </Link>
+
         {/* Resume Section */}
-        <h2 className='text-xl font-semibold'>Your Resume</h2>
+        <h2 className='text-xl font-semibold mt-6'>Your Resume</h2>
 
         <div className='flex flex-col sm:flex-row gap-3 mb-6 mt-3'>
 
