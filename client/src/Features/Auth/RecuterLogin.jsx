@@ -148,7 +148,7 @@ const RecuterLogin = () => {
     };
 
   return (
-    <div className="fixed inset-0 z-[9999] backdrop-blur-sm bg-black/30 flex justify-center items-center px-4">
+    <div className="fixed inset-0 z-9999 backdrop-blur-sm bg-black/30 flex justify-center items-center px-4">
         
         {isLoading && <Loading />}
 

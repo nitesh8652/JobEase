@@ -24,7 +24,7 @@ const Dashboard = () => {
     return (
         <div className='min-h-screen bg-gray-50 flex flex-col'>
             {/* Top Navbar */}
-            <div className='bg-white shadow-md h-[60px] flex items-center justify-between px-4 sm:px-6 z-50 relative'>
+            <div className='bg-white shadow-md h-15 flex items-center justify-between px-4 sm:px-6 z-50 relative'>
                 <img
                     onClick={() => navigate('/')}
                     src={assets.suitcaselogo}
@@ -40,7 +40,7 @@ const Dashboard = () => {
                         <div className='flex items-center gap-2 relative group'>
                             <img
                                 src={companyData.image}
-                                className='w-28 h-10 border rounded-[8px] border-gray-200 object-contain bg-white p-1 shadow-2xl'
+                                className='w-28 h-10 border rounded-lg border-gray-200 object-contain bg-white p-1 shadow-2xl'
                                 alt="Profile"
                             />
 

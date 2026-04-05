@@ -101,13 +101,13 @@ const ViewApplication = () => {
                   <td className="p-2 sm:p-3 text-xs sm:text-sm">{index + 1}</td>
 
                   {/* User Info */}
-                  <td className="p-2 sm:p-3 flex items-center gap-2 min-w-[150px]">
+                  <td className="p-2 sm:p-3 flex items-center gap-2 min-w-37.5">
                     <img
                       src={applicant.userId.image}
                       alt=""
                       className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
                     />
-                    <span className="truncate max-w-[100px] sm:max-w-none">
+                    <span className="truncate max-w-25 sm:max-w-none">
                       {applicant.userId.name}
                     </span>
                   </td>

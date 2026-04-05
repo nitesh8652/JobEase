@@ -170,7 +170,7 @@ useEffect(() => {
               {/* Progress Bar */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 rounded-t-xl" />
               <div
-                className="absolute top-0 left-0 h-1 bg-gradient-to-r from-blue-300 to-blue-900 rounded-t-xl transition-all duration-500"
+                className="absolute top-0 left-0 h-1 bg-linear-to-r from-blue-300 to-blue-900 rounded-t-xl transition-all duration-500"
                 style={{
                   width: `${(activeSectionIndex / (sections.length - 1)) * 100}%`
                 }}
@@ -261,7 +261,7 @@ useEffect(() => {
               </div>
 
               {/* Prev / Next */}
-              <div className="flex items-center gap-2 justify-end mt-[23px]">
+              <div className="flex items-center gap-2 justify-end mt-5.75">
                 {activeSectionIndex !== 0 && (
                   <button
                     onClick={() => setActiveSectionIndex(prev => prev - 1)}

@@ -83,7 +83,7 @@ const Managejobs = () => {
                 className="hover:bg-gray-50 transition border-b last:border-none"
               >
                 <td className="p-2 sm:p-3">{index + 1}</td>
-                <td className="p-2 sm:p-3 min-w-[150px] truncate">{job.title}</td>
+                <td className="p-2 sm:p-3 min-w-37.5 truncate">{job.title}</td>
                 <td className="p-2 sm:p-3">{moment(job.date).format("ll")}</td>
                 <td className="p-2 sm:p-3">{job.location}</td>
                 <td className="p-2 sm:p-3">{job.applicants}</td>
