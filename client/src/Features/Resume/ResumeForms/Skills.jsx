@@ -1,7 +1,7 @@
 import { WandSparklesIcon, X, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from "react-toastify";
-import Skillbttn from '../../Components/Buttons/Skillbtn.jsx';
+import Skillbttn from '../../../Components/Buttons/Skillbtn.jsx';
 
 
 const Skills = ({ data = [], onChange, template = "classic" }) => {

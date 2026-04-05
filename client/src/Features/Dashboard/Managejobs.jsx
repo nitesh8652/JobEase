@@ -4,7 +4,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AppContext } from "../../Context/AppContext";
 import { toast } from "react-toastify";
-import Loading from "../Components/Loading";
+import Loading from "../../Components/Loading";
 
 
 const Managejobs = () => {

@@ -3,9 +3,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
-import Experiencebtt from '../../Components/Buttons/Experiencebtt.jsx';
-import AIexp from '../../Components/Buttons/AIexp.jsx';
-import AIOverlay from '../../Components/AILoader.jsx';
+import Experiencebtt from '../../../Components/Buttons/Experiencebtt.jsx';
+import AIexp from '../../../Components/Buttons/AIexp.jsx';
+import AIOverlay from '../../../Components/AILoader.jsx';
 import { useState } from "react";
 
 

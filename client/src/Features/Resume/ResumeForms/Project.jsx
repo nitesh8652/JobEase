@@ -1,11 +1,11 @@
 import { Plus, ProjectorIcon, Trash2Icon } from 'lucide-react'
-import Projectbtt from '../../Components/Buttons/Projectbtt.jsx';
-import AIproj from '../../Components/Buttons/AIproj.jsx';
+import Projectbtt from '../../../Components/Buttons/Projectbtt.jsx';
+import AIproj from '../../../Components/Buttons/AIproj.jsx';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { toast } from 'react-toastify';
 import { useState } from "react";
-import Loader from '../../Components/Buttons/AIloader.jsx';
-import AIOverlay from '../../Components/AILoader.jsx';
+import Loader from '../../../Components/Loading.jsx';
+import AIOverlay from '../../../Components/AILoader.jsx';
 
 const Project = ({ data, onChange }) => {
 

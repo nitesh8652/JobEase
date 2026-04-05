@@ -2,8 +2,8 @@ import { Sparkles } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { toast } from 'react-toastify';
-import AIOverlay from '../../Components/AILoader.jsx';
-import AIsummry from '../../Components/Buttons/AIsummry.jsx';
+import AIOverlay from '../../../Components/AILoader.jsx';
+import AIsummry from '../../../Components/Buttons/AIsummry.jsx';
 
 
 const Summary = ({ data, onChange }) => {

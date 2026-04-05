@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../Features/Components/Navbar'
+import Navbar from '../Components/Navbar'
 import { UploadCloudIcon } from 'lucide-react'
 
 import { useNavigate } from 'react-router-dom';

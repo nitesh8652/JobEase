@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../../Components/Navbar.jsx'
+import Navbar from '../../../Components/Navbar.jsx'
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import {
@@ -24,10 +24,10 @@ import Experience from '../ResumeForms/Experience';
 import Education from '../ResumeForms/Education';
 import Project from '../ResumeForms/Project.jsx';
 import Skills from '../ResumeForms/Skills';
-import Loading from '../../Components/Loading.jsx';
+import Loading from '../../../Components/Loading.jsx';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/clerk-react';
-import Download from '../../Components/Buttons/Downloadbtt.jsx';
+import Download from '../../../Components/Buttons/Downloadbtt.jsx';
 
 
 // ── Helper: detect which format the skills array is in ──────

@@ -3,7 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { assets } from '../../assets/assets';
 import { AppContext } from '../../Context/AppContext';
 import { LogOutIcon, MenuIcon, NotebookPen, PercentSquareIcon, PlusSquare } from 'lucide-react';
-import Footer from '../Components/Footer';
+import Footer from '../../Components/Footer';
 
 
 const Dashboard = () => {

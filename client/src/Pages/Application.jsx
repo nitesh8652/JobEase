@@ -1,8 +1,8 @@
-import Navbar from '../Features/Components/Navbar'
+import Navbar from '../Components/Navbar'
 import { useState, useContext } from 'react'
 
 import moment from 'moment'
-import Footer from '../Features/Components/Footer'
+import Footer from '../Components/Footer'
 import { useUser, useAuth } from '@clerk/clerk-react'
 import { toast } from 'react-toastify'
 import axios from 'axios'

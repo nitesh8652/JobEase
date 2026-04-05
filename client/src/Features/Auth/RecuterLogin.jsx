@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { EyeClosed, EyeClosedIcon, EyeIcon } from 'lucide-react';
-import Loading from '../Components/Loading';
+import Loading from '../../Components/Loading';
 
 
 const RecuterLogin = () => {
