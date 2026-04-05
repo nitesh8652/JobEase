@@ -21,15 +21,16 @@ const Dashboard = () => {
 
 
 
+
     return (
         <div className='min-h-screen bg-gray-50 flex flex-col'>
             {/* Top Navbar */}
             <div className='bg-white shadow-md h-15 flex items-center justify-between px-4 sm:px-6 z-50 relative'>
                 <img
-                    onClick={() => navigate('/')}
-                    src={assets.suitcaselogo}
-                    className='h-8 w-8 cursor-pointer'
-                    alt="Logo"
+                    src={assets.mainlogo}
+                   
+                    className={`h-9 md:h-11 w-auto object-contain cursor-pointer`}
+                    alt="JobEase"
                 />
 
                 {companyData && (

@@ -44,7 +44,7 @@ export const AppContextProvider = (props) => {
   const [userApplications, setUserApplications] = useState([]); 
   const [isLoadingJobs, setIsLoadingJobs] = useState(false)
   const [isLoadingUser, setIsLoadingUser] = useState(false)
-
+  const [companyAuth, setCompanyAuth] = useState(false)
 
   /**
  * @desc Fetch all available jobs from backend
@@ -171,8 +171,12 @@ export const AppContextProvider = (props) => {
     if (storedCompanyToken) {
       setCompanyToken(storedCompanyToken);
     }
+    setCompanyAuth(true)
   }, []);
 
+
+  
+  
   useEffect(() => {
     if (companyToken) {
       fetchCompanyData();
@@ -188,6 +192,8 @@ export const AppContextProvider = (props) => {
       setUserApplications([]);
     }
   }, [isSignedIn, user]);
+
+ 
 
   const value = {
     setSearchFilter,
@@ -210,6 +216,7 @@ export const AppContextProvider = (props) => {
     fetchUserData,
     fetchUserApplications,
     isLoadingJobs,
+    companyAuth,
     isLoadingUser
   };
 
