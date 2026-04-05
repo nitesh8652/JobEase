@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
-import { UploadCloudIcon } from 'lucide-react'
-import { useNavigate } from 'react-router-dom';
+import { UploadCloudIcon, ArrowLeftIcon } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { toast } from 'react-toastify';
 
@@ -10,7 +10,6 @@ const Resume = () => {
   const navigate = useNavigate();
   const { user } = useUser();
 
-
   return (
     <>
       <Navbar />
@@ -18,16 +17,22 @@ const Resume = () => {
         <p className='text-2xl font-medium mb-6 bg-linear-to-r from-slate-600 to-slate-700 bg-clip-text text-transparent sm:hidden'>
           Welcome, {user?.firstName || 'Login to Continue!'}
         </p>
-
-        <div className='flex flex-wrap gap-5'>
-         
+        <Link
+          to={'/'}
+          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition"
+        >
+          <ArrowLeftIcon className="w-4 h-4" />
+          Go Back
+        </Link>
+        <div className='flex flex-wrap gap-5 mt-6'>
           {/* Upload Button */}
           <button 
             onClick={() => {
               if(!user){
                 toast.error("Please Login First!")
               }
-              navigate(`/resume-create/${user?.id}`)}} 
+              navigate(`/resume-create/${user?.id}`)
+            }} 
             className="relative w-full sm:max-w-80 h-56 flex flex-col items-center justify-center rounded-xl gap-3 border transition-all duration-300 cursor-pointer bg-[linear-gradient(135deg,#f5eaff,#e2c6ff)] border-[#9333ea] hover:shadow-lg group"
           >
             <UploadCloudIcon className='size-11 transition-all duration-300 p-2.5 bg-linear-to-br from-indigo-300 to-indigo-500 text-white rounded-full' />
