@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import Loading from '../Components/Loading'
 import Navbar from '../Components/Navbar'
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useAuth, useUser } from '@clerk/clerk-react'
 import { AppContext } from "../Context/AppContext"
-
+import { ArrowLeftIcon } from 'lucide-react'
 
 const ApplyJob = () => {
     const { id } = useParams()
@@ -20,11 +20,7 @@ const ApplyJob = () => {
     const [jobdata, setjobdata] = useState(null)
     const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
     const { jobs, backendUrl, userData, userApplications, fetchUserApplications } = useContext(AppContext)
-
-
     const { user } = useUser()
-
-
 
     const fetchjob = async () => {
         try {
@@ -48,9 +44,7 @@ const ApplyJob = () => {
                 navigate('/application')
                 return toast.info("Please upload your resume before applying")
             }
-           
             const token = await getToken()
-
             const { data } = await axios.post(
                 backendUrl + '/api/users/apply',
                 { jobId: jobdata._id },
@@ -68,10 +62,8 @@ const ApplyJob = () => {
             }
         } catch (error) {
             toast.error(error.message)
-        } 
+        }
     }
-
-    
 
     const checkIfApplied = () => {
         const hasApplied = userApplications.some(
@@ -97,9 +89,21 @@ const ApplyJob = () => {
         <>
             <Navbar />
 
-            <div className='min-h-screen flex flex-col py-8 sm:py-10 container px-4 sm:px-6 2xl:px-20 mx-auto'>
-                <div className='bg-white text-black sm:p-4 rounded-lg w-full'>
 
+
+            <div className='min-h-screen flex flex-col py-8 sm:py-10 container px-4 sm:px-6 2xl:px-20 mx-auto'>
+
+
+                <Link
+                    to={'/'}
+                    className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition"
+                >
+                    <ArrowLeftIcon className="w-4 h-4" />
+                    Go Back
+                </Link>
+
+
+                <div className='bg-white text-black sm:p-4 rounded-lg w-full'>
                     {/* Hero Section */}
                     <div className='flex flex-col md:flex-row items-center md:items-start justify-between gap-8 p-6 sm:p-10 md:px-14 md:py-16 mb-8 bg-sky-50 border border-[#00B3C7] rounded-xl'>
                         <div className='flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6 w-full md:w-auto'>
@@ -202,8 +206,6 @@ const ApplyJob = () => {
                                     </div>
                                 </div>
                             )}
-
-
                     </div>
 
                 </div>
